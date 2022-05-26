@@ -3,14 +3,15 @@
 #### 介绍
 一个宿舍管理系统
 
-dorm-admin——管理员模块
-dorm-ambient——卫生模块
-dorm-common——通用模块
-dorm-dormitory——宿舍管理模块
-dorm-outLate——晚归模块
-dorm-repair——维修模块
-dorm-system——系统模块
-dorm-visitor——访客模块
+
+1. dorm-admin——管理员模块
+2. dorm-ambient——卫生模块
+3. dorm-common——通用模块
+4. dorm-dormitory——宿舍管理模块
+5. dorm-outLate——晚归模块
+6. dorm-repair——维修模块
+7. dorm-system——系统模块
+8. dorm-visitor——访客模块
 
 #### 软件架构
 软件架构说明
