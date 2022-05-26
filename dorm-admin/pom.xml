@@ -47,6 +47,14 @@
             <artifactId>dorm-system</artifactId>
         </dependency>
 
+        <!-- 宿舍管理模块 -->
+        <dependency>
+            <groupId>com.joy</groupId>
+            <artifactId>dorm-dormitory</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
