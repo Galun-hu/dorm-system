@@ -4,7 +4,7 @@
 一个宿舍管理系统
 
 
-1. dorm-admin——管理员模块
+1. dorm-admin——web服务
 2. dorm-ambient——卫生模块
 3. dorm-common——通用模块
 4. dorm-dormitory——宿舍管理模块
