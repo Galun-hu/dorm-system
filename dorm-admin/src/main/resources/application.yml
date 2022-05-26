@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  data:
+    mongodb:
+      host: 
+      username:
+      password:
+      port:
+      authentication-database:
+      database:
+
