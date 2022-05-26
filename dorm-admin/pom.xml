@@ -47,6 +47,36 @@
             <artifactId>dorm-system</artifactId>
         </dependency>
 
+        <!-- 宿舍管理模块 -->
+        <dependency>
+            <groupId>com.joy</groupId>
+            <artifactId>dorm-dormitory</artifactId>
+        </dependency>
+
+        <!-- 夜归管理模块 -->
+        <dependency>
+            <groupId>com.joy</groupId>
+            <artifactId>dorm-outLate</artifactId>
+        </dependency>
+
+        <!-- 维修管理模块 -->
+        <dependency>
+            <groupId>com.joy</groupId>
+            <artifactId>dorm-repair</artifactId>
+        </dependency>
+
+        <!-- 卫生管理模块 -->
+        <dependency>
+            <groupId>com.joy</groupId>
+            <artifactId>dorm-ambient</artifactId>
+        </dependency>
+
+        <!-- 访客管理模块 -->
+        <dependency>
+            <groupId>com.joy</groupId>
+            <artifactId>dorm-visitor</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

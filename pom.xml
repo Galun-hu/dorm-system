@@ -63,6 +63,41 @@
                 <version>${dorm.version}</version>
             </dependency>
 
+            <!-- 宿舍管理模块 -->
+            <dependency>
+                <groupId>com.joy</groupId>
+                <artifactId>dorm-dormitory</artifactId>
+                <version>${dorm.version}</version>
+            </dependency>
+
+            <!-- 夜归管理模块 -->
+            <dependency>
+                <groupId>com.joy</groupId>
+                <artifactId>dorm-outLate</artifactId>
+                <version>${dorm.version}</version>
+            </dependency>
+
+            <!-- 维修管理模块 -->
+            <dependency>
+                <groupId>com.joy</groupId>
+                <artifactId>dorm-repair</artifactId>
+                <version>${dorm.version}</version>
+            </dependency>
+
+            <!-- 卫生管理模块 -->
+            <dependency>
+                <groupId>com.joy</groupId>
+                <artifactId>dorm-ambient</artifactId>
+                <version>${dorm.version}</version>
+            </dependency>
+
+            <!-- 访客管理模块 -->
+            <dependency>
+                <groupId>com.joy</groupId>
+                <artifactId>dorm-visitor</artifactId>
+                <version>${dorm.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
