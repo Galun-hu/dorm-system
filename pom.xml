@@ -11,8 +11,6 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-
-
     <groupId>com.joy</groupId>
     <artifactId>dorm</artifactId>
     <packaging>pom</packaging>

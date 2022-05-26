@@ -1,6 +1,8 @@
 package com.joy.dorm;
 
+import com.joy.dorm.system.dao.Impl.RoleDaoImpl;
 import com.joy.dorm.system.model.Admin;
+import com.joy.dorm.system.model.Role;
 import com.joy.dorm.system.service.AdminService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ public class DormApplicationTest {
 
     @Autowired
     AdminService adminService;
+
+    @Autowired
+    RoleDaoImpl roleDao;
 
     @Test
     public void test1(){
@@ -34,4 +39,15 @@ public class DormApplicationTest {
         System.out.println(encoder.encode("123456"));
     }
 
+    @Test
+    public void test3(){
+        Role role = new Role();
+        role.setName("ROLE_admin");
+        role.setNameZh("系统管理员");
+        Role role1 = new Role();
+        role1.setName("ROLE_dorm");
+        role1.setNameZh("宿舍管理员");
+        roleDao.insert(role);
+        roleDao.insert(role1);
+    }
 }

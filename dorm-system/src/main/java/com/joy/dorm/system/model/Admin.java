@@ -35,6 +35,10 @@ public class Admin implements UserDetails {
     private String remark;
     @ApiModelProperty("创建时间")
     private Date createTime;
+    @ApiModelProperty("角色id")
+    private String roleId;
+    @ApiModelProperty("角色")
+    private Role role;
 
     public String getId() {
         return id;
@@ -143,5 +147,21 @@ public class Admin implements UserDetails {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 }
