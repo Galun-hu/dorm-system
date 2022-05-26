@@ -8,7 +8,7 @@ spring:
 
   data:
     mongodb:
-      host: 
+      host:
       username:
       password:
       port:
