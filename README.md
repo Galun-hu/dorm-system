@@ -3,6 +3,15 @@
 #### 介绍
 一个宿舍管理系统
 
+dorm-admin——管理员模块
+dorm-ambient——卫生模块
+dorm-common——通用模块
+dorm-dormitory——宿舍管理模块
+dorm-outLate——晚归模块
+dorm-repair——维修模块
+dorm-system——系统模块
+dorm-visitor——访客模块
+
 #### 软件架构
 软件架构说明
 - 宿舍管理
@@ -20,22 +29,3 @@
   * 系统管理员
   * 修改密码
 
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
