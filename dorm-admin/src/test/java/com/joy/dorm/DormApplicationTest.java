@@ -19,7 +19,7 @@ public class DormApplicationTest {
     public void test1(){
         Admin admin = new Admin();
         admin.setUsername("张三");
-        admin.setPassword("123456");
+        admin.setPassword("$2a$10$fF2aibSDBPJkn.HAk23u8u.nytqKZffU1yjizCSFwCC13ie5waVCq");
         admin.setSex("男");
         admin.setPhone("1234567911");
         admin.setCompany("教务处");

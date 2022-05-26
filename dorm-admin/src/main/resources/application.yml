@@ -8,10 +8,10 @@ spring:
 
   data:
     mongodb:
-      host:
-      username:
-      password:
-      port:
-      authentication-database:
-      database:
+      host: 106.55.18.86
+      username: "admin"
+      password: "1353663350"
+      port: 27017
+      authentication-database: admin
+      database: dormitory
 

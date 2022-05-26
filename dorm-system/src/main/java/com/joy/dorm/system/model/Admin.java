@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 
 @ApiModel(description = "管理员")
-@Document(collection = "user")
+@Document(collection = "admin")
 public class Admin implements UserDetails {
 
     @Id
