@@ -13,6 +13,9 @@ public interface IBuildingService {
 //
 //    // 根据管理员姓名获取宿舍信息
 //    Building getBuildingWithAdministrator(String name);
+
+//      // 添加宿舍楼栋信息
+//      void addBuilding(Building building);
 //
 //    // 更新宿舍信息
 //    void updateBuilding(Building building);

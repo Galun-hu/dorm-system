@@ -10,7 +10,7 @@ public class Building {
 
     private Integer id;
     private String type;
-    private Integer administrator;
+    private Integer person_num;
     private String created;
     private String modified;
 
@@ -38,12 +38,12 @@ public class Building {
         this.type = type;
     }
 
-    public Integer getAdministrator() {
-        return administrator;
+    public Integer getPerson_num() {
+        return person_num;
     }
 
-    public void setAdministrator(Integer administrator) {
-        this.administrator = administrator;
+    public void setPerson_num(Integer person_num) {
+        this.person_num = person_num;
     }
 
     public String getCreated() {
@@ -68,7 +68,7 @@ public class Building {
                 "_id='" + _id + '\'' +
                 ", id=" + id +
                 ", type='" + type + '\'' +
-                ", administrator=" + administrator +
+                ", person_num=" + person_num +
                 ", created='" + created + '\'' +
                 ", modified='" + modified + '\'' +
                 '}';

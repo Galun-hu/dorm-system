@@ -13,26 +13,26 @@ public interface IBuildingDao {
      */
     List<Building> findBuildings();
 
-//    /**
-//     * 根据宿舍楼栋号查询宿舍信息
-//     * @param id
-//     * @return
-//     */
-//    Building findBuildingById(int id);
-//
+    /**
+     * 根据宿舍楼栋号查询宿舍信息
+     * @param id
+     * @return
+     */
+    Building findBuildingById(int id);
+
 //    /**
 //     * 根据管理员姓名查询宿舍信息
 //     * @param name
 //     * @return
 //     */
 //    Building findBuildingByAdministrator(String name);
-//
-//    /**
-//     * 更新宿舍信息数据
-//     * @param building
-//     */
-//    void uopdateBuilding(Building building);
-//
+
+    /**
+     * 更新宿舍信息数据
+     * @param building
+     */
+    void updateBuilding(Building building);
+
 //    /**
 //     * 根据_id删除宿舍信息
 //     * @param _id
