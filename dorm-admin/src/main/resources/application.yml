@@ -16,4 +16,7 @@ spring:
       authentication-database: admin
       database: dormitory
 
-
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+#    空值不返回
+    default-property-inclusion: non_null

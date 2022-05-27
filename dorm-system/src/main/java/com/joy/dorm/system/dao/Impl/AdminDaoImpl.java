@@ -30,7 +30,7 @@ public class AdminDaoImpl implements AdminDao {
 
     @Override
     public int update(Admin admin) {
-        Query query = new Query(Criteria.where("id").is(admin.getId()));
+        Query query = new Query(Criteria.where("id").is(admin.get_id()));
         Update update = new Update();
         if (!admin.getName().isEmpty()){
             update.set("name",admin.getName());

@@ -11,18 +11,18 @@ public class Role {
 
     @Id
     @ApiModelProperty("管理员id")
-    private String id;
+    private String _id;
     @ApiModelProperty("角色英文名")
     private String name;
     @ApiModelProperty("角色中文名")
     private String nameZh;
 
-    public String getId() {
-        return id;
+    public String get_id() {
+        return _id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getName() {
@@ -39,5 +39,14 @@ public class Role {
 
     public void setNameZh(String nameZh) {
         this.nameZh = nameZh;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "_id='" + _id + '\'' +
+                ", name='" + name + '\'' +
+                ", nameZh='" + nameZh + '\'' +
+                '}';
     }
 }

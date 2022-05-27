@@ -30,7 +30,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public int update(Role role) {
-        Query query = new Query(Criteria.where("id").is(role.getId()));
+        Query query = new Query(Criteria.where("id").is(role.get_id()));
         Update update = new Update();
 
         if (!role.getName().isEmpty()){
@@ -63,5 +63,11 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public List<Role> getAllRoles() {
         return mongoTemplate.findAll(Role.class);
+    }
+
+    @Override
+    public Role getByIdRole(String id) {
+        Query query = new Query(Criteria.where("_id").is(id));
+        return mongoTemplate.findOne(query,Role.class);
     }
 }

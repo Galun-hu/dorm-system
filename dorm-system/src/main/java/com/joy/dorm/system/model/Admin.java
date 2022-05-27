@@ -1,22 +1,28 @@
 package com.joy.dorm.system.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @ApiModel(description = "管理员")
 @Document(collection = "admin")
+//空值不返回
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Admin implements UserDetails {
 
     @Id
     @ApiModelProperty("管理员id")
-    private String id;
+    private String _id;
     @ApiModelProperty("账号")
     private String username;
     @ApiModelProperty("密码")
@@ -33,19 +39,20 @@ public class Admin implements UserDetails {
     private Boolean enabled;
     @ApiModelProperty("备注")
     private String remark;
-    @ApiModelProperty("创建时间")
-    private Date createTime;
     @ApiModelProperty("角色id")
     private String roleId;
     @ApiModelProperty("角色")
     private Role role;
+    @ApiModelProperty("创建时间")
+    private Date createTime;
 
-    public String getId() {
-        return id;
+
+    public String get_id() {
+        return _id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getUsername() {
@@ -82,7 +89,9 @@ public class Admin implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.getName()));
+        return authorities;
     }
 
     public String getPassword() {
@@ -163,5 +172,23 @@ public class Admin implements UserDetails {
 
     public void setRoleId(String roleId) {
         this.roleId = roleId;
+    }
+
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "_id='" + _id + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", sex='" + sex + '\'' +
+                ", phone='" + phone + '\'' +
+                ", company='" + company + '\'' +
+                ", enabled=" + enabled +
+                ", remark='" + remark + '\'' +
+                ", roleId='" + roleId + '\'' +
+                ", role=" + role +
+                ", createTime=" + createTime +
+                '}';
     }
 }
