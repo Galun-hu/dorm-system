@@ -18,4 +18,29 @@ public class BuildingServiceImpl implements IBuildingService {
     public List<Building> getBuildings(){
         return buildingDao.findBuildings();
     }
+
+    @Override
+    public Building getBuildingWithId(int id){
+        return buildingDao.findBuildingById(id);
+    }
+
+//    @Override
+//    public Building getBuildingWithAdministrator(String name){
+//
+//    }
+
+    @Override
+    public void addBuilding(Building building){
+        buildingDao.insertBuilding(building);
+    }
+
+    @Override
+    public void updateBuilding(Building building){
+        buildingDao.updateBuilding(building);
+    }
+
+    @Override
+    public void deleteBuilding(String _id){
+        buildingDao.deleteBuildingBy_id(_id);
+    }
 }

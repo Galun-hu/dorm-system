@@ -1,18 +1,25 @@
 package com.joy.dorm.dormitory.model;
 
+import com.joy.dorm.common.utils.AutoIncKey;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document("t_building")
 public class Building {
+    private static final String tableName = "t_building";
+
     @Id
     private String _id;
 
+    @AutoIncKey
     private Integer id;
     private String type;
     private Integer person_num;
     private String created;
     private String modified;
+
+
 
     public String get_id() {
         return _id;

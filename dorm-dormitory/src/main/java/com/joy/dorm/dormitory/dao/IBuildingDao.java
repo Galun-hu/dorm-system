@@ -20,6 +20,13 @@ public interface IBuildingDao {
      */
     Building findBuildingById(int id);
 
+    /**
+     * 根据_id获取宿舍楼id
+     * @param String
+     * @return
+     */
+    Building findBuildingBy_id(String String);
+
 //    /**
 //     * 根据管理员姓名查询宿舍信息
 //     * @param name
@@ -31,11 +38,16 @@ public interface IBuildingDao {
      * 更新宿舍信息数据
      * @param building
      */
-    void updateBuilding(Building building);
+    long updateBuilding(Building building);
 
-//    /**
-//     * 根据_id删除宿舍信息
-//     * @param _id
-//     */
-//    void deleteBuildingBy_id(String _id);
+    /**
+     * 添加宿舍信息
+     */
+    void insertBuilding(Building building);
+
+    /**
+     * 根据_id删除宿舍信息
+     * @param _id
+     */
+    long deleteBuildingBy_id(String _id);
 }

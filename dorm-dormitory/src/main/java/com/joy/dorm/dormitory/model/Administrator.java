@@ -1,19 +1,22 @@
 package com.joy.dorm.dormitory.model;
 
+import com.joy.dorm.common.utils.AutoIncKey;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("t_administrator")
 public class Administrator {
+    private static final String tableName = "t_administrator";
 
     @Id
     private String _id;
 
+    @AutoIncKey
+    private Integer id;
     private String name;
     private String sex;
     private Integer age;
     private String phone;
-    private Integer building_id;
     private String created;
     private String modified;
 
@@ -23,6 +26,14 @@ public class Administrator {
 
     public void set_id(String _id) {
         this._id = _id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -57,14 +68,6 @@ public class Administrator {
         this.phone = phone;
     }
 
-    public Integer getBuilding_id() {
-        return building_id;
-    }
-
-    public void setBuilding_id(Integer building_id) {
-        this.building_id = building_id;
-    }
-
     public String getCreated() {
         return created;
     }
@@ -85,11 +88,11 @@ public class Administrator {
     public String toString() {
         return "Administrator{" +
                 "_id='" + _id + '\'' +
+                ", id=" + id +
                 ", name='" + name + '\'' +
                 ", sex='" + sex + '\'' +
                 ", age=" + age +
                 ", phone='" + phone + '\'' +
-                ", building_id=" + building_id +
                 ", created='" + created + '\'' +
                 ", modified='" + modified + '\'' +
                 '}';
