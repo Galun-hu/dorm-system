@@ -16,13 +16,16 @@ public interface IAdministretorDao {
     // 根据宿舍管理员名字获取宿舍管理员信息
     Administrator findAdministratorByName(String name);
 
+    // 根据管理员id获取管理员信息
+    Administrator findAdministratorById(Integer id);
+
     // 系统管理员关联指定宿舍楼
     Integer insertDormAdminToBuilding(Integer building_id,String admin_id);
 
     // 删除宿舍楼关联的指定管理员
-    void deleteDromAdminToBuilding(String admin_id);
+    long deleteDromAdminToBuilding(Integer admin_id);
 
     // 删除宿舍楼关联的所有管理员
-    void deleteAllDromAdminToBuilding(Integer building_id);
+    long deleteAllDromAdminToBuilding(Integer building_id);
 
 }

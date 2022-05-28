@@ -20,17 +20,28 @@ public class AdministratorServiceImpl implements IAdministratorService {
     }
 
     @Override
+    public Administrator getDormAdminWithName(String name){
+        return administretorDao.findAdministratorByName(name);
+    }
+
+    @Override
+    public Administrator getDromAdminWithId(Integer id){
+        return administretorDao.findAdministratorById(id);
+    }
+
+
+    @Override
     public Integer insertDormAdminToBuilding(Integer building_id,String admin_id){
         return administretorDao.insertDormAdminToBuilding(building_id,admin_id);
     }
 
 
-    public void removeDormAdminToBuilding(String admin_id){
-        administretorDao.deleteDromAdminToBuilding(admin_id);
+    public long removeDormAdminToBuilding(Integer admin_id){
+        return administretorDao.deleteDromAdminToBuilding(admin_id);
     }
 
     @Override
-    public void removeAllDormAdminToBuilding(Integer building_id){
-        administretorDao.deleteAllDromAdminToBuilding(building_id);
+    public long removeAllDormAdminToBuilding(Integer building_id){
+        return administretorDao.deleteAllDromAdminToBuilding(building_id);
     }
 }

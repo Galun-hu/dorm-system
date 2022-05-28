@@ -2,13 +2,12 @@ package com.joy.dorm.dormitory.dao.impl;
 
 import com.joy.dorm.dormitory.dao.IAdministretorDao;
 import com.joy.dorm.dormitory.model.Administrator;
-import com.joy.dorm.dormitory.model.Building;
 import com.joy.dorm.dormitory.model.BuildingAdmin;
 import com.joy.dorm.system.dao.RoleDao;
+import com.mongodb.client.result.DeleteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -55,11 +54,20 @@ public class AdministratorDaoImpl implements IAdministretorDao {
 
     @Override
     public Administrator findAdministratorByName(String name){
-        ProjectionOperation project = Aggregation.project("_id","id","name","sex","phone",
-                "company","createTime");
-        Criteria criteria = new Criteria().and("name").is(name);
-        Aggregation aggregation = Aggregation.newAggregation(project,Aggregation.match(criteria));
-        Administrator administrator = mongoTemplate.aggregate(aggregation,"admin",Administrator.class).getUniqueMappedResult();
+        Query query = new Query(Criteria.where("name").is(name));
+        Administrator administrator = mongoTemplate.findOne(query,Administrator.class);
+//        ProjectionOperation project = Aggregation.project("_id","id","name","sex","phone",
+//                "company","createTime");
+//        Criteria criteria = new Criteria().and("name").is(name);
+//        Aggregation aggregation = Aggregation.newAggregation(project,Aggregation.match(criteria));
+//        Administrator administrator = mongoTemplate.aggregate(aggregation,"admin",Administrator.class).getUniqueMappedResult();
+        return administrator;
+    }
+
+    @Override
+    public Administrator findAdministratorById(Integer id){
+        Query query = new Query(Criteria.where("id").is(id));
+        Administrator administrator = mongoTemplate.findOne(query,Administrator.class);
         return administrator;
     }
 
@@ -75,14 +83,16 @@ public class AdministratorDaoImpl implements IAdministretorDao {
     }
 
     @Override
-    public void deleteDromAdminToBuilding(String admin_id){
+    public long deleteDromAdminToBuilding(Integer admin_id){
         Query query = new Query(Criteria.where("admin_id").is(admin_id));
-        mongoTemplate.remove(query,BuildingAdmin.class);
+        DeleteResult result = mongoTemplate.remove(query,BuildingAdmin.class);
+        return result.getDeletedCount();
     }
 
     @Override
-    public void deleteAllDromAdminToBuilding(Integer building_id){
+    public long deleteAllDromAdminToBuilding(Integer building_id){
         Query query = new Query(Criteria.where("building_id").is(building_id));
-        mongoTemplate.findAllAndRemove(query,BuildingAdmin.class);
+        List<BuildingAdmin> result = mongoTemplate.findAllAndRemove(query,BuildingAdmin.class);
+        return result.size();
     }
 }

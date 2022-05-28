@@ -6,6 +6,7 @@ import com.joy.dorm.dormitory.model.Administrator;
 import com.joy.dorm.dormitory.model.Building;
 import com.joy.dorm.dormitory.service.IBuildingService;
 import com.joy.dorm.system.dao.RoleDao;
+import com.joy.dorm.utils.DormitoryTool;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -81,6 +82,13 @@ public class BuildingTest {
     public void cc (){
 //        administretorDao.deleteAllDromAdminInBuilding(2);
         System.out.println(administretorDao.findAdministrators());
+    }
+
+    @Autowired
+    private DormitoryTool dormitoryTool;
+    @Test
+    public void asdasd(){
+        System.out.println(dormitoryTool.getBuildWithAdminId(1));
     }
 }
 

@@ -11,6 +11,9 @@ public interface IBuildingService {
     // 根据宿舍楼栋号获取宿舍信息
     Building getBuildingWithId(int id);
 
+    // 根据管理员id获取该管理员管理的的宿舍信息
+    Building getBuildingWithAdminId(Integer id);
+
     // 根据管理员姓名获取宿舍信息
     Building getBuildingWithAdministrator(String name);
 
@@ -22,4 +25,5 @@ public interface IBuildingService {
 
     // 根据_id删除宿舍信息
     long deleteBuilding(String _id);
+
 }

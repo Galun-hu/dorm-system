@@ -25,10 +25,22 @@ public class AdministratorController {
     @GetMapping("/all")
     public RespResult getAllAdministrator(){
         List<Administrator> administrators = administratorService.getDormAdmins();
-        if (administrators == null || administrators.size() == 0){
+        if (administrators != null && administrators.size() != 0){
             return RespResult.ok("成功",administrators);
         }else {
             return RespResult.error("获取失败");
+        }
+    }
+
+
+    @ApiOperation("根据宿舍管理员名字获取宿舍管理员信息")
+    @GetMapping("/name/{name}")
+    public RespResult getAdminWithName(@PathVariable String name){
+        Administrator administrator = administratorService.getDormAdminWithName(name);
+        if (administrator != null){
+            return RespResult.ok("查询成功",administrator);
+        }else {
+            return RespResult.error("查询失败");
         }
     }
 
@@ -49,10 +61,27 @@ public class AdministratorController {
 
 
 
-//    @ApiOperation("为宿舍楼移除管理员")
-//    @PostMapping("/delete/{admin_id}")
-//    public RespResult deleteDormAdmin(@PathVariable int admin_id){
-//        administratorService.re
-//    }
+    @ApiOperation("为宿舍楼移除指定管理员")
+    @ApiImplicitParams({@ApiImplicitParam(name = "admin_id",value = "管理员id")})
+    @PostMapping("/delete/{admin_id}")
+    public RespResult deleteDormAdmin(@PathVariable int admin_id){
+        long result = administratorService.removeDormAdminToBuilding(admin_id);
+        if (result > 0){
+            return RespResult.ok("移除成功");
+        }else {
+            return RespResult.error("一移除失败");
+        }
+    }
+
+
+
+    @ApiOperation("为宿舍楼移除所有管理员")
+    @PostMapping("/delete/all/{building_id}")
+    public RespResult deleteAllDormAdmin(@PathVariable int building_id){
+        long result = administratorService.removeAllDormAdminToBuilding(building_id);
+        if (result > 0){
+            return RespResult.ok("移除成功");
+        }else {return RespResult.error("移除失败");}
+    }
 
 }
