@@ -1,9 +1,11 @@
 package com.joy.dorm;
 
+import com.joy.dorm.dormitory.dao.IAdministretorDao;
 import com.joy.dorm.dormitory.dao.IBuildingDao;
 import com.joy.dorm.dormitory.model.Administrator;
 import com.joy.dorm.dormitory.model.Building;
 import com.joy.dorm.dormitory.service.IBuildingService;
+import com.joy.dorm.system.dao.RoleDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -63,5 +65,22 @@ public class BuildingTest {
         Administrator administrator = mongoTemplate.findOne(query,Administrator.class,"t_administrator");
         System.out.println(administrator);
     }
+    @Autowired
+    private IAdministretorDao administretorDao;
 
+    @Test
+    public void bb(){
+//        administretorDao.insertDormAdminInBuilding(2,"6290d0e8f248f074c36e2cfd");
+        System.out.println(administretorDao.findBuildingIdByDormAdminId(1));
+    }
+
+    @Autowired
+    private RoleDao roleDao;
+
+    @Test
+    public void cc (){
+//        administretorDao.deleteAllDromAdminInBuilding(2);
+        System.out.println(administretorDao.findAdministrators());
+    }
 }
+

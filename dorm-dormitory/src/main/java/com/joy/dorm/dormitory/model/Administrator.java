@@ -1,24 +1,34 @@
 package com.joy.dorm.dormitory.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.joy.dorm.common.utils.AutoIncKey;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document("t_administrator")
+@ApiModel("宿舍管理员")
+@Document("admin")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Administrator {
-    private static final String tableName = "t_administrator";
 
     @Id
+    @ApiModelProperty("宿舍管理员_id")
     private String _id;
-
-    @AutoIncKey
+    @ApiModelProperty("宿舍管理员id")
     private Integer id;
+    @ApiModelProperty("名字")
     private String name;
+    @ApiModelProperty("性别")
     private String sex;
-    private Integer age;
+    @ApiModelProperty("手机号码")
     private String phone;
-    private String created;
-    private String modified;
+    @ApiModelProperty("单位")
+    private String company;
+    @ApiModelProperty("角色id")
+    private Integer roleId;
+    @ApiModelProperty("创建时间")
+    private String createTime;
+
 
     public String get_id() {
         return _id;
@@ -52,14 +62,6 @@ public class Administrator {
         this.sex = sex;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -68,20 +70,28 @@ public class Administrator {
         this.phone = phone;
     }
 
-    public String getCreated() {
-        return created;
+    public String getCompany() {
+        return company;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
+    public void setCompany(String company) {
+        this.company = company;
     }
 
-    public String getModified() {
-        return modified;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setModified(String modified) {
-        this.modified = modified;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     @Override
@@ -91,10 +101,10 @@ public class Administrator {
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 ", sex='" + sex + '\'' +
-                ", age=" + age +
                 ", phone='" + phone + '\'' +
-                ", created='" + created + '\'' +
-                ", modified='" + modified + '\'' +
+                ", company='" + company + '\'' +
+                ", roleId='" + roleId + '\'' +
+                ", createTime='" + createTime + '\'' +
                 '}';
     }
 }

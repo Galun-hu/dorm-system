@@ -4,7 +4,6 @@ import com.joy.dorm.common.utils.Tool;
 import com.joy.dorm.dormitory.dao.IBuildingDao;
 import com.joy.dorm.dormitory.model.Building;
 import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -45,12 +44,6 @@ public class BuildingDaoImpl implements IBuildingDao {
         return mongoTemplate.findOne(query,Building.class);
     }
 
-//    @Override
-//    public Building findBuildingByAdministrator(String name){
-//        Query query = new Query(Criteria.where("administrator").is(name));
-//        Building building = mongoTemplate.findOne(query,Building.class);
-//        return building;
-//    }
 
     @Override
     public long updateBuilding(Building building){
@@ -61,14 +54,19 @@ public class BuildingDaoImpl implements IBuildingDao {
     }
 
     @Override
-    public void insertBuilding(Building building){
-        mongoTemplate.insert(building);
+    public Integer insertBuilding(Building building){
+        Building result = mongoTemplate.insert(building);
+        if (result != null){
+            return 1;
+        }else {
+            return null;
+        }
     }
 
     @Override
     public long deleteBuildingBy_id(String _id){
         Query query = new Query(Criteria.where("_id").is(_id));
-        Integer id = findBuildingBy_id("_id").getId();
+        Integer id = findBuildingBy_id(_id).getId();
         Query query1 = new Query(Criteria.where("building_id").is(id));
         DeleteResult result = mongoTemplate.remove(query,Building.class);
         mongoTemplate.findAllAndRemove(query1,"t_building_administrator");

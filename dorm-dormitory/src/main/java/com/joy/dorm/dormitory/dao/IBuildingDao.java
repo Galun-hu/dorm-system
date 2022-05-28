@@ -27,12 +27,7 @@ public interface IBuildingDao {
      */
     Building findBuildingBy_id(String String);
 
-//    /**
-//     * 根据管理员姓名查询宿舍信息
-//     * @param name
-//     * @return
-//     */
-//    Building findBuildingByAdministrator(String name);
+
 
     /**
      * 更新宿舍信息数据
@@ -43,7 +38,7 @@ public interface IBuildingDao {
     /**
      * 添加宿舍信息
      */
-    void insertBuilding(Building building);
+    Integer insertBuilding(Building building);
 
     /**
      * 根据_id删除宿舍信息

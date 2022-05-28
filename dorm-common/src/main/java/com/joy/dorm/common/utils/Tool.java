@@ -19,7 +19,8 @@ public class Tool {
             field.setAccessible(true);
             try {
                 if ("serialVersionUID".equals(field.getName())
-                        || "_id".equals(field.getName())) {
+                        || "_id".equals(field.getName())
+                        || "id".equals(field.getName())) {
                     continue;
                 }
                 if (field.get(domainType) != null) {

@@ -12,14 +12,14 @@ public interface IBuildingService {
     Building getBuildingWithId(int id);
 
     // 根据管理员姓名获取宿舍信息
-//    Building getBuildingWithAdministrator(String name);
+    Building getBuildingWithAdministrator(String name);
 
-      // 添加宿舍楼栋信息
-      void addBuilding(Building building);
+    // 添加宿舍楼栋信息
+    Integer addBuilding(Building building);
 
-      // 更新宿舍信息
-      void updateBuilding(Building building);
+    // 更新宿舍信息
+    long updateBuilding(Building building);
 
-      // 根据_id删除宿舍信息
-      void deleteBuilding(String _id);
+    // 根据_id删除宿舍信息
+    long deleteBuilding(String _id);
 }
