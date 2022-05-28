@@ -1,6 +1,5 @@
 package com.joy.dorm.common.utils;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,7 +21,7 @@ public class JwtTokenUtils {
 
 
     //创建token
-    public static String JwtToken(String id,String name,StringBuffer authorities){
+    public static String JwtToken(Integer id,String name,StringBuffer authorities){
         return Jwts.builder()
                 .setHeaderParam("typ","JWT")
                 .setHeaderParam("alg","HS512")
@@ -44,4 +43,6 @@ public class JwtTokenUtils {
         }
         return before;
     }
+
+
 }

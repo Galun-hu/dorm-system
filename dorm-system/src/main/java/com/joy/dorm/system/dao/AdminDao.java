@@ -13,13 +13,13 @@ public interface AdminDao {
     int update(Admin admin);
 
     //删除管理员
-    int delete(String id);
+    int delete(Integer id);
 
     //查询所有管理员
-    List<Admin> getAllAdmin();
+    List<Admin> getAllAdmin(String keywords,Integer id);
 
     //根据id查管理员
-    Admin getByIdAdmin(String id);
+    Admin getByIdAdmin(Integer id);
 
     //根据用户名查询管理员
     Admin loadUserByUsername(String username);

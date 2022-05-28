@@ -4,20 +4,21 @@ import com.alibaba.fastjson.JSON;
 import com.joy.dorm.system.dao.AdminDao;
 import com.joy.dorm.system.model.Admin;
 import com.joy.dorm.system.model.Role;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
@@ -40,26 +41,25 @@ public class AdminDaoImpl implements AdminDao {
     public int update(Admin admin) {
         Query query = new Query(Criteria.where("id").is(admin.getId()));
         Update update = new Update();
-        if (!admin.getName().isEmpty()){
+        if (admin.getName()!=null){
             update.set("name",admin.getName());
         }
-        if (!admin.getPassword().isEmpty()){
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            update.set("password",encoder.encode(admin.getPassword()));
+        if (admin.getPassword()!=null){
+            update.set("password",admin.getPassword());
         }
-        if (!admin.getSex().isEmpty()){
+        if (admin.getSex()!=null){
             update.set("sex",admin.getSex());
         }
-        if (!admin.getPhone().isEmpty()){
+        if (admin.getPhone()!=null){
             update.set("phone",admin.getPhone());
         }
-        if (!admin.getCompany().isEmpty()){
+        if (admin.getCompany()!=null){
             update.set("company",admin.getCompany());
         }
         if (admin.getEnabled()!=null){
             update.set("enabled",admin.getEnabled());
         }
-        if (!admin.getRemark().isEmpty()){
+        if (admin.getRemark()!=null){
             update.set("remark",admin.getRemark());
         }
         try {
@@ -72,7 +72,7 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     @Override
-    public int delete(String id) {
+    public int delete(Integer id) {
         Query query = new Query(Criteria.where("id").is(id));
         try {
             mongoTemplate.remove(query,Admin.class);
@@ -84,7 +84,7 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     @Override
-    public List<Admin> getAllAdmin() {
+    public List<Admin> getAllAdmin(String keywords,Integer id) {
 
         LookupOperation lookupOperation = LookupOperation.newLookup()
                 .from("role")
@@ -92,15 +92,23 @@ public class AdminDaoImpl implements AdminDao {
                 .foreignField("role_id")
                 .as("adminRole");
 
-        Aggregation aggregation = Aggregation.newAggregation(lookupOperation);
+        Criteria criteria = new Criteria();
+        if (id!=null){
+            criteria.and("id").ne(id);
+        }
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("name").regex(pattern);
+        }
+//        .and("adminRole");
+        ProjectionOperation project  = Aggregation.project("id", "username", "name", "sex", "phone", "company", "enabled", "roleId", "createTime")
+                .and("adminRole").as("adminRole");
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),lookupOperation,project,Aggregation.unwind("adminRole"));
         List<Map> results = mongoTemplate.aggregate(aggregation, "admin", Map.class).getMappedResults();
-        System.out.println(results);
         List<Admin> admins = new ArrayList<>();
         for (Map result : results) {
-            List list = (List) result.get("adminRole");
-            result.remove("adminRole");
             String str = JSON.toJSONString(result);
-            String str2 = JSON.toJSONString(list.get(0));
+            String str2 = JSON.toJSONString(result.get("adminRole"));
             Admin admin = JSON.parseObject(str, Admin.class);
             admin.setRole(JSON.parseObject(str2, Role.class));
             admins.add(admin);
@@ -109,7 +117,7 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     @Override
-    public Admin getByIdAdmin(String id) {
+    public Admin getByIdAdmin(Integer id) {
         Query query = new Query(Criteria.where("id").is(id));
         return mongoTemplate.findOne(query,Admin.class);
     }

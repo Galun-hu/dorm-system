@@ -51,7 +51,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             logger.info("令牌解析成功");
 
             String username = claims.getSubject();
-            String id = (String) claims.get("id");
+            Integer id = (Integer) claims.get("id");
             logger.info("当前用户角色信息："+(String) claims.get("authorities")+"  _id："+id);
             List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, null, authorities);
