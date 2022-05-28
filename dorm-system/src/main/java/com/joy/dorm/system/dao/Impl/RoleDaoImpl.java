@@ -33,10 +33,10 @@ public class RoleDaoImpl implements RoleDao {
         Query query = new Query(Criteria.where("id").is(role.get_id()));
         Update update = new Update();
 
-        if (!role.getName().isEmpty()){
+        if (role.getName()!=null){
             update.set("name",role.getName());
         }
-        if (!role.getNameZh().isEmpty()){
+        if (role.getNameZh()!=null){
             update.set("nameZh",role.getNameZh());
         }
         try {

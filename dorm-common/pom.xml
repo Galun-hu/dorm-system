@@ -60,14 +60,14 @@
        </dependency>
 
        <!--    重新低版本的导入    -->
-<!--       <dependency>-->
-<!--           <groupId>io.swagger</groupId>-->
-<!--           <artifactId>swagger-annotations</artifactId>-->
-<!--       </dependency>-->
-<!--       <dependency>-->
-<!--           <groupId>io.swagger</groupId>-->
-<!--           <artifactId>swagger-models</artifactId>-->
-<!--       </dependency>-->
+       <dependency>
+           <groupId>io.swagger</groupId>
+           <artifactId>swagger-annotations</artifactId>
+       </dependency>
+       <dependency>
+           <groupId>io.swagger</groupId>
+           <artifactId>swagger-models</artifactId>
+       </dependency>
 
    </dependencies>
 

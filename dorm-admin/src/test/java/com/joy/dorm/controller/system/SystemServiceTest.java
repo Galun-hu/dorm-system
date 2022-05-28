@@ -16,9 +16,14 @@ public class SystemServiceTest {
 
     @Test
     public void test1(){
-        List<Admin> allAdmin = adminService.getAllAdmin();
-        for (Admin admin : allAdmin) {
-            System.out.println(admin);
+//        List<Admin> allAdmin = adminService.getAllAdmin("张",1);
+//        for (Admin admin : allAdmin) {
+//            System.out.println(admin);
+//        }
+        Admin admin = new Admin();
+        admin.setId(1);
+        if (admin.getName()==null){
+            System.out.println("123131");
         }
     }
 }

@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,10 +23,13 @@ public class AdminService implements UserDetailsService {
     @Autowired
     AdminDaoImpl adminDao;
 
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
 
     //获取所有管理员和对应的角色
-    public List<Admin> getAllAdmin() {
-        return adminDao.getAllAdmin();
+    public List<Admin> getAllAdmin(String keywords,Integer id) {
+        //排除自己
+        return adminDao.getAllAdmin(keywords,id);
     }
 
     //添加管理员
@@ -32,6 +37,8 @@ public class AdminService implements UserDetailsService {
         //在这里添加都是系统管理员
         admin.setRoleId(1);
         admin.setEnabled(true);
+        admin.setPassword(encoder.encode(admin.getPassword()));
+        admin.setCreateTime(new Date());
         return adminDao.insert(admin);
     }
 
@@ -41,7 +48,24 @@ public class AdminService implements UserDetailsService {
     }
 
     //修改密码
-//    public int
+    public boolean updatePassWord(String oldPassword,String newPassword,Integer id){
+        Admin admin = adminDao.getByIdAdmin(id);
+        //密码比对
+        if (encoder.matches(oldPassword,admin.getPassword())){
+            String encode = encoder.encode(newPassword);
+            Admin admin1 = new Admin();
+            admin1.setId(id);
+            admin1.setPassword(encode);
+            return adminDao.update(admin1) == 1;
+        }
+        return false;
+    }
+
+    //删除用户
+    public int deleteAdmin(Integer id){
+        return adminDao.delete(id);
+    }
+
 
     //获取用户名
     @Override
@@ -50,6 +74,7 @@ public class AdminService implements UserDetailsService {
         if (admin==null){
             throw new UsernameNotFoundException("用户名不存在");
         }
+//        throw new
         Role role = roleDao.getByIdRole(admin.getRoleId());
         admin.setRole(role);
         System.out.println(admin);

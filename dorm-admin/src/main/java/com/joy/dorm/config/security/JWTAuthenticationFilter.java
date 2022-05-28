@@ -61,7 +61,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ObjectMapper objectMapper = new ObjectMapper();
         admin.setPassword(null); //建议使用
         HashMap<String,Object> map = new HashMap<>();
-        String token = JwtTokenUtils.JwtToken(admin.get_id(),admin.getUsername(),stringBuffer);
+        String token = JwtTokenUtils.JwtToken(admin.getId(),admin.getUsername(),stringBuffer);
         logger.info("生成用户token："+token);
         map.put("admin",admin);
         map.put("token",token);
