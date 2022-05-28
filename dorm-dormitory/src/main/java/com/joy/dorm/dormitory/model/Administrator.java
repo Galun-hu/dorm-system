@@ -6,6 +6,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
+
 @ApiModel("宿舍管理员")
 @Document("admin")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,7 +30,9 @@ public class Administrator {
     @ApiModelProperty("角色id")
     private Integer roleId;
     @ApiModelProperty("创建时间")
-    private String createTime;
+    private Date createTime;
+
+    private Integer building_id;
 
 
     public String get_id() {
@@ -86,12 +91,20 @@ public class Administrator {
         this.roleId = roleId;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getBuilding_id() {
+        return building_id;
+    }
+
+    public void setBuilding_id(Integer building_id) {
+        this.building_id = building_id;
     }
 
     @Override

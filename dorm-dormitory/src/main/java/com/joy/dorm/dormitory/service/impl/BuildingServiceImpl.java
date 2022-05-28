@@ -4,10 +4,12 @@ import com.joy.dorm.dormitory.dao.IAdministretorDao;
 import com.joy.dorm.dormitory.dao.IBuildingDao;
 import com.joy.dorm.dormitory.model.Administrator;
 import com.joy.dorm.dormitory.model.Building;
+import com.joy.dorm.dormitory.model.BuildingAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.joy.dorm.dormitory.service.IBuildingService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,18 +24,21 @@ public class BuildingServiceImpl implements IBuildingService {
 
     @Override
     public List<Building> getBuildings(){
-        return buildingDao.findBuildings();
+        List<Building> buildings = buildingDao.findBuildings();
+        return setAdminstrator(buildings);
     }
 
     @Override
     public Building getBuildingWithId(int id){
-        return buildingDao.findBuildingById(id);
+        Building building = buildingDao.findBuildingById(id);
+        return setAdminstrator(building);
     }
 
     @Override
     public Building getBuildingWithAdminId(Integer id){
         Integer building_id = administretorDao.findBuildingIdByDormAdminId(id);
-        return buildingDao.findBuildingById(building_id);
+        Building building = buildingDao.findBuildingById(building_id);
+        return setAdminstrator(building);
     }
 
     @Override
@@ -42,7 +47,8 @@ public class BuildingServiceImpl implements IBuildingService {
         if (administrator != null) {
             Integer build_id = administretorDao.findBuildingIdByDormAdminId(administrator.getId());
             if (build_id != null){
-                return buildingDao.findBuildingById(build_id);
+                Building building = buildingDao.findBuildingById(build_id);
+                return setAdminstrator(building);
             }else {
                 return null;
             }
@@ -53,10 +59,10 @@ public class BuildingServiceImpl implements IBuildingService {
 
     @Override
     public Integer addBuilding(Building building){
-        building.setCreated(new Date().toString());
+        building.setCreated(new Date());
         building.setId(null);
         building.set_id(null);
-        building.setModified(new Date().toString());
+        building.setModified(new Date());
         return buildingDao.insertBuilding(building);
     }
 
@@ -65,7 +71,7 @@ public class BuildingServiceImpl implements IBuildingService {
         if (building.get_id() == null || building.get_id() == ""){
             return 0;
         }else {
-            building.setModified(new Date().toString());
+            building.setModified(new Date());
             return buildingDao.updateBuilding(building);
         }
     }
@@ -73,5 +79,35 @@ public class BuildingServiceImpl implements IBuildingService {
     @Override
     public long deleteBuilding(String _id){
         return buildingDao.deleteBuildingBy_id(_id);
+    }
+
+    @Override
+    public List<Building> setAdminstrator(List<Building> buildings){
+        for (int i = 0;i<buildings.size();i++){
+            Building building = buildings.get(i);
+            List<BuildingAdmin> buildingAdmins = administretorDao.findAllAdmintratorIdByBuildId(building.getId());
+            if (buildingAdmins != null){
+                List<Administrator> administrators = new ArrayList<>();
+                for (int index = 0;index < buildingAdmins.size();index++){
+                    administrators.add(administretorDao.findAdministratorById(buildingAdmins.get(index).getAdmin_id()));
+                }
+                building.setAdministrators(administrators);
+            }
+
+        }
+        return buildings;
+    }
+
+    @Override
+    public Building setAdminstrator(Building building){
+        List<BuildingAdmin> buildingAdmins = administretorDao.findAllAdmintratorIdByBuildId(building.getId());
+        if (buildingAdmins != null){
+            List<Administrator> administrators = new ArrayList<>();
+            for (int i = 0;i < buildingAdmins.size();i++){
+                administrators.add(administretorDao.findAdministratorById(buildingAdmins.get(i).getAdmin_id()));
+            }
+            building.setAdministrators(administrators);
+        }
+        return building;
     }
 }

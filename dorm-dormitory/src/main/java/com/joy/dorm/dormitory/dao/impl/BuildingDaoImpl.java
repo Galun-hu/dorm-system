@@ -2,7 +2,9 @@ package com.joy.dorm.dormitory.dao.impl;
 
 import com.joy.dorm.common.utils.Tool;
 import com.joy.dorm.dormitory.dao.IBuildingDao;
+import com.joy.dorm.dormitory.model.Administrator;
 import com.joy.dorm.dormitory.model.Building;
+import com.joy.dorm.dormitory.model.BuildingAdmin;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,7 @@ public class BuildingDaoImpl implements IBuildingDao {
         Query query = new Query(Criteria.where("_id").is(_id));
         return mongoTemplate.findOne(query,Building.class);
     }
+
 
 
     @Override

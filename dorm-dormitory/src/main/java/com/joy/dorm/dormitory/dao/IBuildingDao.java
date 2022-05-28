@@ -1,7 +1,9 @@
 package com.joy.dorm.dormitory.dao;
 
 
+import com.joy.dorm.dormitory.model.Administrator;
 import com.joy.dorm.dormitory.model.Building;
+import com.joy.dorm.dormitory.model.BuildingAdmin;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public interface IBuildingDao {
      * @return
      */
     Building findBuildingBy_id(String String);
+
 
 
 

@@ -72,7 +72,14 @@ public class AdministratorDaoImpl implements IAdministretorDao {
     }
 
     @Override
-    public Integer insertDormAdminToBuilding(Integer building_id,String admin_id){
+    public List<BuildingAdmin> findAllAdmintratorIdByBuildId(Integer id){
+        Query query = new Query(Criteria.where("building_id").is(id));
+        List<BuildingAdmin> buildingAdmins = mongoTemplate.find(query,BuildingAdmin.class);
+        return buildingAdmins;
+    }
+
+    @Override
+    public Integer insertDormAdminToBuilding(Integer building_id,Integer admin_id){
         BuildingAdmin buildingAdmin = new BuildingAdmin();
         buildingAdmin.setBuilding_id(building_id);
         buildingAdmin.setAdmin_id(admin_id);

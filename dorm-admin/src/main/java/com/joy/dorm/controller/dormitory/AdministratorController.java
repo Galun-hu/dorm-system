@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class AdministratorController {
 
 
     @ApiOperation("根据宿舍管理员名字获取宿舍管理员信息")
+    @ApiImplicitParams({@ApiImplicitParam(name = "name",value = "管理员名字")})
     @GetMapping("/name/{name}")
     public RespResult getAdminWithName(@PathVariable String name){
         Administrator administrator = administratorService.getDormAdminWithName(name);
@@ -41,6 +43,19 @@ public class AdministratorController {
             return RespResult.ok("查询成功",administrator);
         }else {
             return RespResult.error("查询失败");
+        }
+    }
+
+    @ApiOperation("根据宿舍管理员id获取宿舍管理员信息")
+    @ApiImplicitParams({@ApiImplicitParam(name = "admin_id",value = "管理员id")})
+    @GetMapping("/{admin_id}")
+    public RespResult getDormAdminWithId(@PathVariable Integer admin_id){
+        Administrator administrator = administratorService.getDromAdminWithId(admin_id);
+        if (administrator != null){
+            return RespResult.ok("查询成功",administrator);
+        }else {
+            return RespResult.error("查询失败");
+
         }
     }
 

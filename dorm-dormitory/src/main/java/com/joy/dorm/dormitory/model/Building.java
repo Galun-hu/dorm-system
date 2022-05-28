@@ -8,6 +8,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
+import java.util.List;
+
 @ApiModel(description = "宿舍楼")
 @Document("t_building")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,18 +30,12 @@ public class Building {
     private String type;
     @ApiModelProperty("人数")
     private Integer person_num;
+    @ApiModelProperty("宿舍管理员")
+    private List<Administrator> administrators;
     @ApiModelProperty("创建时间")
-    private String created;
+    private Date created;
     @ApiModelProperty("修改时间")
-    private String modified;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private Date modified;
 
     public String get_id() {
         return _id;
@@ -54,6 +51,14 @@ public class Building {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getType() {
@@ -72,19 +77,27 @@ public class Building {
         this.person_num = person_num;
     }
 
-    public String getCreated() {
+    public List<Administrator> getAdministrators() {
+        return administrators;
+    }
+
+    public void setAdministrators(List<Administrator> administrators) {
+        this.administrators = administrators;
+    }
+
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
-    public String getModified() {
+    public Date getModified() {
         return modified;
     }
 
-    public void setModified(String modified) {
+    public void setModified(Date modified) {
         this.modified = modified;
     }
 
@@ -96,8 +109,9 @@ public class Building {
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", person_num=" + person_num +
-                ", created='" + created + '\'' +
-                ", modified='" + modified + '\'' +
+                ", administrators=" + administrators +
+                ", created=" + created +
+                ", modified=" + modified +
                 '}';
     }
 }

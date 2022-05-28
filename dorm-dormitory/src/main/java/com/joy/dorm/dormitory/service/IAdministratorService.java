@@ -18,11 +18,12 @@ public interface IAdministratorService {
 
 
     // 为宿舍楼添加管理员
-    Integer insertDormAdminToBuilding(Integer building_id,String admin_id);
+    Integer insertDormAdminToBuilding(Integer building_id,Integer admin_id);
 
     // 为宿舍楼移除管理员
     long removeDormAdminToBuilding(Integer admin_id);
 
     // 为宿舍楼移除所有管理员
     long removeAllDormAdminToBuilding(Integer building_id);
+
 }

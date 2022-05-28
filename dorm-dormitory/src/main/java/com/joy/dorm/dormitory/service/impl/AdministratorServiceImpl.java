@@ -31,7 +31,7 @@ public class AdministratorServiceImpl implements IAdministratorService {
 
 
     @Override
-    public Integer insertDormAdminToBuilding(Integer building_id,String admin_id){
+    public Integer insertDormAdminToBuilding(Integer building_id,Integer admin_id){
         return administretorDao.insertDormAdminToBuilding(building_id,admin_id);
     }
 

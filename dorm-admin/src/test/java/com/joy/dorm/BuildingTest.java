@@ -14,6 +14,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import java.util.Date;
+
 @SpringBootTest
 public class BuildingTest {
 
@@ -46,9 +48,9 @@ public class BuildingTest {
         Building building = new Building();
         building.setId(2);
         building.setPerson_num(80);
-        building.setModified("2022.5.58");
+        building.setModified(new Date());
         building.setType("女生宿舍");
-        building.setCreated("2022-5-58");
+        building.setCreated(new Date());
         buildingDao.insertBuilding(building);
     }
 
@@ -88,7 +90,7 @@ public class BuildingTest {
     private DormitoryTool dormitoryTool;
     @Test
     public void asdasd(){
-        System.out.println(dormitoryTool.getBuildWithAdminId(1));
+        System.out.println(dormitoryTool.getAllAdminWithBuildingId(1));
     }
 }
 

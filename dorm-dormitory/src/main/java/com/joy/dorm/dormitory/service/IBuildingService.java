@@ -26,4 +26,9 @@ public interface IBuildingService {
     // 根据_id删除宿舍信息
     long deleteBuilding(String _id);
 
+    // 设置building实体类的administrator值
+    List<Building> setAdminstrator(List<Building> buildings);
+
+    Building setAdminstrator(Building building);
+
 }
