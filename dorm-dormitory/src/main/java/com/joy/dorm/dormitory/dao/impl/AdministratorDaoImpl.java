@@ -64,7 +64,7 @@ public class AdministratorDaoImpl implements IAdministretorDao {
     }
 
     @Override
-    public Integer insertDormAdminInBuilding(Integer building_id,String admin_id){
+    public Integer insertDormAdminToBuilding(Integer building_id,String admin_id){
         BuildingAdmin buildingAdmin = new BuildingAdmin();
         buildingAdmin.setBuilding_id(building_id);
         buildingAdmin.setAdmin_id(admin_id);
@@ -75,13 +75,13 @@ public class AdministratorDaoImpl implements IAdministretorDao {
     }
 
     @Override
-    public void deleteDromAdminInBuilding(String admin_id){
+    public void deleteDromAdminToBuilding(String admin_id){
         Query query = new Query(Criteria.where("admin_id").is(admin_id));
         mongoTemplate.remove(query,BuildingAdmin.class);
     }
 
     @Override
-    public void deleteAllDromAdminInBuilding(Integer building_id){
+    public void deleteAllDromAdminToBuilding(Integer building_id){
         Query query = new Query(Criteria.where("building_id").is(building_id));
         mongoTemplate.findAllAndRemove(query,BuildingAdmin.class);
     }

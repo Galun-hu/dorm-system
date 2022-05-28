@@ -17,12 +17,12 @@ public interface IAdministretorDao {
     Administrator findAdministratorByName(String name);
 
     // 系统管理员关联指定宿舍楼
-    Integer insertDormAdminInBuilding(Integer building_id,String admin_id);
+    Integer insertDormAdminToBuilding(Integer building_id,String admin_id);
 
     // 删除宿舍楼关联的指定管理员
-    void deleteDromAdminInBuilding(String admin_id);
+    void deleteDromAdminToBuilding(String admin_id);
 
     // 删除宿舍楼关联的所有管理员
-    void deleteAllDromAdminInBuilding(Integer building_id);
+    void deleteAllDromAdminToBuilding(Integer building_id);
 
 }
