@@ -66,8 +66,8 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public Role getByIdRole(String id) {
-        Query query = new Query(Criteria.where("_id").is(id));
+    public Role getByIdRole(Integer id) {
+        Query query = new Query(Criteria.where("role_id").is(id));
         return mongoTemplate.findOne(query,Role.class);
     }
 }

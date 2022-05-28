@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AdminService implements UserDetailsService {
 
@@ -19,10 +21,29 @@ public class AdminService implements UserDetailsService {
     @Autowired
     AdminDaoImpl adminDao;
 
+
+    //获取所有管理员和对应的角色
+    public List<Admin> getAllAdmin() {
+        return adminDao.getAllAdmin();
+    }
+
+    //添加管理员
     public int insert(Admin admin){
+        //在这里添加都是系统管理员
+        admin.setRoleId(1);
+        admin.setEnabled(true);
         return adminDao.insert(admin);
     }
 
+    //修改管理员
+    public int update(Admin admin){
+        return adminDao.update(admin);
+    }
+
+    //修改密码
+//    public int
+
+    //获取用户名
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Admin admin = adminDao.loadUserByUsername(username);
@@ -42,4 +63,6 @@ public class AdminService implements UserDetailsService {
         admin.setRole(role);
         return admin;
     }
+
+
 }

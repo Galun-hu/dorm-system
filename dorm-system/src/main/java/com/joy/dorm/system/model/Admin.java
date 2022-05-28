@@ -1,6 +1,7 @@
 package com.joy.dorm.system.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.joy.dorm.common.utils.AutoIncKey;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
@@ -20,9 +21,14 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Admin implements UserDetails {
 
+    public static final String tableName = "admin";
+
     @Id
-    @ApiModelProperty("管理员id")
+    @ApiModelProperty("id")
     private String _id;
+    @ApiModelProperty("管理员id")
+    @AutoIncKey
+    private Integer id;
     @ApiModelProperty("账号")
     private String username;
     @ApiModelProperty("密码")
@@ -40,7 +46,7 @@ public class Admin implements UserDetails {
     @ApiModelProperty("备注")
     private String remark;
     @ApiModelProperty("角色id")
-    private String roleId;
+    private Integer roleId;
     @ApiModelProperty("角色")
     private Role role;
     @ApiModelProperty("创建时间")
@@ -53,6 +59,14 @@ public class Admin implements UserDetails {
 
     public void set_id(String _id) {
         this._id = _id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -166,11 +180,11 @@ public class Admin implements UserDetails {
         this.role = role;
     }
 
-    public String getRoleId() {
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(Integer roleId) {
         this.roleId = roleId;
     }
 
@@ -178,6 +192,7 @@ public class Admin implements UserDetails {
     public String toString() {
         return "Admin{" +
                 "_id='" + _id + '\'' +
+                ", id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
@@ -186,7 +201,7 @@ public class Admin implements UserDetails {
                 ", company='" + company + '\'' +
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
-                ", roleId='" + roleId + '\'' +
+                ", roleId=" + roleId +
                 ", role=" + role +
                 ", createTime=" + createTime +
                 '}';

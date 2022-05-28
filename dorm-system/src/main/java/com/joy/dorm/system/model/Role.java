@@ -1,5 +1,6 @@
 package com.joy.dorm.system.model;
 
+import com.joy.dorm.common.utils.AutoIncKey;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
@@ -9,9 +10,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "role")
 public class Role {
 
+    public static final String tableName = "role";
+
     @Id
     @ApiModelProperty("管理员id")
     private String _id;
+    @ApiModelProperty("管理员id")
+    @AutoIncKey
+    private Integer role_id;
     @ApiModelProperty("角色英文名")
     private String name;
     @ApiModelProperty("角色中文名")
@@ -41,10 +47,19 @@ public class Role {
         this.nameZh = nameZh;
     }
 
+    public Integer getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(Integer role_id) {
+        this.role_id = role_id;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
                 "_id='" + _id + '\'' +
+                ", role_id=" + role_id +
                 ", name='" + name + '\'' +
                 ", nameZh='" + nameZh + '\'' +
                 '}';

@@ -35,7 +35,7 @@ public class DormApplicationTest {
         admin.setPhone("1234567911");
         admin.setCompany("宿舍管理中心");
         admin.setEnabled(true);
-        admin.setRoleId("62909496904bda2075659860");
+        admin.setRoleId(2);
         admin.setCreateTime(new Date());
         adminService.insert(admin);
     }
@@ -68,7 +68,7 @@ public class DormApplicationTest {
 
     @Test
     public void test5(){
-        Admin admin = adminService.getUsername("张三");
+        Admin admin = adminService.getUsername("zhangsan");
         System.out.println(admin);
     }
 }
