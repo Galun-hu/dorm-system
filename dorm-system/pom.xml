@@ -21,6 +21,7 @@
             <groupId>com.joy</groupId>
             <artifactId>dorm-common</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

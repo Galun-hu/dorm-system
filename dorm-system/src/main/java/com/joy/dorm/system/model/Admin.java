@@ -188,22 +188,4 @@ public class Admin implements UserDetails {
         this.roleId = roleId;
     }
 
-    @Override
-    public String toString() {
-        return "Admin{" +
-                "_id='" + _id + '\'' +
-                ", id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", sex='" + sex + '\'' +
-                ", phone='" + phone + '\'' +
-                ", company='" + company + '\'' +
-                ", enabled=" + enabled +
-                ", remark='" + remark + '\'' +
-                ", roleId=" + roleId +
-                ", role=" + role +
-                ", createTime=" + createTime +
-                '}';
-    }
 }

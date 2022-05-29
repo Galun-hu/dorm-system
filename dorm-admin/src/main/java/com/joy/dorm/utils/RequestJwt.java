@@ -3,7 +3,6 @@ package com.joy.dorm.utils;
 import com.joy.dorm.common.utils.JwtTokenUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;

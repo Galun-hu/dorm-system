@@ -18,5 +18,6 @@ public interface RoleDao {
     //查询角色
     List<Role> getAllRoles();
 
+    //根据id查找角色
     Role getByIdRole(Integer id);
 }

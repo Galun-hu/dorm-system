@@ -3,6 +3,8 @@ package com.joy.dorm.config.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.joy.dorm.common.utils.JwtTokenUtils;
 import com.joy.dorm.common.utils.RespResult;
+import com.joy.dorm.dormitory.dao.impl.AdministratorDaoImpl;
+import com.joy.dorm.dormitory.service.impl.BuildingServiceImpl;
 import com.joy.dorm.system.model.Admin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private AuthenticationManager authenticationManager;
 
     public static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
+
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager){
         this.authenticationManager = authenticationManager;

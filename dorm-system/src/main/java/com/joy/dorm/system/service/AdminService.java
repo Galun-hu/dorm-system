@@ -23,6 +23,7 @@ public class AdminService implements UserDetailsService {
     @Autowired
     AdminDaoImpl adminDao;
 
+
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 
@@ -74,7 +75,6 @@ public class AdminService implements UserDetailsService {
         if (admin==null){
             throw new UsernameNotFoundException("用户名不存在");
         }
-//        throw new
         Role role = roleDao.getByIdRole(admin.getRoleId());
         admin.setRole(role);
         System.out.println(admin);
