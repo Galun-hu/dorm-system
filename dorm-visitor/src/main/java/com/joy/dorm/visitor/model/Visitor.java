@@ -35,9 +35,6 @@ public class Visitor {
     @ApiModelProperty("到访时间")
     private Date createTime;
 
-    public static String getTableName() {
-        return tableName;
-    }
 
     public String get_id() {
         return _id;

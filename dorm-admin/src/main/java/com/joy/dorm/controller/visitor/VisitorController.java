@@ -2,9 +2,6 @@ package com.joy.dorm.controller.visitor;
 
 import com.joy.dorm.common.utils.RespResult;
 import com.joy.dorm.dormitory.model.Building;
-import com.joy.dorm.dormitory.model.BuildingAdmin;
-import com.joy.dorm.system.model.Admin;
-import com.joy.dorm.system.service.AdminService;
 import com.joy.dorm.utils.DormitoryTool;
 import com.joy.dorm.utils.RequestJwt;
 import com.joy.dorm.visitor.model.Visitor;
