@@ -43,7 +43,7 @@ public class SystemController {
         Long total = adminService.getAdminCount(keywords,id);
         RespPage respPage = new RespPage();
         respPage.setTotal(total);
-        respPage.setData(adminService.getAllAdmin(keywords,id,pageNumNew,pageSize));
+        respPage.setData(adminService.getAllAdmin(keywords,id,pageNum,pageSize));
         return respPage;
     }
 
