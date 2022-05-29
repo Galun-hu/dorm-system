@@ -16,11 +16,14 @@ public interface AdminDao {
     int delete(Integer id);
 
     //查询所有管理员
-    List<Admin> getAllAdmin(String keywords,Integer id);
+    List<Admin> getAllAdmin(String keywords,Integer id,int pageNumNew,int pageSize);
 
     //根据id查管理员
     Admin getByIdAdmin(Integer id);
 
     //根据用户名查询管理员
     Admin loadUserByUsername(String username);
+
+    //获取总记录数
+    Long getAdminCount(String keywords, Integer id);
 }

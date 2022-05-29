@@ -3,6 +3,8 @@ package com.joy.dorm.visitor.dao.Impl;
 import com.joy.dorm.visitor.dao.VisitorDao;
 import com.joy.dorm.visitor.model.Visitor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -20,7 +22,7 @@ public class VisitorDaoImpl implements VisitorDao {
     MongoTemplate mongoTemplate;
 
     @Override
-    public List<Visitor> getAllVisitor(String keywords, Integer id) {
+    public List<Visitor> getAllVisitor(String keywords, Integer id,int pageNumNew,int pageSize) {
         Criteria criteria = new Criteria();
         if (id!=null){
             //根据宿舍楼查找
@@ -30,7 +32,13 @@ public class VisitorDaoImpl implements VisitorDao {
             Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("name").regex(pattern);
         }
-        Query query = new Query(criteria);
+        //创建分页
+        PageRequest pageRequest = PageRequest.of(pageNumNew,pageSize);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createTime");
+        Query query = new Query();
+        query.with(pageRequest);
+        query.with(sort);
+        query.addCriteria(criteria);
         return mongoTemplate.find(query,Visitor.class);
     }
 
@@ -83,5 +91,20 @@ public class VisitorDaoImpl implements VisitorDao {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    @Override
+    public Long getVisitorCount(String keywords, Integer id) {
+        Criteria criteria = new Criteria();
+        if (id!=null){
+            //根据宿舍楼查找
+            criteria.and("buildingId").is(id);
+        }
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("name").regex(pattern);
+        }
+        Query query = new Query(criteria);
+        return mongoTemplate.count(query,Visitor.class);
     }
 }

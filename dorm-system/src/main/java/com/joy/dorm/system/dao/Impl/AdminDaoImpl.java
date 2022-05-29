@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.joy.dorm.system.dao.AdminDao;
 import com.joy.dorm.system.model.Admin;
 import com.joy.dorm.system.model.Role;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
@@ -84,7 +86,7 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     @Override
-    public List<Admin> getAllAdmin(String keywords,Integer id) {
+    public List<Admin> getAllAdmin(String keywords,Integer id,int pageNumNew,int pageSize) {
 
         LookupOperation lookupOperation = LookupOperation.newLookup()
                 .from("role")
@@ -100,6 +102,9 @@ public class AdminDaoImpl implements AdminDao {
             Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("name").regex(pattern);
         }
+        //创建分页
+        PageRequest pageRequest = PageRequest.of(pageNumNew,pageSize);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createTime");
 //        .and("adminRole");
         ProjectionOperation project  = Aggregation.project("id", "username", "name", "sex", "phone", "company", "enabled", "roleId", "createTime")
                 .and("adminRole").as("adminRole");
@@ -132,5 +137,19 @@ public class AdminDaoImpl implements AdminDao {
             System.out.println("该用户名不存在");
             return null;
         }
+    }
+
+    @Override
+    public Long getAdminCount(String keywords, Integer id) {
+        Criteria criteria = new Criteria();
+        if (id!=null){
+            criteria.and("id").ne(id);
+        }
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("name").regex(pattern);
+        }
+        Query query = new Query(criteria);
+        return mongoTemplate.count(query,Admin.class);
     }
 }

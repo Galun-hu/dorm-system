@@ -13,8 +13,8 @@ public class VisitorService {
     @Autowired
     VisitorDaoImpl visitorDao;
 
-    public List<Visitor> getAllVisitor(String keywords, Integer id) {
-        return visitorDao.getAllVisitor(keywords,id);
+    public List<Visitor> getAllVisitor(String keywords, Integer id,int pageNumNew,int pageSize) {
+        return visitorDao.getAllVisitor(keywords,id,pageNumNew,pageSize);
     }
 
     public int addVisitor(Visitor visitor) {
@@ -27,5 +27,9 @@ public class VisitorService {
 
     public int deleteVisitor(Integer id) {
         return visitorDao.deleteVisitor(id);
+    }
+
+    public Long getVisitorCount(String keywords, Integer id) {
+        return visitorDao.getVisitorCount(keywords,id);
     }
 }

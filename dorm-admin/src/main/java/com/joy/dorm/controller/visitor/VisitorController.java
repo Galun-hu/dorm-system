@@ -1,5 +1,6 @@
 package com.joy.dorm.controller.visitor;
 
+import com.joy.dorm.common.utils.RespPage;
 import com.joy.dorm.common.utils.RespResult;
 import com.joy.dorm.dormitory.model.Building;
 import com.joy.dorm.utils.DormitoryTool;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@Api(tags = "访客管理")
+@Api(tags = "f 访客管理 ------宿舍管理员")
 @RequestMapping("/system/dorm/visitor")
 public class VisitorController {
 
@@ -31,19 +32,31 @@ public class VisitorController {
 
     @ApiOperation("获取所有到访记录")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "keywords",value = "根据到访者姓名关键词")
+            @ApiImplicitParam(name = "keywords",value = "根据到访者姓名关键词"),
+            @ApiImplicitParam(name = "pageNum",value = "第几页 默认第一页"),
+            @ApiImplicitParam(name = "pageSize",value = "拿多少条数据 默认10条")
     })
     @GetMapping("/")
-    public List<Visitor> getAllVisitor(String keywords, HttpServletRequest request){
+    public RespPage getAllVisitor(String keywords, HttpServletRequest request,
+                                  @RequestParam(defaultValue = "1") int pageNum,
+                                  @RequestParam(defaultValue = "10") int pageSize){
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
         Integer id = (Integer) map.get("id");
         Building building = dormitoryTool.getBuildWithAdminId(id);
-        return visitorService.getAllVisitor(keywords,building.getId());
+        int pageNumNew = pageNum-1;
+        if (pageNumNew < 0){
+            pageNumNew = 0;
+        }
+        Long total = visitorService.getVisitorCount(keywords,building.getId());
+        RespPage respPage = new RespPage();
+        respPage.setTotal(total);
+        respPage.setData(visitorService.getAllVisitor(keywords,building.getId(),pageNumNew,pageSize));
+        return respPage;
     }
 
     @ApiOperation("添加到访人员")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Visitor",value = "Visitor类"),
+            @ApiImplicitParam(name = "Visitor",value = "Visitor类  接口文档Models有对应该类描述"),
             @ApiImplicitParam(name = "name",value = "姓名"),
             @ApiImplicitParam(name = "sex",value = "性别"),
             @ApiImplicitParam(name = "phone",value = "手机号"),
@@ -66,7 +79,7 @@ public class VisitorController {
 
     @ApiOperation("修改到访记录")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Visitor",value = "Visitor类"),
+            @ApiImplicitParam(name = "Visitor",value = "Visitor类  接口文档Models有对应该类描述"),
             @ApiImplicitParam(name = "id",value = "到访的id"),
             @ApiImplicitParam(name = "name",value = "姓名"),
             @ApiImplicitParam(name = "sex",value = "性别"),

@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "测试接口")
+@Api(tags = "z 测试接口")
 @RestController
 public class HelloController {
 

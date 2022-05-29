@@ -1,5 +1,6 @@
 package com.joy.dorm.controller.repair;
 
+import com.joy.dorm.common.utils.RespPage;
 import com.joy.dorm.common.utils.RespResult;
 import com.joy.dorm.dormitory.model.Building;
 import com.joy.dorm.repair.model.Repair;
@@ -18,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@Api(tags = "访客管理")
-@RequestMapping("/system/dorm/visitor")
+@Api(tags = "e 维修管理 ------宿舍管理员")
+@RequestMapping("/system/dorm/repair")
 public class RepairController {
 
     @Autowired
@@ -31,19 +32,31 @@ public class RepairController {
 
     @ApiOperation("获取所有维修记录")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "keywords",value = "根据申报人姓名关键词")
+            @ApiImplicitParam(name = "keywords",value = "根据申报人姓名关键词"),
+            @ApiImplicitParam(name = "pageNum",value = "第几页 默认第一页"),
+            @ApiImplicitParam(name = "pageSize",value = "拿多少条数据 默认10条")
     })
     @GetMapping("/")
-    public List<Repair> getAllRepair(String keywords, HttpServletRequest request){
+    public RespPage getAllRepair(String keywords, HttpServletRequest request,
+                                     @RequestParam(defaultValue = "1") int pageNum,
+                                     @RequestParam(defaultValue = "10") int pageSize){
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
         Integer id = (Integer) map.get("id");
         Building building = dormitoryTool.getBuildWithAdminId(id);
-        return repairService.getAllRepair(keywords,building.getId());
+        int pageNumNew = pageNum-1;
+        if (pageNumNew < 0){
+            pageNumNew = 0;
+        }
+        Long total = repairService.getRepairCount(keywords,building.getId());
+        RespPage respPage = new RespPage();
+        respPage.setTotal(total);
+        respPage.setData(repairService.getAllRepair(keywords,building.getId(),pageNumNew,pageSize));
+        return respPage;
     }
 
     @ApiOperation("添加报修")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Repair",value = "Repair类"),
+            @ApiImplicitParam(name = "Repair",value = "Repair类  接口文档Models有对应该类描述"),
             @ApiImplicitParam(name = "number",value = "宿舍号 类型string"),
             @ApiImplicitParam(name = "name",value = "申报人姓名"),
             @ApiImplicitParam(name = "phone",value = "申报人手机号"),
@@ -69,7 +82,7 @@ public class RepairController {
 
     @ApiOperation("修改维修记录")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Repair",value = "Repair类"),
+            @ApiImplicitParam(name = "Repair",value = "Repair类  接口文档Models有对应该类描述"),
             @ApiImplicitParam(name = "id",value = "维修的id"),
             @ApiImplicitParam(name = "number",value = "宿舍号 类型string"),
             @ApiImplicitParam(name = "name",value = "申报人姓名"),

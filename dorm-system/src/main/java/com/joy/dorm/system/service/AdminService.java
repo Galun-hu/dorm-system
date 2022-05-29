@@ -28,9 +28,9 @@ public class AdminService implements UserDetailsService {
 
 
     //获取所有管理员和对应的角色
-    public List<Admin> getAllAdmin(String keywords,Integer id) {
+    public List<Admin> getAllAdmin(String keywords,Integer id,int pageNumNew,int pageSize) {
         //排除自己
-        return adminDao.getAllAdmin(keywords,id);
+        return adminDao.getAllAdmin(keywords,id,pageNumNew,pageSize);
     }
 
     //添加管理员
@@ -90,4 +90,7 @@ public class AdminService implements UserDetailsService {
     }
 
 
+    public Long getAdminCount(String keywords, Integer id) {
+        return adminDao.getAdminCount(keywords,id);
+    }
 }

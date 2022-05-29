@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = "宿舍管理员信息")
+@Api(tags = "b 宿舍管理员信息 ------系统管理员")
 @RestController
 @RequestMapping("/system/admin/administrator/")
 public class AdministratorController {

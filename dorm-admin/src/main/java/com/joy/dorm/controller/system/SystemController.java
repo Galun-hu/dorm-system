@@ -1,5 +1,6 @@
 package com.joy.dorm.controller.system;
 
+import com.joy.dorm.common.utils.RespPage;
 import com.joy.dorm.common.utils.RespResult;
 import com.joy.dorm.system.model.Admin;
 import com.joy.dorm.system.service.AdminService;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@Api(tags = "管理员信息")
+@Api(tags = "g 管理员信息 ------系统管理员")
 @RequestMapping("/system/admin")
 public class SystemController {
 
@@ -25,18 +26,30 @@ public class SystemController {
 
     @ApiOperation("获取所有管理员")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "keywords",value = "关键词")
+            @ApiImplicitParam(name = "keywords",value = "关键词"),
+            @ApiImplicitParam(name = "pageNum",value = "第几页 默认第一页"),
+            @ApiImplicitParam(name = "pageSize",value = "拿多少条数据 默认10条")
     })
     @GetMapping("/")
-    public List<Admin> getAllAdmin(String keywords, HttpServletRequest request){
+    public RespPage getAllAdmin(String keywords, HttpServletRequest request,
+                                   @RequestParam(defaultValue = "1") int pageNum,
+                                   @RequestParam(defaultValue = "10") int pageSize){
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
         Integer id = (Integer) map.get("id");
-        return adminService.getAllAdmin(keywords,id);
+        int pageNumNew = pageNum-1;
+        if (pageNumNew < 0){
+            pageNumNew = 0;
+        }
+        Long total = adminService.getAdminCount(keywords,id);
+        RespPage respPage = new RespPage();
+        respPage.setTotal(total);
+        respPage.setData(adminService.getAllAdmin(keywords,id,pageNumNew,pageSize));
+        return respPage;
     }
 
     @ApiOperation("添加管理员")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Admin",value = "Admin类"),
+            @ApiImplicitParam(name = "Admin",value = "Admin类 接口文档Models有对应该类描述"),
             @ApiImplicitParam(name = "username",value = "账号"),
             @ApiImplicitParam(name = "password",value = "密码"),
             @ApiImplicitParam(name = "name",value = "姓名"),
@@ -55,7 +68,7 @@ public class SystemController {
     }
 
 
-    @ApiOperation("修改管理员")
+    @ApiOperation("修改管理员，系统管理员个人中心修改的也是这个接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Admin",value = "Admin类"),
             @ApiImplicitParam(name = "id",value = "管理员id"),
@@ -63,7 +76,7 @@ public class SystemController {
             @ApiImplicitParam(name = "sex",value = "性别"),
             @ApiImplicitParam(name = "phone",value = "手机号"),
             @ApiImplicitParam(name = "company",value = "学生处、宿舍管理中心，前端这两个直接写死 后端不提供"),
-            @ApiImplicitParam(name = "enabled",value = "是否启用 Boolean类型"),
+            @ApiImplicitParam(name = "enabled",value = "是否启用 Boolean类型 个人中心的修改不显示这个"),
     })
     @PutMapping("/")
     public RespResult updateAdmin(@RequestBody Admin admin){
@@ -86,21 +99,4 @@ public class SystemController {
         return RespResult.error("删除管理员失败！");
     }
 
-
-    @ApiOperation("修改管理员密码")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "oldPassword",value = "旧密码"),
-            @ApiImplicitParam(name = "newPassword",value = "新密码"),
-            @ApiImplicitParam(name = "id",value = "管理员id"),
-    })
-    @PutMapping("/pwd")
-    public RespResult updatePassword(@RequestBody Map<String,Object> map){
-        String oldPassword = (String) map.get("oldPassword");
-        String newPassword = (String) map.get("newPassword");
-        Integer id = (Integer) map.get("id");
-        if (adminService.updatePassWord(oldPassword,newPassword,id)){
-            return RespResult.ok("修改管理员密码成功！");
-        }
-        return RespResult.error("修改管理员密码失败！");
-    }
 }
