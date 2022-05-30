@@ -103,7 +103,7 @@ public class AdminDaoImpl implements AdminDao {
             criteria.and("name").regex(pattern);
         }
         //创建分页
-        Sort sort = Sort.by(Sort.Direction.DESC, "createTime");
+        Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
         ProjectionOperation project  = Aggregation.project("id", "username", "name", "sex", "phone", "company", "enabled", "roleId", "createTime")
                 .and("adminRole").as("adminRole");
         Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),Aggregation.sort(sort),lookupOperation,project,Aggregation.unwind("adminRole"));

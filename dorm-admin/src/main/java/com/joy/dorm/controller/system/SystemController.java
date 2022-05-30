@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -43,7 +42,7 @@ public class SystemController {
         Long total = adminService.getAdminCount(keywords,id);
         RespPage respPage = new RespPage();
         respPage.setTotal(total);
-        respPage.setData(adminService.getAllAdmin(keywords,id,pageNum,pageSize));
+        respPage.setData(adminService.getAllAdmin(keywords,id,pageNumNew,pageSize));
         return respPage;
     }
 

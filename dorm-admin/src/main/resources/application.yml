@@ -21,3 +21,8 @@ spring:
 #    空值不返回
     default-property-inclusion: non_null
     time-zone: GMT+8
+
+
+logging:
+  level:
+    org.springframework.data.mongodb.core: DEBUG
