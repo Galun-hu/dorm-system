@@ -2,10 +2,13 @@ package com.joy.dorm.dormitory.dao.impl;
 
 import com.joy.dorm.dormitory.dao.IAdministretorDao;
 import com.joy.dorm.dormitory.model.Administrator;
+import com.joy.dorm.dormitory.model.Building;
 import com.joy.dorm.dormitory.model.BuildingAdmin;
 import com.joy.dorm.system.dao.RoleDao;
 import com.mongodb.client.result.DeleteResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
@@ -13,25 +16,36 @@ import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Repository
 public class AdministratorDaoImpl implements IAdministretorDao {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @Autowired
-    private RoleDao roleDao;
 
     @Override
-    public List<Administrator> findAdministrators(){
-        ProjectionOperation project = Aggregation.project("_id","id","name","sex","phone",
-                "company","createTime","roleId");
-        Criteria criteria = new Criteria().and("roleId").is(2);
-        Aggregation aggregation = Aggregation.newAggregation(project,Aggregation.match(criteria));
-        List<Administrator> administrators = mongoTemplate.aggregate(aggregation,"admin",Administrator.class).getMappedResults();
-        return administrators;
+    public List<Administrator> findAdministrators(String keywords,int pageNum,int pageSize){
+        Criteria criteria = new Criteria();
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("name").regex(pattern);
+        }
+        PageRequest pageRequest = PageRequest.of(pageNum,pageSize);
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        Query query = new Query().addCriteria(criteria).with(sort).with(pageRequest);
+        return mongoTemplate.find(query, Administrator.class);
+    }
+
+    @Override
+    public Long acountAdministrators(String keywords){
+        Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+        Criteria criteria = new Criteria().and("name").regex(pattern);
+        Query query = new Query(criteria);
+        return Long.valueOf(mongoTemplate.find(query,Administrator.class).size());
     }
 
     @Override
@@ -51,18 +65,18 @@ public class AdministratorDaoImpl implements IAdministretorDao {
             return null;
         }
     }
-
-    @Override
-    public Administrator findAdministratorByName(String name){
-        Query query = new Query(Criteria.where("name").is(name));
-        Administrator administrator = mongoTemplate.findOne(query,Administrator.class);
-//        ProjectionOperation project = Aggregation.project("_id","id","name","sex","phone",
-//                "company","createTime");
-//        Criteria criteria = new Criteria().and("name").is(name);
-//        Aggregation aggregation = Aggregation.newAggregation(project,Aggregation.match(criteria));
-//        Administrator administrator = mongoTemplate.aggregate(aggregation,"admin",Administrator.class).getUniqueMappedResult();
-        return administrator;
-    }
+//
+//    @Override
+//    public Administrator findAdministratorByName(String name){
+//        Query query = new Query(Criteria.where("name").is(name));
+//        Administrator administrator = mongoTemplate.findOne(query,Administrator.class);
+////        ProjectionOperation project = Aggregation.project("_id","id","name","sex","phone",
+////                "company","createTime");
+////        Criteria criteria = new Criteria().and("name").is(name);
+////        Aggregation aggregation = Aggregation.newAggregation(project,Aggregation.match(criteria));
+////        Administrator administrator = mongoTemplate.aggregate(aggregation,"admin",Administrator.class).getUniqueMappedResult();
+//        return administrator;
+//    }
 
     @Override
     public Administrator findAdministratorById(Integer id){

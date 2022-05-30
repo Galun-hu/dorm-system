@@ -1,9 +1,10 @@
 package com.joy.dorm.common.utils;
 
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
-
+@Component
 public class Tool {
 
     /**

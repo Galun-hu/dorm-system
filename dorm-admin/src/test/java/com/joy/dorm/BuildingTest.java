@@ -26,22 +26,22 @@ public class BuildingTest {
     @Autowired
     private IBuildingDao buildingDao;
 
-    @Test
-    public void findBuildingsTest(){
-        System.out.println(buildingService.getBuildings());
-    }
+//    @Test
+//    public void findBuildingsTest(){
+//        System.out.println(buildingService.getBuildings());
+//    }
 
-    @Test
-    public void findBuildingByIdTest(){
-        System.out.println(buildingDao.findBuildingById(1));
-    }
-
-    @Test
-    public void updateTest(){
-        Building building = buildingDao.findBuildingById(1);
-        building.setPerson_num(800);
-        buildingDao.updateBuilding(building);
-    }
+//    @Test
+//    public void findBuildingByIdTest(){
+//        System.out.println(buildingDao.findBuildingById(1));
+//    }
+//
+//    @Test
+//    public void updateTest(){
+//        Building building = buildingDao.findBuildingById(1);
+//        building.setPerson_num(800);
+//        buildingDao.updateBuilding(building);
+//    }
 
     @Test
     public void insertTest(){
@@ -54,11 +54,11 @@ public class BuildingTest {
         buildingDao.insertBuilding(building);
     }
 
-    @Test
-    public void deleteTest(){
-        long result = buildingDao.deleteBuildingBy_id("6290ccf1ac591137bb0cfcf5");
-        System.out.println("删除"+result+"条");
-    }
+//    @Test
+//    public void deleteTest(){
+//        long result = buildingDao.deleteBuildingBy_id("6290ccf1ac591137bb0cfcf5");
+//        System.out.println("删除"+result+"条");
+//    }
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -71,20 +71,20 @@ public class BuildingTest {
     @Autowired
     private IAdministretorDao administretorDao;
 
-    @Test
-    public void bb(){
-//        administretorDao.insertDormAdminInBuilding(2,"6290d0e8f248f074c36e2cfd");
-        System.out.println(administretorDao.findBuildingIdByDormAdminId(1));
-    }
+//    @Test
+//    public void bb(){
+////        administretorDao.insertDormAdminInBuilding(2,"6290d0e8f248f074c36e2cfd");
+//        System.out.println(administretorDao.findBuildingIdByDormAdminId(1));
+//    }
 
     @Autowired
     private RoleDao roleDao;
 
-    @Test
-    public void cc (){
-//        administretorDao.deleteAllDromAdminInBuilding(2);
-        System.out.println(administretorDao.findAdministrators());
-    }
+//    @Test
+//    public void cc (){
+////        administretorDao.deleteAllDromAdminInBuilding(2);
+//        System.out.println(administretorDao.findAdministrators());
+//    }
 
     @Autowired
     private DormitoryTool dormitoryTool;
@@ -92,5 +92,6 @@ public class BuildingTest {
     public void asdasd(){
         System.out.println(dormitoryTool.getAllAdminWithBuildingId(1));
     }
+
 }
 

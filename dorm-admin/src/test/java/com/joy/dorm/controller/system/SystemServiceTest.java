@@ -24,20 +24,20 @@ public class SystemServiceTest {
     @Autowired
     AdministratorDaoImpl administratorDao;
 
-    @Test
-    public void test1(){
-//        List<Admin> allAdmin = adminService.getAllAdmin("张",1);
-//        for (Admin admin : allAdmin) {
-//            System.out.println(admin);
-//        }
-//        Admin admin = new Admin();
-//        admin.setId(1);
-//        if (admin.getName()==null){
-//            System.out.println("123131");
-//        }
-        Integer id = administratorDao.findBuildingIdByDormAdminId(1);
-        System.out.println(id);
-        Building building = buildingService.getBuildingWithId(id);
-        System.out.println(building.get_id()+" "+building.getType());
-    }
+//    @Test
+//    public void test1(){
+////        List<Admin> allAdmin = adminService.getAllAdmin("张",1);
+////        for (Admin admin : allAdmin) {
+////            System.out.println(admin);
+////        }
+////        Admin admin = new Admin();
+////        admin.setId(1);
+////        if (admin.getName()==null){
+////            System.out.println("123131");
+////        }
+//        Integer id = administratorDao.findBuildingIdByDormAdminId(1);
+//        System.out.println(id);
+//        Building building = buildingService.getBuildingWithId(id);
+//        System.out.println(building.get_id()+" "+building.getType());
+//    }
 }

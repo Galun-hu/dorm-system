@@ -9,13 +9,17 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Repository
 public class BuildingDaoImpl implements IBuildingDao {
@@ -23,14 +27,29 @@ public class BuildingDaoImpl implements IBuildingDao {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @Bean
-    private Tool myTool(){
-        return new Tool();
+
+    @Autowired
+    private Tool myTool;
+
+    @Override
+    public List<Building> findBuildings(String keywords,int pageNum,int pageSize){
+        Criteria criteria = new Criteria();
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("name").regex(pattern);
+        }
+        PageRequest pageRequest = PageRequest.of(pageNum,pageSize);
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        Query query = new Query().addCriteria(criteria).with(sort).with(pageRequest);
+        return mongoTemplate.find(query,Building.class);
     }
 
     @Override
-    public List<Building> findBuildings(){
-        return mongoTemplate.findAll(Building.class);
+    public Long acountBuildings(String keywords){
+        Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+        Criteria criteria = new Criteria().and("name").regex(pattern);
+        Query query = new Query().addCriteria(criteria);
+        return Long.valueOf(mongoTemplate.find(query,Building.class).size());
     }
 
     @Override
@@ -40,18 +59,18 @@ public class BuildingDaoImpl implements IBuildingDao {
         return building;
     }
 
-    @Override
-    public Building findBuildingBy_id(String _id){
-        Query query = new Query(Criteria.where("_id").is(_id));
-        return mongoTemplate.findOne(query,Building.class);
-    }
+//    @Override
+//    public Building findBuildingBy_id(String _id){
+//        Query query = new Query(Criteria.where("_id").is(_id));
+//        return mongoTemplate.findOne(query,Building.class);
+//    }
 
 
 
     @Override
     public long updateBuilding(Building building){
-        Update update = myTool().updateFields(building);
-        Query query = new Query().addCriteria(Criteria.where("_id").is(building.get_id()));
+        Update update = myTool.updateFields(building);
+        Query query = new Query().addCriteria(Criteria.where("id").is(building.getId()));
         UpdateResult result = mongoTemplate.updateFirst(query,update,Building.class);
         return result.getModifiedCount();
     }
@@ -67,9 +86,8 @@ public class BuildingDaoImpl implements IBuildingDao {
     }
 
     @Override
-    public long deleteBuildingBy_id(String _id){
-        Query query = new Query(Criteria.where("_id").is(_id));
-        Integer id = findBuildingBy_id(_id).getId();
+    public long deleteBuildingBy_id(Integer id){
+        Query query = new Query(Criteria.where("id").is(id));
         Query query1 = new Query(Criteria.where("building_id").is(id));
         DeleteResult result = mongoTemplate.remove(query,Building.class);
         mongoTemplate.findAllAndRemove(query1,"t_building_administrator");

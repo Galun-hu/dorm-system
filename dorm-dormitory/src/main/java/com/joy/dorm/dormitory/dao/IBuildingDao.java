@@ -13,7 +13,14 @@ public interface IBuildingDao {
     /**
      * 查询所有宿舍信息
      */
-    List<Building> findBuildings();
+    List<Building> findBuildings(String keywords,int pageNum,int pageSize);
+
+    /**
+     * 统计模糊查询结果数量
+     * @param keywords
+     * @return
+     */
+    Long acountBuildings(String keywords);
 
     /**
      * 根据宿舍楼栋号查询宿舍信息
@@ -22,12 +29,12 @@ public interface IBuildingDao {
      */
     Building findBuildingById(int id);
 
-    /**
-     * 根据_id获取宿舍楼id
-     * @param String
-     * @return
-     */
-    Building findBuildingBy_id(String String);
+//    /**
+//     * 根据_id获取宿舍楼id
+//     * @param String
+//     * @return
+//     */
+//    Building findBuildingBy_id(String String);
 
 
 
@@ -47,5 +54,5 @@ public interface IBuildingDao {
      * 根据_id删除宿舍信息
      * @param _id
      */
-    long deleteBuildingBy_id(String _id);
+    long deleteBuildingBy_id(Integer _id);
 }

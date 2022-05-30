@@ -6,7 +6,10 @@ import java.util.List;
 
 public interface IBuildingService {
     // 获取所有宿舍楼栋信息
-    List<Building> getBuildings();
+    List<Building> getBuildings(String keywords,int pageNum,int pageSize);
+
+    // 统计模糊查询结果数量
+    Long getBuildingsCount(String keywords);
 
     // 根据宿舍楼栋号获取宿舍信息
     Building getBuildingWithId(int id);
@@ -14,8 +17,8 @@ public interface IBuildingService {
     // 根据管理员id获取该管理员管理的的宿舍信息
     Building getBuildingWithAdminId(Integer id);
 
-    // 根据管理员姓名获取宿舍信息
-    Building getBuildingWithAdministrator(String name);
+//    // 根据管理员姓名获取宿舍信息
+//    Building getBuildingWithAdministrator(String name);
 
     // 添加宿舍楼栋信息
     Integer addBuilding(Building building);
@@ -24,7 +27,7 @@ public interface IBuildingService {
     long updateBuilding(Building building);
 
     // 根据_id删除宿舍信息
-    long deleteBuilding(String _id);
+    long deleteBuilding(Integer _id);
 
     // 设置building实体类的administrator值
     List<Building> setAdminstrator(List<Building> buildings);

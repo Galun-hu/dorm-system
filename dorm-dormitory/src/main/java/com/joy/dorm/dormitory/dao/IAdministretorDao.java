@@ -9,13 +9,15 @@ import java.util.List;
 public interface IAdministretorDao {
 
     // 获取所有宿舍管理员信息
-    List<Administrator> findAdministrators();
+    List<Administrator> findAdministrators(String keywords,int pageNum,int pageSize);
+
+    Long acountAdministrators(String keywords);
 
     // 根据宿舍管理员id获取宿舍楼id
     Integer findBuildingIdByDormAdminId(int id);
-
-    // 根据宿舍管理员名字获取宿舍管理员信息
-    Administrator findAdministratorByName(String name);
+//
+//    // 根据宿舍管理员名字获取宿舍管理员信息
+//    Administrator findAdministratorByName(String name);
 
     // 根据管理员id获取管理员信息
     Administrator findAdministratorById(Integer id);
