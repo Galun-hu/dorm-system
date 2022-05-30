@@ -33,23 +33,32 @@ public class VisitorController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "keywords",value = "根据到访者姓名关键词"),
             @ApiImplicitParam(name = "pageNum",value = "第几页 默认第一页"),
-            @ApiImplicitParam(name = "pageSize",value = "拿多少条数据 默认10条")
+            @ApiImplicitParam(name = "pageSize",value = "拿多少条数据 默认10条"),
+            @ApiImplicitParam(name = "buildingId",value = "宿舍楼id 默认拿第一栋的信息 *这是系统管理员的才有"),
+            @ApiImplicitParam(name = "buildingType",value = "宿舍楼类别 默认拿男生宿舍的信息 *这是系统管理员的才有"),
     })
     @GetMapping("/")
     public RespPage getAllVisitor(String keywords, HttpServletRequest request,
                                   @RequestParam(defaultValue = "1") int pageNum,
-                                  @RequestParam(defaultValue = "10") int pageSize){
+                                  @RequestParam(defaultValue = "10") int pageSize,
+                                  @RequestParam(defaultValue = "1") Integer buildingId,
+                                  @RequestParam(defaultValue = "男生宿舍") String buildingType){
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
         Integer id = (Integer) map.get("id");
+        String role = (String)map.get("role");
         Building building = dormitoryTool.getBuildWithAdminId(id);
         int pageNumNew = pageNum-1;
         if (pageNumNew < 0){
             pageNumNew = 0;
         }
-        Long total = visitorService.getVisitorCount(keywords,building.getId());
         RespPage respPage = new RespPage();
-        respPage.setTotal(total);
-        respPage.setData(visitorService.getAllVisitor(keywords,building.getId(),pageNumNew,pageSize));
+        if (role.equals("ROLE_admin")){
+            respPage.setTotal(visitorService.getVisitorAdminCount(keywords,buildingId,buildingType));
+            respPage.setData(visitorService.getAllVisitorAdmin(keywords,pageNumNew,pageSize,buildingId,buildingType));
+        }else{
+            respPage.setTotal(visitorService.getVisitorCount(keywords,building.getId()));
+            respPage.setData(visitorService.getAllVisitor(keywords,building.getId(),pageNumNew,pageSize));
+        }
         return respPage;
     }
 

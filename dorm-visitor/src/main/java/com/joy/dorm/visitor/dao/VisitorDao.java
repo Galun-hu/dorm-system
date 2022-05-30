@@ -20,4 +20,10 @@ public interface VisitorDao {
 
     //获取总记录数
     Long getVisitorCount(String keywords, Integer id);
+
+    //获取属于该楼栋的访客总记录数
+    Long getVisitorAdminCount(String keywords,Integer buildingId,String buildingType);
+
+    //获取属于该楼栋的所有访客
+    List<Visitor> getAllVisitorAdmin(String keywords, Integer pageNumNew, Integer pageSize, Integer buildingId, String buildingType);
 }

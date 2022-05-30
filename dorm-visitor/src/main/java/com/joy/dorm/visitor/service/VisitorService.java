@@ -32,4 +32,12 @@ public class VisitorService {
     public Long getVisitorCount(String keywords, Integer id) {
         return visitorDao.getVisitorCount(keywords,id);
     }
+
+    public Long getVisitorAdminCount(String keywords,Integer buildingId,String buildingType) {
+        return visitorDao.getVisitorAdminCount(keywords,buildingId,buildingType);
+    }
+
+    public List<Visitor> getAllVisitorAdmin(String keywords,Integer pageNumNew,Integer pageSize,Integer buildingId,String buildingType){
+        return visitorDao.getAllVisitorAdmin(keywords,pageNumNew,pageSize,buildingId,buildingType);
+    }
 }

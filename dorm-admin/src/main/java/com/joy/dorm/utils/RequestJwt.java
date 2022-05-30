@@ -15,6 +15,8 @@ public class RequestJwt {
         Map<String,Object> map = new HashMap<>();
         map.put("id",(Integer)claims.get("id"));
         map.put("name",claims.getSubject());
+        String role = (String)claims.get("authorities");
+        map.put("role",role.replace(",",""));
         return map;
     }
 

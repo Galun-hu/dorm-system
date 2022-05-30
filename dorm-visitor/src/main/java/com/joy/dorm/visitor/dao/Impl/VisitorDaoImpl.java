@@ -1,18 +1,24 @@
 package com.joy.dorm.visitor.dao.Impl;
 
+import com.alibaba.fastjson.JSON;
 import com.joy.dorm.visitor.dao.VisitorDao;
 import com.joy.dorm.visitor.model.Visitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @Repository
@@ -106,5 +112,64 @@ public class VisitorDaoImpl implements VisitorDao {
         }
         Query query = new Query(criteria);
         return mongoTemplate.count(query,Visitor.class);
+    }
+
+    @Override
+    public Long getVisitorAdminCount(String keywords,Integer buildingId,String buildingType) {
+
+        LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("t_building")
+                .localField("buildingId")
+                .foreignField("id")
+                .as("building");
+
+        Criteria criteria = new Criteria();
+        if (buildingId!=null){
+            criteria.and("buildingId").is(buildingId);
+        }
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("name").regex(pattern);
+        }
+        Criteria criteria2 = new Criteria();
+        if (StringUtils.hasText(buildingType)){
+            criteria2.and("building.type").is(buildingType);
+        }
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),lookupOperation,Aggregation.match(criteria2));
+        List<Map> results = mongoTemplate.aggregate(aggregation, "visitor", Map.class).getMappedResults();
+        int num = results.size();
+        return (long)num;
+    }
+
+    @Override
+    public List<Visitor> getAllVisitorAdmin(String keywords, Integer pageNumNew, Integer pageSize, Integer buildingId, String buildingType) {
+        LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("t_building")
+                .localField("buildingId")
+                .foreignField("id")
+                .as("building");
+
+        Criteria criteria = new Criteria();
+        if (buildingId!=null){
+            criteria.and("buildingId").is(buildingId);
+        }
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("name").regex(pattern);
+        }
+        Criteria criteria2 = new Criteria();
+        if (StringUtils.hasText(buildingType)){
+            criteria2.and("building.type").is(buildingType);
+        }
+        ProjectionOperation project  = Aggregation.project("id", "name", "sex", "phone", "buildingId", "dormId", "remark","createTime");
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),lookupOperation,Aggregation.match(criteria2));
+        List<Map> results = mongoTemplate.aggregate(aggregation, "visitor", Map.class).getMappedResults();
+        List<Visitor> visitors = new ArrayList<>();
+        for (Map result : results) {
+            String str = JSON.toJSONString(result);
+            Visitor visitor = JSON.parseObject(str, Visitor.class);
+            visitors.add(visitor);
+        }
+        return visitors;
     }
 }
