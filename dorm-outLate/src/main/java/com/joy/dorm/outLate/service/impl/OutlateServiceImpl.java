@@ -16,19 +16,24 @@ public class OutlateServiceImpl implements IOutlateService {
     private IOutlateDao outlateDao;
 
     @Override
-    public List<Outlate> getAllOutlate(){
-        return outlateDao.findAllOutlate();
+    public List<Outlate> getAllOutlate(Integer building_id,String keywords,String building_type,Integer pageNum,Integer pageSize){
+        return outlateDao.findOutlate(building_id,keywords,building_type,pageNum,pageSize);
     }
 
     @Override
-    public List<Outlate> getAllOutlateWithBuildingId(Integer building_id){
-        return outlateDao.findAllOutlateByBuildingId(building_id);
+    public Long getOutlateCount(String keywords){
+        return outlateDao.acountOutlate(keywords);
     }
 
-    @Override
-    public List<Outlate> getAllOutlateWithBuildingIdAndBuildingType(Integer building_id,String building_type){
-        return outlateDao.findAllOutlateByBuildingIdAdndBuildingType(building_id,building_type);
-    }
+//    @Override
+//    public List<Outlate> getAllOutlateWithBuildingId(Integer building_id){
+//        return outlateDao.findAllOutlateByBuildingId(building_id);
+//    }
+//
+//    @Override
+//    public List<Outlate> getAllOutlateWithBuildingIdAndBuildingType(Integer building_id,String building_type){
+//        return outlateDao.findAllOutlateByBuildingIdAdndBuildingType(building_id,building_type);
+//    }
 
 
 

@@ -8,7 +8,10 @@ import java.util.List;
 public interface IAdministratorService {
 
     // 获取所有宿舍管理员信息
-    List<Administrator> getDormAdmins(String keywords,int pageNum,int pageSize);
+    List<Administrator> getDormAdmins(String keywords,Integer building_id,int pageNum,int pageSize);
+
+    // 根据building_id获取所有宿舍管理员信息
+    List<Administrator> getDormAdminsWithBuildingId(String keywords,Integer building_id,int pageNum,int pageSize);
 
     // 统计模糊查询结果的数量
     Long getAdministratorsCount(String keywords);

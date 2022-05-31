@@ -8,13 +8,16 @@ import java.util.List;
 public interface IOutlateService {
 
     // 获取所有晚归信息
-    List<Outlate> getAllOutlate();
+    List<Outlate> getAllOutlate(Integer building_id,String keywords,String building_type,Integer pageNum,Integer pageSize);
 
-    // 根据building_id获取所有晚归信息
-    List<Outlate> getAllOutlateWithBuildingId(Integer building_id);
+    // 统计模糊查询结果的数量
+    Long getOutlateCount(String keywords);
 
-    // 根据building_id和building_type获取所有晚归信息
-    List<Outlate> getAllOutlateWithBuildingIdAndBuildingType(Integer building_id,String building_type);
+//    // 根据building_id获取所有晚归信息
+//    List<Outlate> getAllOutlateWithBuildingId(Integer building_id);
+//
+//    // 根据building_id和building_type获取所有晚归信息
+//    List<Outlate> getAllOutlateWithBuildingIdAndBuildingType(Integer building_id,String building_type);
 
 
     // 添加晚归信息

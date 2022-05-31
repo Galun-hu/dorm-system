@@ -18,8 +18,13 @@ public class AdministratorServiceImpl implements IAdministratorService {
     private IAdministretorDao administretorDao;
 
     @Override
-    public List<Administrator> getDormAdmins(String keywords,int pageNum,int pageSize){
-        return administretorDao.findAdministrators(keywords,pageNum,pageSize);
+    public List<Administrator> getDormAdmins(String keywords,Integer building_id,int pageNum,int pageSize){
+        return administretorDao.findAdministrators(keywords,building_id,pageNum,pageSize);
+    }
+
+    @Override
+    public List<Administrator> getDormAdminsWithBuildingId(String keywords,Integer building_id,int pageNum,int pageSize){
+        return  administretorDao.findAdministratorsWithBuildingId(keywords,building_id,pageNum,pageSize);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class BuildingController {
                         @ApiImplicitParam(name = "pageNum",value = "第几页（默认第1页）"),
                         @ApiImplicitParam(name = "pagheSize",value = "一页多少条数据（默认10条）")})
     @GetMapping("/")
-    public RespPage getAllBuilding(HttpServletRequest request,
+    public RespPage getAllBuilding(@RequestParam(defaultValue = "") Integer id,
                                    @RequestParam(defaultValue = "") String keywords,
                                    @RequestParam(defaultValue = "1") int pageNum,
                                    @RequestParam(defaultValue = "10") int pagheSize){
@@ -38,9 +38,9 @@ public class BuildingController {
         if (pageNumNew < 0){
             pageNumNew = 0;
         }
-        List<Building> buildings = buildingService.getBuildings(keywords,pageNumNew,pagheSize);
+        List<Building> buildings = buildingService.getBuildings(keywords,id,pageNumNew,pagheSize);
         RespPage page = new RespPage();
-        if (buildings.size() == 1){
+        if (id != null){
             page.setTotal(Long.valueOf(1));
         }else {
             Long count = buildingService.getBuildingsCount(keywords);
@@ -53,19 +53,34 @@ public class BuildingController {
 
 
 
-    @ApiOperation("根据宿舍楼栋号获取宿舍信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id",value = "宿舍楼id")
-    })
-    @GetMapping("/{id}")
-    public RespResult getBuildingWithId(@PathVariable int id){
-        Building building = buildingService.getBuildingWithId(id);
-        if (building != null) {
-            return RespResult.ok("成功",building);
+
+    @ApiOperation("获取所有宿舍楼名称")
+    @GetMapping("/name")
+    public RespResult getAllBuildingName(){
+        List<Building> buildings = buildingService.getNames();
+        if (buildings.size() > 0){
+            return RespResult.ok("获取成功",buildings);
         }else {
-            return RespResult.error("失败，检查宿舍楼id");
+            return RespResult.error("获取失败");
         }
     }
+
+
+
+
+//    @ApiOperation("根据宿舍楼栋号获取宿舍信息")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "id",value = "宿舍楼id")
+//    })
+//    @GetMapping("/{id}")
+//    public RespResult getBuildingWithId(@PathVariable int id){
+//        Building building = buildingService.getBuildingWithId(id);
+//        if (building != null) {
+//            return RespResult.ok("成功",building);
+//        }else {
+//            return RespResult.error("失败，检查宿舍楼id");
+//        }
+//    }
 
 
 
@@ -99,6 +114,7 @@ public class BuildingController {
             return RespResult.error("数据插入失败");
         }
     }
+
 
 
     @ApiOperation("更新宿舍信息")

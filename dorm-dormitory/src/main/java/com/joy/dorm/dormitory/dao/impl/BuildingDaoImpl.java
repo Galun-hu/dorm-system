@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -32,8 +34,11 @@ public class BuildingDaoImpl implements IBuildingDao {
     private Tool myTool;
 
     @Override
-    public List<Building> findBuildings(String keywords,int pageNum,int pageSize){
+    public List<Building> findBuildings(String keywords,Integer id,int pageNum,int pageSize){
         Criteria criteria = new Criteria();
+        if (id != null){
+            criteria.and("id").is(id);
+        }
         if (StringUtils.hasText(keywords)){
             Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("name").regex(pattern);
@@ -50,6 +55,13 @@ public class BuildingDaoImpl implements IBuildingDao {
         Criteria criteria = new Criteria().and("name").regex(pattern);
         Query query = new Query().addCriteria(criteria);
         return Long.valueOf(mongoTemplate.find(query,Building.class).size());
+    }
+
+    @Override
+    public List<Building> findNames(){
+        ProjectionOperation project = Aggregation.project("_id","id","name","type");
+        Aggregation aggregation = Aggregation.newAggregation(project);
+        return mongoTemplate.aggregate(aggregation,"t_building",Building.class).getMappedResults();
     }
 
     @Override
