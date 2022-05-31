@@ -32,4 +32,12 @@ public class RepairService {
     public Long getRepairCount(String keywords, Integer id) {
         return repairDao.getRepairCount(keywords,id);
     }
+
+    public Long getRepairAdminCount(String keywords, Integer buildingId) {
+        return repairDao.getRepairAdminCount(keywords,buildingId);
+    }
+
+    public List<Repair> getAllRepairAdmin(String keywords, int pageNumNew, int pageSize, Integer buildingId) {
+        return repairDao.getAllRepairAdmin(keywords,pageNumNew,pageSize,buildingId);
+    }
 }

@@ -43,6 +43,9 @@ public class AdminDaoImpl implements AdminDao {
     public int update(Admin admin) {
         Query query = new Query(Criteria.where("id").is(admin.getId()));
         Update update = new Update();
+        if (admin.getUsername()!=null){
+            update.set("username",admin.getUsername());
+        }
         if (admin.getName()!=null){
             update.set("name",admin.getName());
         }

@@ -20,4 +20,10 @@ public interface RepairDao {
 
     //获取总记录数
     Long getRepairCount(String keywords, Integer id);
+
+    //获取该宿舍楼维修总记录数
+    Long getRepairAdminCount(String keywords, Integer buildingId);
+
+    //获取该宿舍楼所有维修记录
+    List<Repair> getAllRepairAdmin(String keywords, int pageNumNew, int pageSize, Integer buildingId);
 }

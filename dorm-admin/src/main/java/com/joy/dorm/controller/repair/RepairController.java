@@ -33,23 +33,30 @@ public class RepairController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "keywords",value = "根据申报人姓名关键词"),
             @ApiImplicitParam(name = "pageNum",value = "第几页 默认第一页"),
-            @ApiImplicitParam(name = "pageSize",value = "拿多少条数据 默认10条")
+            @ApiImplicitParam(name = "pageSize",value = "拿多少条数据 默认10条"),
+            @ApiImplicitParam(name = "buildingId",value = "宿舍楼id 默认拿第一栋的信息 *这是系统管理员的才有")
     })
     @GetMapping("/")
     public RespPage getAllRepair(String keywords, HttpServletRequest request,
                                      @RequestParam(defaultValue = "1") int pageNum,
-                                     @RequestParam(defaultValue = "10") int pageSize){
+                                     @RequestParam(defaultValue = "10") int pageSize,
+                                    @RequestParam(defaultValue = "1") Integer buildingId){
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
         Integer id = (Integer) map.get("id");
+        String role = (String)map.get("role");
         Building building = dormitoryTool.getBuildWithAdminId(id);
         int pageNumNew = pageNum-1;
         if (pageNumNew < 0){
             pageNumNew = 0;
         }
-        Long total = repairService.getRepairCount(keywords,building.getId());
         RespPage respPage = new RespPage();
-        respPage.setTotal(total);
-        respPage.setData(repairService.getAllRepair(keywords,building.getId(),pageNumNew,pageSize));
+        if (role.equals("ROLE_admin")){
+            respPage.setTotal(repairService.getRepairAdminCount(keywords,buildingId));
+            respPage.setData(repairService.getAllRepairAdmin(keywords,pageNumNew,pageSize,buildingId));
+        }else{
+            respPage.setTotal(repairService.getRepairCount(keywords,building.getId()));
+            respPage.setData(repairService.getAllRepair(keywords,building.getId(),pageNumNew,pageSize));
+        }
         return respPage;
     }
 

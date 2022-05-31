@@ -1,18 +1,24 @@
 package com.joy.dorm.repair.dao.Impl;
 
+import com.alibaba.fastjson.JSON;
 import com.joy.dorm.repair.dao.RepairDao;
 import com.joy.dorm.repair.model.Repair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @Repository
@@ -115,6 +121,62 @@ public class RepairDaoImpl implements RepairDao {
         }
         Query query = new Query(criteria);
         return mongoTemplate.count(query,Repair.class);
+    }
+
+    @Override
+    public Long getRepairAdminCount(String keywords, Integer buildingId) {
+        LookupOperation lookup= LookupOperation.newLookup()
+                .from("t_building")
+                .localField("buildingId")
+                .foreignField("id")
+                .as("building");
+
+        Criteria criteria = new Criteria();
+        boolean flag = true;
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("name").regex(pattern);
+            flag = false;
+        }
+        if (buildingId!=null&&flag){
+            criteria.and("buildingId").is(buildingId);
+        }
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),lookup);
+        List<Map> results = mongoTemplate.aggregate(aggregation, "repair", Map.class).getMappedResults();
+        int num = results.size();
+        return (long)num;
+    }
+
+    @Override
+    public List<Repair> getAllRepairAdmin(String keywords, int pageNumNew, int pageSize, Integer buildingId) {
+        LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("t_building")
+                .localField("buildingId")
+                .foreignField("id")
+                .as("building");
+
+        Criteria criteria = new Criteria();
+        boolean flag = true;
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("name").regex(pattern);
+            flag = false;
+        }
+        if (buildingId!=null&&flag){
+            criteria.and("buildingId").is(buildingId);
+        }
+        ProjectionOperation project  = Aggregation.project("id", "dormId", "buildingId", "number", "name", "phone","content","enabled", "remark","createTime")
+                .and("building").as("building");
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),lookupOperation);
+        List<Map> results = mongoTemplate.aggregate(aggregation, "repair", Map.class).getMappedResults();
+        List<Repair> repairs = new ArrayList<>();
+        for (Map result : results) {
+            Integer id = (Integer)result.get("building.id");
+            String str = JSON.toJSONString(result);
+            Repair repair = JSON.parseObject(str, Repair.class);
+            repairs.add(repair);
+        }
+        return repairs;
     }
 
 
