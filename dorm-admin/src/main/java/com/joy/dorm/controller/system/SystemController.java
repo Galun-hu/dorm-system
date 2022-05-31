@@ -37,10 +37,10 @@ public class SystemController {
         Integer id = (Integer) map.get("id");
         long pageNumNew = pageNum-1;
         if (pageNumNew < 0){
-            pageNumNew = 0L;
+            pageNumNew = 0;
         }
         if (pageNumNew>0){
-            pageNumNew*=10;
+            pageNumNew*=pageSize;
         }
         Long total = adminService.getAdminCount(keywords,id);
         RespPage respPage = new RespPage();

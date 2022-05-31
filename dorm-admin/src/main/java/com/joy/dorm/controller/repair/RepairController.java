@@ -50,7 +50,7 @@ public class RepairController {
             pageNumNew = 0;
         }
         if (pageNumNew > 0){
-            pageNumNew *= 10;
+            pageNumNew *= pageSize;
         }
         RespPage respPage = new RespPage();
         if (role.equals("ROLE_admin")){
