@@ -13,7 +13,7 @@ public interface IBuildingDao {
     /**
      * 查询所有宿舍信息
      */
-    List<Building> findBuildings(String keywords,int pageNum,int pageSize);
+    List<Building> findBuildings(String keywords,Integer id,int pageNum,int pageSize);
 
     /**
      * 统计模糊查询结果数量
@@ -21,6 +21,12 @@ public interface IBuildingDao {
      * @return
      */
     Long acountBuildings(String keywords);
+
+    /**
+     * 获取所有宿舍楼的名称
+     * @return
+     */
+    List<Building> findNames();
 
     /**
      * 根据宿舍楼栋号查询宿舍信息

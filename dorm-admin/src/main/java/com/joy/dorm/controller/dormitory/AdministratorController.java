@@ -24,23 +24,26 @@ public class AdministratorController {
     private IAdministratorService administratorService;
 
     @ApiOperation("获取所有宿舍管理员信息")
-    @ApiImplicitParams({@ApiImplicitParam(name = "id",value = "宿舍楼id"),
+    @ApiImplicitParams({@ApiImplicitParam(name = "building_id",value = "宿舍楼id"),
             @ApiImplicitParam(name = "keywords",value = "搜索关键词"),
             @ApiImplicitParam(name = "pageNum",value = "第几页（默认第1页）"),
             @ApiImplicitParam(name = "pagheSize",value = "一页多少条数据（默认10条）")})
     @GetMapping("/")
-    public RespPage getAllAdministrator(@RequestParam(defaultValue = "") String keywords,
+    public RespPage getAllAdministrator(@RequestParam(defaultValue = "") Integer building_id,
+                                        @RequestParam(defaultValue = "") String keywords,
                                         @RequestParam(defaultValue = "1") int pageNum,
                                         @RequestParam(defaultValue = "10") int pageSize){
         int pageNumNew = pageNum-1;
         if (pageNumNew < 0){
             pageNumNew = 0;
         }
-        List<Administrator> administrators = administratorService.getDormAdmins(keywords,pageNumNew,pageSize);
+        List<Administrator> administrators = null;
         RespPage page = new RespPage();
-        if (administrators.size() == 1){
+        if (building_id != null){
+            administrators = administratorService.getDormAdminsWithBuildingId(keywords,building_id,pageNumNew,pageSize);
             page.setTotal(Long.valueOf(1));
         }else {
+            administrators = administratorService.getDormAdmins(keywords,building_id,pageNumNew,pageSize);
             Long count = administratorService.getAdministratorsCount(keywords);
             page.setTotal(count);
         }
@@ -76,7 +79,9 @@ public class AdministratorController {
 
 
     @ApiOperation("为宿舍楼添加管理员")
-    @ApiImplicitParams({@ApiImplicitParam(name = "buildingAdmin",value = "宿舍楼管理员关联实体类")})
+    @ApiImplicitParams({@ApiImplicitParam(name = "buildingAdmin",value = "宿舍楼管理员关联实体类"),
+                        @ApiImplicitParam(name = "building_id",value = "宿舍楼id"),
+                        @ApiImplicitParam(name = "admin_id",value = "管理员id")})
     @PostMapping("/")
     public RespResult addDormAdminToBuilding(@RequestBody BuildingAdmin buildingAdmin){
         if (buildingAdmin.getBuilding_id() != null && buildingAdmin.getAdmin_id() != null){
@@ -106,7 +111,7 @@ public class AdministratorController {
         if (result > 0){
             return RespResult.ok("移除成功");
         }else {
-            return RespResult.error("一移除失败");
+            return RespResult.error("移除失败");
         }
     }
 

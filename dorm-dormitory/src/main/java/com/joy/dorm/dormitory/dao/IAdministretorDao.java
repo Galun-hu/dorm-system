@@ -9,7 +9,10 @@ import java.util.List;
 public interface IAdministretorDao {
 
     // 获取所有宿舍管理员信息
-    List<Administrator> findAdministrators(String keywords,int pageNum,int pageSize);
+    List<Administrator> findAdministrators(String keywords,Integer building_id,int pageNum,int pageSize);
+
+    // 根据building_id获取所有宿舍管理员信息
+    List<Administrator> findAdministratorsWithBuildingId(String keywords,Integer building_id,int pageNum,int pageSize);
 
     Long acountAdministrators(String keywords);
 

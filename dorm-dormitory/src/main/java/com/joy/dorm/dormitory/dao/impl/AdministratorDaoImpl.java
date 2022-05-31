@@ -28,7 +28,7 @@ public class AdministratorDaoImpl implements IAdministretorDao {
 
 
     @Override
-    public List<Administrator> findAdministrators(String keywords,int pageNum,int pageSize){
+    public List<Administrator> findAdministrators(String keywords,Integer building_id,int pageNum,int pageSize){
         Criteria criteria = new Criteria();
         if (StringUtils.hasText(keywords)){
             Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
@@ -38,6 +38,33 @@ public class AdministratorDaoImpl implements IAdministretorDao {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Query query = new Query().addCriteria(criteria).with(sort).with(pageRequest);
         return mongoTemplate.find(query, Administrator.class);
+    }
+
+    @Override
+    public List<Administrator> findAdministratorsWithBuildingId(String keywords,Integer building_id,int pageNum,int pageSize){
+        LookupOperation lookup = LookupOperation.newLookup()
+                .from("t_building_admin")
+                .localField("id")
+                .foreignField("admin_id")
+                .as("t_b_a");
+        ProjectionOperation project = Aggregation.project("_id","id","name","sex","age","phone",
+                "created","modified").and("t_b_a.building_id").as("building_id");
+        Criteria criteria = new Criteria();
+        if (building_id != null){
+            criteria.and("building_id").is(building_id);
+        }
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("name").regex(pattern);
+        }
+
+        Aggregation aggregation = Aggregation.newAggregation(lookup,project,
+                Aggregation.match(criteria),
+                Aggregation.skip(pageNum*pageSize),
+                Aggregation.limit(pageSize),
+                Aggregation.unwind("building_id"));
+        List<Administrator> administrators = mongoTemplate.aggregate(aggregation,"admin",Administrator.class).getMappedResults();
+        return administrators;
     }
 
     @Override

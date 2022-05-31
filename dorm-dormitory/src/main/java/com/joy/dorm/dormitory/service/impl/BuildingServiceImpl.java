@@ -23,8 +23,8 @@ public class BuildingServiceImpl implements IBuildingService {
     private IAdministretorDao administretorDao;
 
     @Override
-    public List<Building> getBuildings(String keywords,int pageNum,int pageSize){
-        List<Building> buildings = buildingDao.findBuildings(keywords,pageNum,pageSize);
+    public List<Building> getBuildings(String keywords,Integer id,int pageNum,int pageSize){
+        List<Building> buildings = buildingDao.findBuildings(keywords,id,pageNum,pageSize);
         return setAdminstrator(buildings);
     }
 
@@ -32,6 +32,11 @@ public class BuildingServiceImpl implements IBuildingService {
     @Override
     public Long getBuildingsCount(String keywords){
         return buildingDao.acountBuildings(keywords);
+    }
+
+    @Override
+    public List<Building> getNames(){
+        return buildingDao.findNames();
     }
 
     @Override
