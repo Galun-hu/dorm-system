@@ -8,13 +8,16 @@ import java.util.List;
 public interface IAdministratorService {
 
     // 获取所有宿舍管理员信息
-    List<Administrator> getDormAdmins();
+    List<Administrator> getDormAdmins(String keywords,int pageNum,int pageSize);
 
-    // 根据宿舍管理员名字获取宿舍管理员信息
-    Administrator getDormAdminWithName(String name);
+    // 统计模糊查询结果的数量
+    Long getAdministratorsCount(String keywords);
 
-    // 根据宿舍管理员id获取宿舍管理员信息
-    Administrator getDromAdminWithId(Integer id);
+//    // 根据宿舍管理员名字获取宿舍管理员信息
+//    Administrator getDormAdminWithName(String name);
+//
+//    // 根据宿舍管理员id获取宿舍管理员信息
+//    Administrator getDromAdminWithId(Integer id);
 
 
     // 为宿舍楼添加管理员

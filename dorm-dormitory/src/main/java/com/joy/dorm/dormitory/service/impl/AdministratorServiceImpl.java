@@ -4,9 +4,12 @@ import com.joy.dorm.dormitory.dao.IAdministretorDao;
 import com.joy.dorm.dormitory.model.Administrator;
 import com.joy.dorm.dormitory.service.IAdministratorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class AdministratorServiceImpl implements IAdministratorService {
@@ -15,19 +18,24 @@ public class AdministratorServiceImpl implements IAdministratorService {
     private IAdministretorDao administretorDao;
 
     @Override
-    public List<Administrator> getDormAdmins(){
-        return administretorDao.findAdministrators();
+    public List<Administrator> getDormAdmins(String keywords,int pageNum,int pageSize){
+        return administretorDao.findAdministrators(keywords,pageNum,pageSize);
     }
 
     @Override
-    public Administrator getDormAdminWithName(String name){
-        return administretorDao.findAdministratorByName(name);
+    public Long getAdministratorsCount(String keywords){
+        return administretorDao.acountAdministrators(keywords);
     }
 
-    @Override
-    public Administrator getDromAdminWithId(Integer id){
-        return administretorDao.findAdministratorById(id);
-    }
+//    @Override
+//    public Administrator getDormAdminWithName(String name){
+//        return administretorDao.findAdministratorByName(name);
+//    }
+
+//    @Override
+//    public Administrator getDromAdminWithId(Integer id){
+//        return administretorDao.findAdministratorById(id);
+//    }
 
 
     @Override

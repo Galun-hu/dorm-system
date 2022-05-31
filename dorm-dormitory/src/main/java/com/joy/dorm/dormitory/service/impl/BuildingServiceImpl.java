@@ -23,9 +23,15 @@ public class BuildingServiceImpl implements IBuildingService {
     private IAdministretorDao administretorDao;
 
     @Override
-    public List<Building> getBuildings(){
-        List<Building> buildings = buildingDao.findBuildings();
+    public List<Building> getBuildings(String keywords,int pageNum,int pageSize){
+        List<Building> buildings = buildingDao.findBuildings(keywords,pageNum,pageSize);
         return setAdminstrator(buildings);
+    }
+
+
+    @Override
+    public Long getBuildingsCount(String keywords){
+        return buildingDao.acountBuildings(keywords);
     }
 
     @Override
@@ -41,21 +47,21 @@ public class BuildingServiceImpl implements IBuildingService {
         return setAdminstrator(building);
     }
 
-    @Override
-    public Building getBuildingWithAdministrator(String name){
-        Administrator administrator = administretorDao.findAdministratorByName(name);
-        if (administrator != null) {
-            Integer build_id = administretorDao.findBuildingIdByDormAdminId(administrator.getId());
-            if (build_id != null){
-                Building building = buildingDao.findBuildingById(build_id);
-                return setAdminstrator(building);
-            }else {
-                return null;
-            }
-        }else {
-            return null;
-        }
-    }
+//    @Override
+//    public Building getBuildingWithAdministrator(String name){
+//        Administrator administrator = administretorDao.findAdministratorByName(name);
+//        if (administrator != null) {
+//            Integer build_id = administretorDao.findBuildingIdByDormAdminId(administrator.getId());
+//            if (build_id != null){
+//                Building building = buildingDao.findBuildingById(build_id);
+//                return setAdminstrator(building);
+//            }else {
+//                return null;
+//            }
+//        }else {
+//            return null;
+//        }
+//    }
 
     @Override
     public Integer addBuilding(Building building){
@@ -68,7 +74,7 @@ public class BuildingServiceImpl implements IBuildingService {
 
     @Override
     public long updateBuilding(Building building){
-        if (building.get_id() == null || building.get_id() == ""){
+        if (building.getId() == null){
             return 0;
         }else {
             building.setModified(new Date());
@@ -77,8 +83,8 @@ public class BuildingServiceImpl implements IBuildingService {
     }
 
     @Override
-    public long deleteBuilding(String _id){
-        return buildingDao.deleteBuildingBy_id(_id);
+    public long deleteBuilding(Integer id){
+        return buildingDao.deleteBuildingBy_id(id);
     }
 
     @Override
