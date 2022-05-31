@@ -1,6 +1,7 @@
 package com.joy.dorm.repair.dao.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.joy.dorm.repair.dao.RepairDao;
 import com.joy.dorm.repair.model.Repair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class RepairDaoImpl implements RepairDao {
     MongoTemplate mongoTemplate;
 
     @Override
-    public List<Repair> getAllRepair(String keywords, Integer id,int pageNumNew,int pageSize) {
+    public List<Repair> getAllRepair(String keywords, Integer id,long pageNumNew,long pageSize) {
         Criteria criteria = new Criteria();
         if (id!=null){
             //根据宿舍楼查找
@@ -39,7 +40,7 @@ public class RepairDaoImpl implements RepairDao {
             criteria.and("name").regex(pattern);
         }
         //创建分页
-        PageRequest pageRequest = PageRequest.of(pageNumNew,pageSize);
+        PageRequest pageRequest = PageRequest.of((int)pageNumNew,(int)pageSize);
         Sort sort = Sort.by(Sort.Direction.DESC, "createTime");
         Query query = new Query();
         query.with(pageRequest);
@@ -63,19 +64,19 @@ public class RepairDaoImpl implements RepairDao {
     public int updateRepair(Repair repair) {
         Query query = new Query(Criteria.where("id").is(repair.getId()));
         Update update = new Update();
-        if (repair.getNumber()!=null){
+        if (StringUtils.hasText(repair.getNumber())){
             update.set("number",repair.getNumber());
         }
-        if (repair.getName()!=null){
+        if (StringUtils.hasText(repair.getName())){
             update.set("name",repair.getName());
         }
-        if (repair.getPhone()!=null){
+        if (StringUtils.hasText(repair.getPhone())){
             update.set("phone",repair.getPhone());
         }
-        if (repair.getContent()!=null){
+        if (StringUtils.hasText(repair.getContent())){
             update.set("content",repair.getContent());
         }
-        if (repair.getRemark()!=null){
+        if (StringUtils.hasText(repair.getRemark())){
             update.set("remark",repair.getRemark());
         }
         if (repair.getEnabled()!=null){
@@ -141,6 +142,7 @@ public class RepairDaoImpl implements RepairDao {
         if (buildingId!=null&&flag){
             criteria.and("buildingId").is(buildingId);
         }
+//        Aggregation.match(criteria),
         Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),lookup);
         List<Map> results = mongoTemplate.aggregate(aggregation, "repair", Map.class).getMappedResults();
         int num = results.size();
@@ -148,7 +150,7 @@ public class RepairDaoImpl implements RepairDao {
     }
 
     @Override
-    public List<Repair> getAllRepairAdmin(String keywords, int pageNumNew, int pageSize, Integer buildingId) {
+    public List<Repair> getAllRepairAdmin(String keywords, long pageNumNew, long pageSize, Integer buildingId) {
         LookupOperation lookupOperation = LookupOperation.newLookup()
                 .from("t_building")
                 .localField("buildingId")
@@ -167,13 +169,15 @@ public class RepairDaoImpl implements RepairDao {
         }
         ProjectionOperation project  = Aggregation.project("id", "dormId", "buildingId", "number", "name", "phone","content","enabled", "remark","createTime")
                 .and("building").as("building");
-        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),lookupOperation);
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),lookupOperation,project,Aggregation.unwind("building"));
         List<Map> results = mongoTemplate.aggregate(aggregation, "repair", Map.class).getMappedResults();
         List<Repair> repairs = new ArrayList<>();
         for (Map result : results) {
-            Integer id = (Integer)result.get("building.id");
+            Map<String,Object> building = JSONObject.parseObject(JSONObject.toJSONString(result.get("building")));
             String str = JSON.toJSONString(result);
             Repair repair = JSON.parseObject(str, Repair.class);
+            repair.setBuiName((String) building.get("name"));
+            repair.setType((String) building.get("type"));
             repairs.add(repair);
         }
         return repairs;

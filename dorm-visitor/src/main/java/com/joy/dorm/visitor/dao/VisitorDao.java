@@ -7,7 +7,7 @@ import java.util.List;
 public interface VisitorDao {
 
     //获取所有访客记录
-    List<Visitor> getAllVisitor(String keywords, Integer id,int pageNumNew,int pageSize);
+    List<Visitor> getAllVisitor(String keywords, Integer id,long pageNumNew,long pageSize);
 
     //添加到访人员
     int addVisitor(Visitor visitor);
@@ -22,8 +22,8 @@ public interface VisitorDao {
     Long getVisitorCount(String keywords, Integer id);
 
     //获取属于该楼栋的访客总记录数
-    Long getVisitorAdminCount(String keywords,Integer buildingId,String buildingType);
+    Long getVisitorAdminCount(String keywords,Integer buildingId);
 
     //获取属于该楼栋的所有访客
-    List<Visitor> getAllVisitorAdmin(String keywords, Integer pageNumNew, Integer pageSize, Integer buildingId, String buildingType);
+    List<Visitor> getAllVisitorAdmin(String keywords, long pageNumNew, long pageSize, Integer buildingId);
 }

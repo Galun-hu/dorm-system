@@ -31,13 +31,16 @@ public class SystemController {
     })
     @GetMapping("/")
     public RespPage getAllAdmin(String keywords, HttpServletRequest request,
-                                   @RequestParam(defaultValue = "1") int pageNum,
-                                   @RequestParam(defaultValue = "10") int pageSize){
+                                   @RequestParam(defaultValue = "1") long pageNum,
+                                   @RequestParam(defaultValue = "10") long pageSize){
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
         Integer id = (Integer) map.get("id");
-        int pageNumNew = pageNum-1;
+        long pageNumNew = pageNum-1;
         if (pageNumNew < 0){
-            pageNumNew = 0;
+            pageNumNew = 0L;
+        }
+        if (pageNumNew>0){
+            pageNumNew*=10;
         }
         Long total = adminService.getAdminCount(keywords,id);
         RespPage respPage = new RespPage();

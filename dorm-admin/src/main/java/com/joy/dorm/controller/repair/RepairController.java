@@ -38,16 +38,19 @@ public class RepairController {
     })
     @GetMapping("/")
     public RespPage getAllRepair(String keywords, HttpServletRequest request,
-                                     @RequestParam(defaultValue = "1") int pageNum,
-                                     @RequestParam(defaultValue = "10") int pageSize,
+                                     @RequestParam(defaultValue = "1") long pageNum,
+                                     @RequestParam(defaultValue = "10") long pageSize,
                                     @RequestParam(defaultValue = "1") Integer buildingId){
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
         Integer id = (Integer) map.get("id");
         String role = (String)map.get("role");
         Building building = dormitoryTool.getBuildWithAdminId(id);
-        int pageNumNew = pageNum-1;
+        long pageNumNew = pageNum-1;
         if (pageNumNew < 0){
             pageNumNew = 0;
+        }
+        if (pageNumNew > 0){
+            pageNumNew *= 10;
         }
         RespPage respPage = new RespPage();
         if (role.equals("ROLE_admin")){

@@ -39,8 +39,8 @@ public class VisitorController {
     })
     @GetMapping("/")
     public RespPage getAllVisitor(String keywords, HttpServletRequest request,
-                                  @RequestParam(defaultValue = "1") int pageNum,
-                                  @RequestParam(defaultValue = "10") int pageSize,
+                                  @RequestParam(defaultValue = "1") long pageNum,
+                                  @RequestParam(defaultValue = "10") long pageSize,
                                   @RequestParam(defaultValue = "1") Integer buildingId
                                //   @RequestParam(defaultValue = "男生宿舍") String buildingType
     ){
@@ -48,14 +48,17 @@ public class VisitorController {
         Integer id = (Integer) map.get("id");
         String role = (String)map.get("role");
         Building building = dormitoryTool.getBuildWithAdminId(id);
-        int pageNumNew = pageNum-1;
+        long pageNumNew = pageNum-1;
         if (pageNumNew < 0){
             pageNumNew = 0;
         }
+        if (pageNumNew > 0){
+            pageNumNew *= 10;
+        }
         RespPage respPage = new RespPage();
         if (role.equals("ROLE_admin")){
-            respPage.setTotal(visitorService.getVisitorAdminCount(keywords,buildingId,null));
-            respPage.setData(visitorService.getAllVisitorAdmin(keywords,pageNumNew,pageSize,buildingId,null));
+            respPage.setTotal(visitorService.getVisitorAdminCount(keywords,buildingId));
+            respPage.setData(visitorService.getAllVisitorAdmin(keywords,pageNumNew,pageSize,buildingId));
         }else{
             respPage.setTotal(visitorService.getVisitorCount(keywords,building.getId()));
             respPage.setData(visitorService.getAllVisitor(keywords,building.getId(),pageNumNew,pageSize));

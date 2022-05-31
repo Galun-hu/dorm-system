@@ -40,8 +40,6 @@ public class Repair {
     private Date createTime;
     @ApiModelProperty("修好时间")
     private Date goodsTime;
-    @ApiModelProperty("宿舍楼id")
-    private Integer BuiId;
     @ApiModelProperty("宿舍名")
     private String BuiName;
     @ApiModelProperty("宿舍类别")
@@ -143,13 +141,6 @@ public class Repair {
         this.goodsTime = goodsTime;
     }
 
-    public Integer getBuiId() {
-        return BuiId;
-    }
-
-    public void setBuiId(Integer buiId) {
-        BuiId = buiId;
-    }
 
     public String getBuiName() {
         return BuiName;
@@ -182,7 +173,6 @@ public class Repair {
                 ", enabled=" + enabled +
                 ", createTime=" + createTime +
                 ", goodsTime=" + goodsTime +
-                ", BuiId=" + BuiId +
                 ", BuiName='" + BuiName + '\'' +
                 ", type='" + type + '\'' +
                 '}';

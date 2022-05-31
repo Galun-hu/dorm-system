@@ -13,7 +13,7 @@ public class RepairService {
     @Autowired
     RepairDaoImpl repairDao;
 
-    public List<Repair> getAllRepair(String keywords, Integer id,int pageNumNew,int pageSize) {
+    public List<Repair> getAllRepair(String keywords, Integer id,long pageNumNew,long pageSize) {
         return repairDao.getAllRepair(keywords,id,pageNumNew,pageSize);
     }
 
@@ -37,7 +37,7 @@ public class RepairService {
         return repairDao.getRepairAdminCount(keywords,buildingId);
     }
 
-    public List<Repair> getAllRepairAdmin(String keywords, int pageNumNew, int pageSize, Integer buildingId) {
+    public List<Repair> getAllRepairAdmin(String keywords, long pageNumNew, long pageSize, Integer buildingId) {
         return repairDao.getAllRepairAdmin(keywords,pageNumNew,pageSize,buildingId);
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 public interface RepairDao {
 
     //获取所有维修记录
-    List<Repair> getAllRepair(String keywords, Integer id,int pageNumNew,int pageSize);
+    List<Repair> getAllRepair(String keywords, Integer id,long pageNumNew,long pageSize);
 
     //添加报修
     int addRepair(Repair repair);
@@ -25,5 +25,5 @@ public interface RepairDao {
     Long getRepairAdminCount(String keywords, Integer buildingId);
 
     //获取该宿舍楼所有维修记录
-    List<Repair> getAllRepairAdmin(String keywords, int pageNumNew, int pageSize, Integer buildingId);
+    List<Repair> getAllRepairAdmin(String keywords, long pageNumNew, long pageSize, Integer buildingId);
 }

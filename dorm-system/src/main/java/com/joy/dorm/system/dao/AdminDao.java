@@ -16,7 +16,7 @@ public interface AdminDao {
     int delete(Integer id);
 
     //查询所有管理员
-    List<Admin> getAllAdmin(String keywords,Integer id,int pageNumNew,int pageSize);
+    List<Admin> getAllAdmin(String keywords,Integer id,long pageNumNew,long pageSize);
 
     //根据id查管理员
     Admin getByIdAdmin(Integer id);

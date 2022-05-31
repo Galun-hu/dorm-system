@@ -43,28 +43,28 @@ public class AdminDaoImpl implements AdminDao {
     public int update(Admin admin) {
         Query query = new Query(Criteria.where("id").is(admin.getId()));
         Update update = new Update();
-        if (admin.getUsername()!=null){
+        if (StringUtils.hasText(admin.getUsername())){
             update.set("username",admin.getUsername());
         }
-        if (admin.getName()!=null){
+        if (StringUtils.hasText(admin.getName())){
             update.set("name",admin.getName());
         }
-        if (admin.getPassword()!=null){
+        if (StringUtils.hasText(admin.getPassword())){
             update.set("password",admin.getPassword());
         }
-        if (admin.getSex()!=null){
+        if (StringUtils.hasText(admin.getSex())){
             update.set("sex",admin.getSex());
         }
-        if (admin.getPhone()!=null){
+        if (StringUtils.hasText(admin.getPhone())){
             update.set("phone",admin.getPhone());
         }
-        if (admin.getCompany()!=null){
+        if (StringUtils.hasText(admin.getCompany())){
             update.set("company",admin.getCompany());
         }
         if (admin.getEnabled()!=null){
             update.set("enabled",admin.getEnabled());
         }
-        if (admin.getRemark()!=null){
+        if (StringUtils.hasText(admin.getRemark())){
             update.set("remark",admin.getRemark());
         }
         try {
@@ -89,7 +89,7 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     @Override
-    public List<Admin> getAllAdmin(String keywords,Integer id,int pageNumNew,int pageSize) {
+    public List<Admin> getAllAdmin(String keywords,Integer id,long pageNumNew,long pageSize) {
 
         LookupOperation lookupOperation = LookupOperation.newLookup()
                 .from("role")
@@ -106,10 +106,11 @@ public class AdminDaoImpl implements AdminDao {
             criteria.and("name").regex(pattern);
         }
         //创建分页
-        Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
+        //Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
         ProjectionOperation project  = Aggregation.project("id", "username", "name", "sex", "phone", "company", "enabled", "roleId", "createTime")
                 .and("adminRole").as("adminRole");
-        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),Aggregation.sort(sort),lookupOperation,project,Aggregation.unwind("adminRole"));
+        //,Aggregation.sort(sort)
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),lookupOperation,project,Aggregation.unwind("adminRole"));
         List<Map> results = mongoTemplate.aggregate(aggregation, "admin", Map.class).getMappedResults();
         List<Admin> admins = new ArrayList<>();
         for (Map result : results) {

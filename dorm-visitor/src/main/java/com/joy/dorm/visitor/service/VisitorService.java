@@ -13,7 +13,7 @@ public class VisitorService {
     @Autowired
     VisitorDaoImpl visitorDao;
 
-    public List<Visitor> getAllVisitor(String keywords, Integer id,int pageNumNew,int pageSize) {
+    public List<Visitor> getAllVisitor(String keywords, Integer id,long pageNumNew,long pageSize) {
         return visitorDao.getAllVisitor(keywords,id,pageNumNew,pageSize);
     }
 
@@ -33,11 +33,11 @@ public class VisitorService {
         return visitorDao.getVisitorCount(keywords,id);
     }
 
-    public Long getVisitorAdminCount(String keywords,Integer buildingId,String buildingType) {
-        return visitorDao.getVisitorAdminCount(keywords,buildingId,buildingType);
+    public Long getVisitorAdminCount(String keywords,Integer buildingId) {
+        return visitorDao.getVisitorAdminCount(keywords,buildingId);
     }
 
-    public List<Visitor> getAllVisitorAdmin(String keywords,Integer pageNumNew,Integer pageSize,Integer buildingId,String buildingType){
-        return visitorDao.getAllVisitorAdmin(keywords,pageNumNew,pageSize,buildingId,buildingType);
+    public List<Visitor> getAllVisitorAdmin(String keywords,long pageNumNew,long pageSize,Integer buildingId){
+        return visitorDao.getAllVisitorAdmin(keywords,pageNumNew,pageSize,buildingId);
     }
 }

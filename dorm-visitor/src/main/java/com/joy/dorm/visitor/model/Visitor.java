@@ -34,6 +34,10 @@ public class Visitor {
     private String remark;
     @ApiModelProperty("到访时间")
     private Date createTime;
+    @ApiModelProperty("宿舍名")
+    private String BuiName;
+    @ApiModelProperty("宿舍类别")
+    private String type;
 
 
     public String get_id() {
@@ -108,6 +112,22 @@ public class Visitor {
         this.createTime = createTime;
     }
 
+    public String getBuiName() {
+        return BuiName;
+    }
+
+    public void setBuiName(String buiName) {
+        BuiName = buiName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "Visitor{" +
@@ -120,6 +140,8 @@ public class Visitor {
                 ", dormId=" + dormId +
                 ", remark='" + remark + '\'' +
                 ", createTime=" + createTime +
+                ", BuiName='" + BuiName + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

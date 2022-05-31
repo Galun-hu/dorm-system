@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,7 @@ public class AdminService implements UserDetailsService {
 
 
     //获取所有管理员和对应的角色
-    public List<Admin> getAllAdmin(String keywords,Integer id,int pageNumNew,int pageSize) {
+    public List<Admin> getAllAdmin(String keywords,Integer id,long pageNumNew,long pageSize) {
         //排除自己
         return adminDao.getAllAdmin(keywords,id,pageNumNew,pageSize);
     }
@@ -38,13 +39,18 @@ public class AdminService implements UserDetailsService {
         //在这里添加都是系统管理员
         admin.setRoleId(1);
         admin.setEnabled(true);
-        admin.setPassword(encoder.encode(admin.getPassword()));
+        if (StringUtils.hasText(admin.getPassword())){
+            admin.setPassword(encoder.encode(admin.getPassword()));
+        }
         admin.setCreateTime(new Date());
         return adminDao.insert(admin);
     }
 
     //修改管理员
     public int update(Admin admin){
+        if (StringUtils.hasText(admin.getPassword())){
+           admin.setPassword(encoder.encode(admin.getPassword()));
+        }
         return adminDao.update(admin);
     }
 
@@ -52,12 +58,14 @@ public class AdminService implements UserDetailsService {
     public boolean updatePassWord(String oldPassword,String newPassword,Integer id){
         Admin admin = adminDao.getByIdAdmin(id);
         //密码比对
-        if (encoder.matches(oldPassword,admin.getPassword())){
-            String encode = encoder.encode(newPassword);
-            Admin admin1 = new Admin();
-            admin1.setId(id);
-            admin1.setPassword(encode);
-            return adminDao.update(admin1) == 1;
+        if (StringUtils.hasText(oldPassword)&&StringUtils.hasText(newPassword)){
+            if (encoder.matches(oldPassword,admin.getPassword())){
+                String encode = encoder.encode(newPassword);
+                Admin admin1 = new Admin();
+                admin1.setId(id);
+                admin1.setPassword(encode);
+                return adminDao.update(admin1) == 1;
+            }
         }
         return false;
     }

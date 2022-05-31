@@ -1,6 +1,7 @@
 package com.joy.dorm.visitor.dao.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.joy.dorm.visitor.dao.VisitorDao;
 import com.joy.dorm.visitor.model.Visitor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class VisitorDaoImpl implements VisitorDao {
     MongoTemplate mongoTemplate;
 
     @Override
-    public List<Visitor> getAllVisitor(String keywords, Integer id,int pageNumNew,int pageSize) {
+    public List<Visitor> getAllVisitor(String keywords, Integer id,long pageNumNew,long pageSize) {
         Criteria criteria = new Criteria();
         if (id!=null){
             //根据宿舍楼查找
@@ -39,7 +40,7 @@ public class VisitorDaoImpl implements VisitorDao {
             criteria.and("name").regex(pattern);
         }
         //创建分页
-        PageRequest pageRequest = PageRequest.of(pageNumNew,pageSize);
+        PageRequest pageRequest = PageRequest.of((int)pageNumNew,(int)pageSize);
         Sort sort = Sort.by(Sort.Direction.DESC, "createTime");
         Query query = new Query();
         query.with(pageRequest);
@@ -63,16 +64,16 @@ public class VisitorDaoImpl implements VisitorDao {
     public int updateVisitor(Visitor visitor) {
         Query query = new Query(Criteria.where("id").is(visitor.getId()));
         Update update = new Update();
-        if (visitor.getName()!=null){
+        if (StringUtils.hasText(visitor.getName())){
             update.set("name",visitor.getName());
         }
-        if (visitor.getSex()!=null){
+        if (StringUtils.hasText(visitor.getSex())){
             update.set("sex",visitor.getSex());
         }
-        if (visitor.getPhone()!=null){
+        if (StringUtils.hasText(visitor.getPhone())){
             update.set("phone",visitor.getPhone());
         }
-        if (visitor.getRemark()!=null){
+        if (StringUtils.hasText(visitor.getRemark())){
             update.set("remark",visitor.getRemark());
         }
         if (visitor.getCreateTime()!=null){
@@ -115,7 +116,7 @@ public class VisitorDaoImpl implements VisitorDao {
     }
 
     @Override
-    public Long getVisitorAdminCount(String keywords,Integer buildingId,String buildingType) {
+    public Long getVisitorAdminCount(String keywords,Integer buildingId) {
 
         LookupOperation lookupOperation = LookupOperation.newLookup()
                 .from("t_building")
@@ -124,25 +125,23 @@ public class VisitorDaoImpl implements VisitorDao {
                 .as("building");
 
         Criteria criteria = new Criteria();
-        if (buildingId!=null){
-            criteria.and("buildingId").is(buildingId);
-        }
+        boolean flag = true;
         if (StringUtils.hasText(keywords)){
             Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("name").regex(pattern);
+            flag=false;
         }
-        Criteria criteria2 = new Criteria();
-        if (StringUtils.hasText(buildingType)){
-            criteria2.and("building.type").is(buildingType);
+        if (buildingId!=null&&flag){
+            criteria.and("buildingId").is(buildingId);
         }
-        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),lookupOperation,Aggregation.match(criteria2));
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),lookupOperation);
         List<Map> results = mongoTemplate.aggregate(aggregation, "visitor", Map.class).getMappedResults();
         int num = results.size();
         return (long)num;
     }
 
     @Override
-    public List<Visitor> getAllVisitorAdmin(String keywords, Integer pageNumNew, Integer pageSize, Integer buildingId, String buildingType) {
+    public List<Visitor> getAllVisitorAdmin(String keywords, long pageNumNew, long pageSize, Integer buildingId) {
         LookupOperation lookupOperation = LookupOperation.newLookup()
                 .from("t_building")
                 .localField("buildingId")
@@ -150,24 +149,26 @@ public class VisitorDaoImpl implements VisitorDao {
                 .as("building");
 
         Criteria criteria = new Criteria();
-        if (buildingId!=null){
-            criteria.and("buildingId").is(buildingId);
-        }
+        boolean flag = true;
         if (StringUtils.hasText(keywords)){
             Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("name").regex(pattern);
+            flag = false;
         }
-        Criteria criteria2 = new Criteria();
-        if (StringUtils.hasText(buildingType)){
-            criteria2.and("building.type").is(buildingType);
+        if (buildingId!=null&&flag){
+            criteria.and("buildingId").is(buildingId);
         }
-        ProjectionOperation project  = Aggregation.project("id", "name", "sex", "phone", "buildingId", "dormId", "remark","createTime");
-        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),lookupOperation,Aggregation.match(criteria2));
+        ProjectionOperation project  = Aggregation.project("id", "name", "sex", "phone", "buildingId", "dormId", "remark","createTime")
+                .and("building").as("building");
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),lookupOperation,project,Aggregation.unwind("building"));
         List<Map> results = mongoTemplate.aggregate(aggregation, "visitor", Map.class).getMappedResults();
         List<Visitor> visitors = new ArrayList<>();
         for (Map result : results) {
+            Map<String,Object> building = JSONObject.parseObject(JSONObject.toJSONString(result.get("building")));
             String str = JSON.toJSONString(result);
             Visitor visitor = JSON.parseObject(str, Visitor.class);
+            visitor.setBuiName((String) building.get("name"));
+            visitor.setType((String) building.get("type"));
             visitors.add(visitor);
         }
         return visitors;
