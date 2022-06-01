@@ -51,23 +51,23 @@ public class OutlateTest {
     }
 
 
-    @Test
-    public void insert(){
-        int in = 1;
-        int o = 0;
-        for (int i = 0;i<5;i++) {
-            List<Administrator> administrators = administratorService.getDormAdmins(null, null,i,10);
-            for (int j = 0;j < administrators.size();j++){
-                if (o < 3){
-                    administratorService.insertDormAdminToBuilding(in,administrators.get(j).getId());
-                    o++;
-                }else {
-                    o = 0;
-                    administratorService.insertDormAdminToBuilding(++in,administrators.get(j).getId());
-                }
-            }
-        }
-    }
+//    @Test
+//    public void insert(){
+//        int in = 1;
+//        int o = 0;
+//        for (int i = 0;i<5;i++) {
+//            List<Administrator> administrators = administratorService.getDormAdmins(null, null,i,10);
+//            for (int j = 0;j < administrators.size();j++){
+//                if (o < 3){
+//                    administratorService.insertDormAdminToBuilding(in,administrators.get(j).getId());
+//                    o++;
+//                }else {
+//                    o = 0;
+//                    administratorService.insertDormAdminToBuilding(++in,administrators.get(j).getId());
+//                }
+//            }
+//        }
+//    }
 
 
     @Test
@@ -151,5 +151,27 @@ public class OutlateTest {
 //        );
         List<Map> buildings = mongoTemplate.aggregate(aggregation,"t_building",Map.class).getMappedResults();
         System.out.println(buildings);
+    }
+
+
+    @Test
+    public void t(){
+        Administrator administrator = new Administrator();
+//        administrator.setBuilding_id(3);
+        administrator.setId(11);
+        administrator.setSex("男");
+        System.out.println(administratorService.updateDormAdminToBuilding(administrator));
+    }
+
+    @Test
+    public void insertAdmin(){
+        Administrator administrator = new Administrator();
+        administrator.setBuilding_id(1);
+
+    }
+
+    @Test
+    public void asdasd(){
+        System.out.println(administratorService.getDormAdminsWithBuildingId(null,null,0,5).size());
     }
 }

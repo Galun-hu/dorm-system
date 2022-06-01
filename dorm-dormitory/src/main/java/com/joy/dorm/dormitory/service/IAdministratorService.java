@@ -11,7 +11,7 @@ public interface IAdministratorService {
     List<Administrator> getDormAdmins(String keywords,Integer building_id,int pageNum,int pageSize);
 
     // 根据building_id获取所有宿舍管理员信息
-    List<Administrator> getDormAdminsWithBuildingId(String keywords,Integer building_id,int pageNum,int pageSize);
+    List<Administrator> getDormAdminsWithBuildingId(String keywords,Integer building_id,Integer pageNum,Integer pageSize);
 
     // 统计模糊查询结果的数量
     Long getAdministratorsCount(String keywords,Integer building_id);
@@ -26,8 +26,12 @@ public interface IAdministratorService {
 //    Administrator getDromAdminWithId(Integer id);
 
 
-    // 为宿舍楼添加管理员
-    Integer insertDormAdminToBuilding(Integer building_id,Integer admin_id);
+    // 添加管理员并绑定宿舍楼
+    Integer insertDormAdminToBuilding(Administrator administrator);
+
+    // 修改宿舍管理员信息
+    Long updateDormAdminToBuilding(Administrator administrator);
+
 
     // 为宿舍楼移除管理员
     long removeDormAdminToBuilding(Integer admin_id);

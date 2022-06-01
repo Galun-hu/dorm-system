@@ -17,7 +17,7 @@ import java.util.List;
 
 @Api(tags = "b 宿舍管理员信息 ------系统管理员")
 @RestController
-@RequestMapping("/system/admin/administrator/")
+@RequestMapping("/system/admin/administrator")
 public class AdministratorController {
 
     @Autowired
@@ -31,8 +31,8 @@ public class AdministratorController {
     @GetMapping("/")
     public RespPage getAllAdministrator(@RequestParam(defaultValue = "") Integer building_id,
                                         @RequestParam(defaultValue = "") String keywords,
-                                        @RequestParam(defaultValue = "1") int pageNum,
-                                        @RequestParam(defaultValue = "10") int pageSize){
+                                        @RequestParam(defaultValue = "1") Integer pageNum,
+                                        @RequestParam(defaultValue = "10") Integer pageSize){
         int pageNumNew = pageNum-1;
         if (pageNumNew < 0){
             pageNumNew = 0;
@@ -41,18 +41,19 @@ public class AdministratorController {
         RespPage page = new RespPage();
 //        if (building_id != null){
 //            List<Administrator> administrators = administratorService.getDormAdminsWithBuildingId(keywords,building_id,pageNumNew,pageSize);
-//            Long count = administratorService.getAdministratorsCount(keywords);
+//            Long count = administratorService.getAdministratorsCount(keywords,building_id);
 //            page.setTotal(count);
 //            page.setData(administrators);
 //            return page;
 //        }else {
 //            List<Administrator> administrators = administratorService.getDormAdmins(keywords,building_id,pageNumNew,pageSize);
-//            Long count = administratorService.getAdministratorsCount(keywords);
+//            Long count = administratorService.getAdministratorsCount(keywords,building_id);
 //            page.setTotal(count);
 //            page.setData(administrators);
 //            return page;
 //        }
         List<Administrator> administrators = administratorService.getDormAdminsWithBuildingId(keywords,building_id,pageNumNew,pageSize);
+//        List<Administrator> administrators = administratorService.getDormAdmins(keywords,building_id,pageNumNew,pageSize);
         Long count = administratorService.getAdministratorsCount(keywords,building_id);
         page.setTotal(count);
         page.setData(administrators);
@@ -77,7 +78,8 @@ public class AdministratorController {
 
 
 //    @ApiOperation("根据宿舍管理员名字获取宿舍管理员信息")
-//    @ApiImplicitParams({@ApiImplicitParam(name = "name",value = "管理员名字")})
+//    @ApiImplicitParams({@ApiImplicitParam(name = "name",va
+//    lue = "管理员名字")})
 //    @GetMapping("/name/{name}")
 //    public RespResult getAdminWithName(@PathVariable String name){
 //        Administrator administrator = administratorService.getDormAdminWithName(name);
@@ -102,40 +104,85 @@ public class AdministratorController {
 //    }
 
 
-    @ApiOperation("为宿舍楼添加管理员")
-    @ApiImplicitParams({@ApiImplicitParam(name = "buildingAdmin",value = "宿舍楼管理员关联实体类"),
-                        @ApiImplicitParam(name = "building_id",value = "宿舍楼id"),
-                        @ApiImplicitParam(name = "admin_id",value = "管理员id")})
+    @ApiOperation("为宿舍楼添加管理员并绑定宿舍楼id")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Administrator",value = "Administrator类 接口文档Models有对应该类描述"),
+            @ApiImplicitParam(name = "username",value = "账号"),
+            @ApiImplicitParam(name = "password",value = "密码"),
+            @ApiImplicitParam(name = "name",value = "姓名"),
+            @ApiImplicitParam(name = "sex",value = "性别"),
+            @ApiImplicitParam(name = "phone",value = "手机号"),
+            @ApiImplicitParam(name = "company",value = "学生处、宿舍管理中心，前端这两个直接写死 后端不提供"),
+            @ApiImplicitParam(name = "remark",value = "备注"),
+            @ApiImplicitParam(name = "enabled",value = "是否启用不用传递 后端自动启用"),
+            @ApiImplicitParam(name = "building_id",value = "宿舍楼id")
+    })
     @PostMapping("/")
-    public RespResult addDormAdminToBuilding(@RequestBody BuildingAdmin buildingAdmin){
-        if (buildingAdmin.getBuilding_id() != null && buildingAdmin.getAdmin_id() != null){
-            Integer result = administratorService.insertDormAdminToBuilding(buildingAdmin
-                    .getBuilding_id(),buildingAdmin.getAdmin_id());
+    public RespResult addDormAdminToBuilding(@RequestBody Administrator administrator){
+        if (administrator.getBuilding_id() != null) {
+            Integer result = administratorService.insertDormAdminToBuilding(administrator);
             if (result > 0){
                 return RespResult.ok("成功");
+            }else if(result == -2){
+                return RespResult.error("失败，用户名已被使用");
             }else {return RespResult.error("失败");}
-        }else {return RespResult.error("失败，缺少building_id或admin_id");}
+        }else {return RespResult.error("失败，缺少building_id");}
 
     }
 
 
 
-    @ApiOperation("带admin_id参数表示移除指定管理员，带building_id参数参数表示移除指定宿舍楼的所有管理员")
-    @ApiImplicitParams({@ApiImplicitParam(name = "admin_id",value = "管理员id"),
-                        @ApiImplicitParam(name = "building_id",value = "宿舍楼id")})
-    @DeleteMapping("/")
-    public RespResult deleteDormAdmin(@RequestParam(defaultValue = "") Integer admin_id,
-                                      @RequestParam(defaultValue = "") Integer building_id){
-        long result = -1;
-        if (building_id != null){
-            result = administratorService.removeAllDormAdminToBuilding(building_id);
-        }else if (admin_id != null){
-            result = administratorService.removeDormAdminToBuilding(admin_id);
-        }
-        if (result > 0){
+    @ApiOperation("修改宿舍管理员信息或修改管理员绑定的宿舍楼id")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Administrator",value = "Administrator类 接口文档Models有对应该类描述"),
+            @ApiImplicitParam(name = "username",value = "账号"),
+            @ApiImplicitParam(name = "password",value = "密码"),
+            @ApiImplicitParam(name = "name",value = "姓名"),
+            @ApiImplicitParam(name = "sex",value = "性别"),
+            @ApiImplicitParam(name = "phone",value = "手机号"),
+            @ApiImplicitParam(name = "company",value = "学生处、宿舍管理中心，前端这两个直接写死 后端不提供"),
+            @ApiImplicitParam(name = "remark",value = "备注"),
+            @ApiImplicitParam(name = "enabled",value = "是否启用不用传递 后端自动启用"),
+            @ApiImplicitParam(name = "building_id",value = "宿舍楼id")
+    })
+    @PutMapping("/")
+    public RespResult update(@RequestBody Administrator administrator){
+        Long result = administratorService.updateDormAdminToBuilding(administrator);
+        if (result == -1){
+            return RespResult.error("失败，缺少管理员id");
+        }else if (result == -2){
+            return RespResult.error("修改绑定的宿舍失败");
+        }else if (result > 0){
             return RespResult.ok("成功");
         }else {
             return RespResult.error("失败");
+        }
+    }
+
+
+
+
+
+    @ApiOperation("带id参数删除指定管理员并解除绑定宿舍id")
+    @ApiImplicitParams({@ApiImplicitParam(name = "admin_id",value = "管理员id")})
+//                        @ApiImplicitParam(name = "building_id",value = "宿舍楼id")})
+    @DeleteMapping("/")
+    public RespResult deleteDormAdmin(@RequestParam(defaultValue = "") Integer id){
+//                                      @RequestParam(defaultValue = "") Integer building_id){
+        long result = -1;
+//        if (building_id != null){
+//            result = administratorService.removeAllDormAdminToBuilding(building_id);
+//        }else if (admin_id != null){
+        if (id != null){
+            result = administratorService.removeDormAdminToBuilding(id);
+        }
+        if (result > 0){
+            return RespResult.ok("成功");
+        }
+        else if (result == -1){
+            return RespResult.error("删除管理员失败");
+        }else {
+            return RespResult.error("接除管理员绑定的宿舍楼id失败");
         }
     }
 

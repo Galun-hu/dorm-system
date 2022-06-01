@@ -37,7 +37,7 @@ public class OutlateDaoImpl implements IOutlateDao {
                 .foreignField("id")
                 .as("t_b");
         ProjectionOperation project = Aggregation.project("_id","id","student_id","name","phone","building_id",
-                "rome_id","outlate_time").and("t_b.name").as("building_name")
+                "rome_id","outlate_time","floor").and("t_b.name").as("building_name")
                 .and("t_b.type").as("building_type");
         Criteria criteria = new Criteria();
         if (building_id != null){
@@ -74,7 +74,7 @@ public class OutlateDaoImpl implements IOutlateDao {
                 .foreignField("id")
                 .as("t_b");
         ProjectionOperation project = Aggregation.project("_id","id","student_id","name","phone","building_id",
-                        "rome_id","outlate_time").and("t_b.name").as("building_name")
+                        "rome_id","outlate_time","floor").and("t_b.name").as("building_name")
                 .and("t_b.type").as("building_type");
         Criteria criteria = new Criteria();
         if (building_id != null){

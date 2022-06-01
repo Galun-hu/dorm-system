@@ -74,7 +74,15 @@ public class AambientController {
             @ApiImplicitParam(name = "health_level",value = "卫生等级"),
             @ApiImplicitParam(name = "create_time",value = "创建时间")})
     @PostMapping("/")
-    public RespResult addHealth(@RequestBody Health health){
+    public RespResult addHealth(HttpServletRequest request,
+            @RequestBody Health health){
+        Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
+        Integer id = (Integer) map.get("id");
+        String role = (String)map.get("role");
+        if (!role.equals("ROLE_admin")){
+            Building building = dormitoryTool.getBuildWithAdminId(id);
+            health.setBuilding_id(building.getId());
+        }
         Integer result = healthService.addHealth(health);
         if (result > 0){
             return RespResult.ok("成功");
@@ -95,7 +103,15 @@ public class AambientController {
             @ApiImplicitParam(name = "create_time",value = "创建时间")
     })
     @PutMapping("/")
-    public RespResult updateHealth(@RequestBody Health health){
+    public RespResult updateHealth(HttpServletRequest request
+            ,@RequestBody Health health){
+        Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
+        Integer id = (Integer) map.get("id");
+        String role = (String)map.get("role");
+        if (!role.equals("ROLE_admin")){
+            Building building = dormitoryTool.getBuildWithAdminId(id);
+            health.setBuilding_id(building.getId());
+        }
         long result = healthService.updateHealth(health);
         if (result == -1){
             return RespResult.error("缺少卫生信息id");

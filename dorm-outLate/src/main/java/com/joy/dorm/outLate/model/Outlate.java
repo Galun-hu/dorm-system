@@ -35,11 +35,21 @@ public class Outlate {
     private Integer rome_id;
     @ApiModelProperty("晚归时间")
     private Date outlate_time;
+    @ApiModelProperty("楼层")
+    private Integer floor;
 
     @ApiModelProperty("宿舍楼名称")
     private String building_name;
     @ApiModelProperty("宿舍楼类型")
     private String building_type;
+
+    public Integer getFloor() {
+        return floor;
+    }
+
+    public void setFloor(Integer floor) {
+        this.floor = floor;
+    }
 
     public String get_id() {
         return _id;
@@ -132,6 +142,7 @@ public class Outlate {
                 ", building_id=" + building_id +
                 ", rome_id=" + rome_id +
                 ", outlate_time=" + outlate_time +
+                ", floor=" + floor +
                 ", building_name='" + building_name + '\'' +
                 ", building_type='" + building_type + '\'' +
                 '}';

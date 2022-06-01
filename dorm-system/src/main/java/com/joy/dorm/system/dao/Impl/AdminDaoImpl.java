@@ -107,7 +107,7 @@ public class AdminDaoImpl implements AdminDao {
         }
         //创建分页
         //Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
-        ProjectionOperation project  = Aggregation.project("id", "username", "name", "sex", "phone", "company", "enabled", "roleId", "createTime")
+        ProjectionOperation project  = Aggregation.project("id", "username", "name", "sex", "phone", "company", "enabled", "roleId", "createTime","remark")
                 .and("adminRole").as("adminRole");
         //,Aggregation.sort(sort)
         Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),lookupOperation,project,Aggregation.unwind("adminRole"));

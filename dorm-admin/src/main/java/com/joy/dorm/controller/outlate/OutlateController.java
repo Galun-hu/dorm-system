@@ -100,9 +100,17 @@ public class OutlateController {
             @ApiImplicitParam(name = "name",value = "姓名"),
             @ApiImplicitParam(name = "phone",value = "手机号"),
             @ApiImplicitParam(name = "building_id",value = "宿舍楼id"),
-            @ApiImplicitParam(name = "rome_id",value = "房间号")})
+            @ApiImplicitParam(name = "rome_id",value = "房间号"),
+            @ApiImplicitParam(name = "floor",value = "楼层")})
     @PostMapping("/")
-    public RespResult addOutlate(@RequestBody Outlate outlate){
+    public RespResult addOutlate(HttpServletRequest request,@RequestBody Outlate outlate){
+        Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
+        Integer id = (Integer) map.get("id");
+        String role = (String)map.get("role");
+        if (!role.equals("ROLE_admin")){
+            Building building = dormitoryTool.getBuildWithAdminId(id);
+            outlate.setBuilding_id(building.getId());
+        }
         Integer result = outlateService.addOutlate(outlate);
         if (result > 0){
             return RespResult.ok("成功");
@@ -119,10 +127,18 @@ public class OutlateController {
             @ApiImplicitParam(name = "name",value = "姓名"),
             @ApiImplicitParam(name = "phone",value = "手机号"),
             @ApiImplicitParam(name = "building_id",value = "宿舍楼id"),
-            @ApiImplicitParam(name = "rome_id",value = "房间号")
+            @ApiImplicitParam(name = "rome_id",value = "房间号"),
+            @ApiImplicitParam(name = "floor",value = "楼层")
     })
     @PutMapping("/")
-    public RespResult updateOutlate(@RequestBody Outlate outlate){
+    public RespResult updateOutlate(HttpServletRequest request,@RequestBody Outlate outlate){
+        Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
+        Integer id = (Integer) map.get("id");
+        String role = (String)map.get("role");
+        if (!role.equals("ROLE_admin")){
+            Building building = dormitoryTool.getBuildWithAdminId(id);
+            outlate.setBuilding_id(building.getId());
+        }
         long result = outlateService.updateOutlate(outlate);
         if (result == -1){
             return RespResult.error("缺少晚归信息id");
