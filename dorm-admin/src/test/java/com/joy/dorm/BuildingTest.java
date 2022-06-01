@@ -91,7 +91,7 @@ public class BuildingTest {
     private DormitoryTool dormitoryTool;
     @Test
     public void asdasd(){
-        System.out.println(dormitoryTool.getAllAdminWithBuildingId(1));
+        System.out.println(dormitoryTool.getAllAdminWithBuildingId(2));
     }
 
 

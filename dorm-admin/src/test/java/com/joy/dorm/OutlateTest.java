@@ -114,6 +114,11 @@ public class OutlateTest {
     @Autowired
     private DormitoryTool dormitoryTool;
 
+    @Test
+    public void ddd(){
+        System.out.println(dormitoryTool.getBuildWithAdminId(3));
+    }
+
     @Autowired
     private IHealthDao healthDao;
 
@@ -140,9 +145,11 @@ public class OutlateTest {
 //        Criteria criteria = new Criteria();
 
         Aggregation aggregation = Aggregation.newAggregation(lookup,project,
-//                Aggregation.group("id"),
+                Aggregation.group("id"),
+                Aggregation.bucket("amdin_id").andOutput("admin_id").push().as("admin_id"),
                 Aggregation.unwind("admin_id"));
-        List<Building> buildings = mongoTemplate.aggregate(aggregation,"t_building",Building.class).getMappedResults();
+//        );
+        List<Map> buildings = mongoTemplate.aggregate(aggregation,"t_building",Map.class).getMappedResults();
         System.out.println(buildings);
     }
 }

@@ -77,9 +77,9 @@ public class AambientController {
     public RespResult addHealth(@RequestBody Health health){
         Integer result = healthService.addHealth(health);
         if (result > 0){
-            return RespResult.ok("数据添加成功");
+            return RespResult.ok("成功");
         }else {
-            return RespResult.error("数据添失败");}
+            return RespResult.error("失败");}
     }
 
 
@@ -100,9 +100,9 @@ public class AambientController {
         if (result == -1){
             return RespResult.error("缺少卫生信息id");
         }else if (result > 0){
-            return RespResult.ok("更新成功");
+            return RespResult.ok("成功");
         }else{
-            return RespResult.error("更新失败");
+            return RespResult.error("失败");
         }
     }
 
@@ -115,9 +115,9 @@ public class AambientController {
     public RespResult deleteHealth(@PathVariable Integer id){
         long result = healthService.deleteHealth(id);
         if (result > 0){
-            return RespResult.ok("删除成功");
+            return RespResult.ok("成功");
         }else {
-            return RespResult.error("删除失败");
+            return RespResult.error("失败");
         }
     }
 }

@@ -105,11 +105,11 @@ public class OutlateController {
     public RespResult addOutlate(@RequestBody Outlate outlate){
         Integer result = outlateService.addOutlate(outlate);
         if (result > 0){
-            return RespResult.ok("数据添加成功");
+            return RespResult.ok("成功");
         }else if (result == -1) {
             return RespResult.error("缺少学号或宿舍楼id或房间号");
         }else {
-            return RespResult.error("数据添失败");}
+            return RespResult.error("失败");}
     }
 
     @ApiOperation("修改晚归信息")
@@ -127,9 +127,9 @@ public class OutlateController {
         if (result == -1){
             return RespResult.error("缺少晚归信息id");
         }else if (result > 0){
-            return RespResult.ok("更新成功");
+            return RespResult.ok("成功");
         }else{
-            return RespResult.error("更新失败");
+            return RespResult.error("失败");
         }
     }
 
@@ -140,9 +140,9 @@ public class OutlateController {
     public RespResult deleteOutlate(@PathVariable Integer id){
         long result = outlateService.deleteOutlateWithId(id);
         if (result > 0){
-            return RespResult.ok("删除成功");
+            return RespResult.ok("成功");
         }else {
-            return RespResult.error("删除失败");
+            return RespResult.error("失败");
         }
     }
 }

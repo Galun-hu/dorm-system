@@ -61,9 +61,9 @@ public class BuildingController {
     public RespResult getAllBuildingName(){
         List<Building> buildings = buildingService.getNames();
         if (buildings.size() > 0){
-            return RespResult.ok("获取成功",buildings);
+            return RespResult.ok("成功",buildings);
         }else {
-            return RespResult.error("获取失败");
+            return RespResult.error("失败");
         }
     }
 
@@ -111,9 +111,9 @@ public class BuildingController {
     public RespResult addBuilding(@RequestBody Building building){
         Integer result = buildingService.addBuilding(building);
         if (result > 0){
-            return RespResult.ok("数据成功插入："+result+"条");
+            return RespResult.ok("成功");
         }else {
-            return RespResult.error("数据插入失败");
+            return RespResult.error("失败");
         }
     }
 
@@ -129,9 +129,9 @@ public class BuildingController {
     public RespResult updateBuilding(@RequestBody Building building){
         long result = buildingService.updateBuilding(building);
         if (result > 0){
-            return RespResult.ok("成功更新数据"+result+"条");
+            return RespResult.ok("成功");
         }else {
-            return RespResult.error("更新数据失败");
+            return RespResult.error("失败");
         }
     }
 
@@ -143,9 +143,9 @@ public class BuildingController {
     public RespResult deleteBuilding(@PathVariable Integer id){
         long result = buildingService.deleteBuilding(id);
         if (result > 0){
-            return RespResult.ok("成功删除"+result+"条数据");
+            return RespResult.ok("成功");
         }else {
-            return RespResult.error("删除失败，该_id不存在");
+            return RespResult.error("失败");
         }
 
     }

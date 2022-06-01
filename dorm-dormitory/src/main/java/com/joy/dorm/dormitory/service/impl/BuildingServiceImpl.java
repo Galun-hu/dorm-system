@@ -48,8 +48,12 @@ public class BuildingServiceImpl implements IBuildingService {
     @Override
     public Building getBuildingWithAdminId(Integer id){
         Integer building_id = administretorDao.findBuildingIdByDormAdminId(id);
-        Building building = buildingDao.findBuildingById(building_id);
-        return setAdminstrator(building);
+        if (building_id != null) {
+            Building building = buildingDao.findBuildingById(building_id);
+            return setAdminstrator(building);
+        }else {return null;
+        }
+
     }
 
 //    @Override

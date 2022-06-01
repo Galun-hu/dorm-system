@@ -14,7 +14,10 @@ public interface IAdministratorService {
     List<Administrator> getDormAdminsWithBuildingId(String keywords,Integer building_id,int pageNum,int pageSize);
 
     // 统计模糊查询结果的数量
-    Long getAdministratorsCount(String keywords);
+    Long getAdministratorsCount(String keywords,Integer building_id);
+
+    // 获取宿舍管理员名称
+    List<Administrator> getNames();
 
 //    // 根据宿舍管理员名字获取宿舍管理员信息
 //    Administrator getDormAdminWithName(String name);

@@ -28,8 +28,14 @@ public class AdministratorServiceImpl implements IAdministratorService {
     }
 
     @Override
-    public Long getAdministratorsCount(String keywords){
-        return administretorDao.acountAdministrators(keywords);
+    public Long getAdministratorsCount(String keywords,Integer building_id){
+        return administretorDao.acountAdministrators(keywords,building_id);
+    }
+
+
+    @Override
+    public List<Administrator> getNames(){
+        return administretorDao.findNames();
     }
 
 //    @Override

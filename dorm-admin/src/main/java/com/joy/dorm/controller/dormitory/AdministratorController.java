@@ -53,12 +53,26 @@ public class AdministratorController {
 //            return page;
 //        }
         List<Administrator> administrators = administratorService.getDormAdminsWithBuildingId(keywords,building_id,pageNumNew,pageSize);
-        Long count = administratorService.getAdministratorsCount(keywords);
+        Long count = administratorService.getAdministratorsCount(keywords,building_id);
         page.setTotal(count);
         page.setData(administrators);
         return page;
 //        page.setData(administrators);
 //        return page;
+    }
+
+
+
+
+    @ApiOperation("获取所有宿舍管理员名字和id")
+    @GetMapping("/name")
+    public RespResult getAllAdministratorNames(){
+        List<Administrator> administrators = administratorService.getNames();
+        if (administrators.size() > 0){
+            return RespResult.ok("成功",administrators);
+        }else {
+            return RespResult.error("失败");
+        }
     }
 
 
@@ -98,9 +112,9 @@ public class AdministratorController {
             Integer result = administratorService.insertDormAdminToBuilding(buildingAdmin
                     .getBuilding_id(),buildingAdmin.getAdmin_id());
             if (result > 0){
-                return RespResult.ok("添加成功");
-            }else {return RespResult.error("添加失败");}
-        }else {return RespResult.error("添加失败，缺少building_id或admin_id");}
+                return RespResult.ok("成功");
+            }else {return RespResult.error("失败");}
+        }else {return RespResult.error("失败，缺少building_id或admin_id");}
 
     }
 
@@ -119,9 +133,9 @@ public class AdministratorController {
             result = administratorService.removeDormAdminToBuilding(admin_id);
         }
         if (result > 0){
-            return RespResult.ok("移除成功");
+            return RespResult.ok("成功");
         }else {
-            return RespResult.error("移除失败");
+            return RespResult.error("失败");
         }
     }
 

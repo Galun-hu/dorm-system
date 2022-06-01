@@ -68,11 +68,34 @@ public class AdministratorDaoImpl implements IAdministretorDao {
     }
 
     @Override
-    public Long acountAdministrators(String keywords){
-        Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
-        Criteria criteria = new Criteria().and("name").regex(pattern);
-        Query query = new Query(criteria);
-        return Long.valueOf(mongoTemplate.find(query,Administrator.class).size());
+    public Long acountAdministrators(String keywords,Integer building_id){
+//        Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+//        Criteria criteria = new Criteria().and("name").regex(pattern);
+//        Query query = new Query(criteria);
+//        return Long.valueOf(mongoTemplate.find(query,Administrator.class).size());
+
+
+        LookupOperation lookup = LookupOperation.newLookup()
+                .from("t_building_admin")
+                .localField("id")
+                .foreignField("admin_id")
+                .as("t_b_a");
+        ProjectionOperation project = Aggregation.project("_id","id","name","sex","age","phone",
+                "created","modified").and("t_b_a.building_id").as("building_id");
+        Criteria criteria = new Criteria();
+        if (building_id != null){
+            criteria.and("building_id").is(building_id);
+        }
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("name").regex(pattern);
+        }
+
+        Aggregation aggregation = Aggregation.newAggregation(lookup,project,
+                Aggregation.match(criteria),
+                Aggregation.unwind("building_id"));
+        List<Administrator> administrators = mongoTemplate.aggregate(aggregation,"admin",Administrator.class).getMappedResults();
+        return Long.valueOf(administrators.size());
     }
 
     @Override
@@ -92,6 +115,18 @@ public class AdministratorDaoImpl implements IAdministretorDao {
             return null;
         }
     }
+
+    @Override
+    public List<Administrator> findNames(){
+        ProjectionOperation project = Aggregation.project("_id","id","name");
+        Aggregation aggregation = Aggregation.newAggregation(project);
+        List<Administrator> administrators = mongoTemplate.aggregate(aggregation,"admin",Administrator.class).getMappedResults();
+        return administrators;
+    }
+
+
+
+
 //
 //    @Override
 //    public Administrator findAdministratorByName(String name){

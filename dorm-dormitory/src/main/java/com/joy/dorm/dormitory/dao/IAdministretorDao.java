@@ -14,10 +14,13 @@ public interface IAdministretorDao {
     // 根据building_id获取所有宿舍管理员信息
     List<Administrator> findAdministratorsWithBuildingId(String keywords,Integer building_id,int pageNum,int pageSize);
 
-    Long acountAdministrators(String keywords);
+    Long acountAdministrators(String keywords,Integer building_id);
 
     // 根据宿舍管理员id获取宿舍楼id
     Integer findBuildingIdByDormAdminId(int id);
+
+    // 获取宿舍管理员名称
+    List<Administrator> findNames();
 //
 //    // 根据宿舍管理员名字获取宿舍管理员信息
 //    Administrator findAdministratorByName(String name);
