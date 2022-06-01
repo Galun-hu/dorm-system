@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @Api(tags = "c 卫生管理 ------宿舍管理员")
-@RequestMapping("/system/admin/ambient")
+@RequestMapping("/system/dorm/ambient")
 public class AambientController {
 
     @Autowired
