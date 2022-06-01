@@ -170,7 +170,7 @@ public class RepairDaoImpl implements RepairDao {
         if (buildingId!=null&&flag){
             criteria.and("buildingId").is(buildingId);
         }
-        ProjectionOperation project  = Aggregation.project("id", "dormId", "buildingId", "number", "name", "phone","content","enabled", "remark","createTime")
+        ProjectionOperation project  = Aggregation.project("id", "dormId", "buildingId", "number", "name", "phone","floor","content","enabled", "remark","createTime")
                 .and("building").as("building");
         Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),lookupOperation,project,Aggregation.unwind("building"));
         List<Map> results = mongoTemplate.aggregate(aggregation, "repair", Map.class).getMappedResults();

@@ -161,7 +161,7 @@ public class VisitorDaoImpl implements VisitorDao {
         if (buildingId!=null&&flag){
             criteria.and("buildingId").is(buildingId);
         }
-        ProjectionOperation project  = Aggregation.project("id", "name", "sex", "phone", "buildingId", "dormId", "remark","createTime")
+        ProjectionOperation project  = Aggregation.project("id", "name", "sex","floor","phone", "buildingId", "dormId", "remark","createTime")
                 .and("building").as("building");
         Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),lookupOperation,project,Aggregation.unwind("building"));
         List<Map> results = mongoTemplate.aggregate(aggregation, "visitor", Map.class).getMappedResults();
