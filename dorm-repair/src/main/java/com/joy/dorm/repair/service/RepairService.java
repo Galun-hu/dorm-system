@@ -5,6 +5,7 @@ import com.joy.dorm.repair.model.Repair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,10 +19,13 @@ public class RepairService {
     }
 
     public int addRepair(Repair repair) {
+        repair.setEnabled(false);
+        repair.setCreateTime(new Date());
         return repairDao.addRepair(repair);
     }
 
     public int updateRepair(Repair repair) {
+        repair.setGoodsTime(new Date());
         return repairDao.updateRepair(repair);
     }
 

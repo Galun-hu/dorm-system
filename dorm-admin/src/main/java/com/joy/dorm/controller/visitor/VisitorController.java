@@ -73,7 +73,7 @@ public class VisitorController {
             @ApiImplicitParam(name = "sex",value = "性别"),
             @ApiImplicitParam(name = "phone",value = "手机号"),
             @ApiImplicitParam(name = "remark",value = "到访原因"),
-            @ApiImplicitParam(name = "createTime",value = "到访时间")
+//            @ApiImplicitParam(name = "createTime",value = "到访时间")
     })
     @PostMapping("/")
     public RespResult addVisitor(@RequestBody Visitor visitor, HttpServletRequest request){
@@ -97,7 +97,7 @@ public class VisitorController {
             @ApiImplicitParam(name = "sex",value = "性别"),
             @ApiImplicitParam(name = "phone",value = "手机号"),
             @ApiImplicitParam(name = "remark",value = "到访原因"),
-            @ApiImplicitParam(name = "createTime",value = "到访时间")
+//            @ApiImplicitParam(name = "createTime",value = "到访时间")
     })
     @PutMapping("/")
     public RespResult updateVisitor(@RequestBody Visitor visitor){

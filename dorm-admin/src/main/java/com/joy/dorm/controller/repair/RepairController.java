@@ -70,10 +70,10 @@ public class RepairController {
             @ApiImplicitParam(name = "name",value = "申报人姓名"),
             @ApiImplicitParam(name = "phone",value = "申报人手机号"),
             @ApiImplicitParam(name = "content",value = "维修内容"),
-            @ApiImplicitParam(name = "remark",value = "备注"),
-            @ApiImplicitParam(name = "enabled",value = "是否完成 有两种状态 false：维修中 true：已修好 类型布尔"),
-            @ApiImplicitParam(name = "createTime",value = "申报时间"),
-            @ApiImplicitParam(name = "goodsTime",value = "修好时间"),
+            @ApiImplicitParam(name = "remark",value = "备注")
+//            @ApiImplicitParam(name = "enabled",value = "是否完成 有两种状态 false：维修中 true：已修好 类型布尔"),
+//            @ApiImplicitParam(name = "createTime",value = "申报时间"),
+//            @ApiImplicitParam(name = "goodsTime",value = "修好时间"),
     })
     @PostMapping("/")
     public RespResult addRepair(@RequestBody Repair repair, HttpServletRequest request){
@@ -99,8 +99,8 @@ public class RepairController {
             @ApiImplicitParam(name = "content",value = "维修内容"),
             @ApiImplicitParam(name = "remark",value = "备注"),
             @ApiImplicitParam(name = "enabled",value = "是否完成 有两种状态 false：维修中 true：已修好 类型布尔"),
-            @ApiImplicitParam(name = "createTime",value = "申报时间"),
-            @ApiImplicitParam(name = "goodsTime",value = "修好时间"),
+//            @ApiImplicitParam(name = "createTime",value = "申报时间"),
+//            @ApiImplicitParam(name = "goodsTime",value = "修好时间"),
     })
     @PutMapping("/")
     public RespResult updateRepair(@RequestBody Repair repair){
