@@ -76,11 +76,37 @@ public class HealthDaoImpl implements IHealthDao {
     }
 
     @Override
-    public Long acountHealths(String keywords){
-        Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
-        Criteria criteria = new Criteria().and("rome_id").regex(pattern);
-        Query query = new Query(criteria);
-        return Long.valueOf(mongoTemplate.find(query,Health.class).size());
+    public Long acountHealths(String building_type,String keywords,Integer building_id){
+//        Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+//        Criteria criteria = new Criteria().and("building_name").regex(pattern);
+//        Query query = new Query().addCriteria(criteria);
+        LookupOperation lookup = LookupOperation.newLookup()
+                .from("t_building")
+                .localField("building_id")
+                .foreignField("id")
+                .as("t_b");
+        ProjectionOperation project = Aggregation.project("_id","id","building_id","rome_id","floor",
+                        "health_level","create_time").and("t_b.name").as("building_name")
+                .and("t_b.type").as("building_type");
+        Criteria criteria = new Criteria();
+        if (building_id != null){
+            criteria.and("building_id").is(building_id);
+        }
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("building_name").regex(pattern);
+        }
+        if (StringUtils.hasText(building_type)){
+            criteria.and("building_type").is(building_type);
+        }
+
+        Aggregation aggregation = Aggregation.newAggregation(lookup,project,
+                Aggregation.match(criteria),
+                Aggregation.unwind("building_name"),
+                Aggregation.unwind("building_type"));
+        List<Health> healths = mongoTemplate.aggregate(aggregation,"t_health",Health.class).getMappedResults();
+//        return healths;
+        return Long.valueOf(healths.size());
     }
 
     @Override

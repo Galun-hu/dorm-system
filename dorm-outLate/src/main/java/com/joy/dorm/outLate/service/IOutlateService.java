@@ -11,7 +11,7 @@ public interface IOutlateService {
     List<Outlate> getAllOutlate(Integer building_id,String keywords,String building_type,Integer pageNum,Integer pageSize);
 
     // 统计模糊查询结果的数量
-    Long getOutlateCount(String keywords);
+    Long getOutlateCount(Integer building_id,String keywords,String building_type);
 
 //    // 根据building_id获取所有晚归信息
 //    List<Outlate> getAllOutlateWithBuildingId(Integer building_id);

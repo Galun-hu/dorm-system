@@ -47,7 +47,7 @@ public class OutlateController {
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
         Integer id = (Integer) map.get("id");
         String role = (String)map.get("role");
-        if (role != "ROLE_admin"){
+        if (!role.equals("ROLE_admin")){
             Building building = dormitoryTool.getBuildWithAdminId(id);
             building_id = building.getId();
         }
@@ -57,12 +57,8 @@ public class OutlateController {
         }
         List<Outlate> outlates = outlateService.getAllOutlate(building_id,keywords,building_type,pageNumNew,pageSize);
         RespPage page = new RespPage();
-        if (outlates.size() == 1){
-            page.setTotal(Long.valueOf(1));
-        }else {
-            Long count = outlateService.getOutlateCount(keywords);
-            page.setTotal(count);
-        }
+        Long count = outlateService.getOutlateCount(building_id,keywords,building_type);
+        page.setTotal(count);
         page.setData(outlates);
         return page;
     }

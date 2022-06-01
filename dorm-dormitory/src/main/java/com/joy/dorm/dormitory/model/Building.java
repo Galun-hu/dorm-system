@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.joy.dorm.common.utils.AutoIncKey;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -36,6 +37,16 @@ public class Building {
     private Date created;
     @ApiModelProperty("修改时间")
     private Date modified;
+
+    private List<Integer> admin_id;
+
+    public List<Integer> getAdmin_id() {
+        return admin_id;
+    }
+
+    public void setAdmin_id(List<Integer> admin_id) {
+        this.admin_id = admin_id;
+    }
 
     public String get_id() {
         return _id;
@@ -112,6 +123,7 @@ public class Building {
                 ", administrators=" + administrators +
                 ", created=" + created +
                 ", modified=" + modified +
+                ", admin_id=" + admin_id +
                 '}';
     }
 }

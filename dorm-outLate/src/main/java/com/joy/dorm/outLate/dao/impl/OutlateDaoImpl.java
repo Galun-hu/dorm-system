@@ -62,11 +62,38 @@ public class OutlateDaoImpl implements IOutlateDao {
     }
 
     @Override
-    public Long acountOutlate(String keywords){
-        Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
-        Criteria criteria = new Criteria().and("name").regex(pattern);
-        Query query = new Query(criteria);
-        return Long.valueOf(mongoTemplate.find(query,Outlate.class).size());
+    public Long acountOutlate(Integer building_id,String keywords,String building_type){
+//        Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+//        Criteria criteria = new Criteria().and("name").regex(pattern);
+//        Query query = new Query(criteria);
+//        return Long.valueOf(mongoTemplate.find(query,Outlate.class).size());
+
+        LookupOperation lookup = LookupOperation.newLookup()
+                .from("t_building")
+                .localField("building_id")
+                .foreignField("id")
+                .as("t_b");
+        ProjectionOperation project = Aggregation.project("_id","id","student_id","name","phone","building_id",
+                        "rome_id","outlate_time").and("t_b.name").as("building_name")
+                .and("t_b.type").as("building_type");
+        Criteria criteria = new Criteria();
+        if (building_id != null){
+            criteria.and("building_id").is(building_id);
+        }
+        if (StringUtils.hasText(keywords)){
+            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("name").regex(pattern);
+        }
+        if (StringUtils.hasText(building_type)){
+            criteria.and("building_type").is(building_type);
+        }
+
+        Aggregation aggregation = Aggregation.newAggregation(lookup,project,
+                Aggregation.match(criteria),
+                Aggregation.unwind("building_name"),
+                Aggregation.unwind("building_type"));
+        List<Outlate> outlates = mongoTemplate.aggregate(aggregation,"t_outlate",Outlate.class).getMappedResults();
+        return Long.valueOf(outlates.size());
     }
 
 //    @Override

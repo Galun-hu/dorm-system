@@ -21,8 +21,8 @@ public class OutlateServiceImpl implements IOutlateService {
     }
 
     @Override
-    public Long getOutlateCount(String keywords){
-        return outlateDao.acountOutlate(keywords);
+    public Long getOutlateCount(Integer building_id,String keywords,String building_type){
+        return outlateDao.acountOutlate(building_id,keywords,building_type);
     }
 
 //    @Override

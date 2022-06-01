@@ -37,18 +37,28 @@ public class AdministratorController {
         if (pageNumNew < 0){
             pageNumNew = 0;
         }
-        List<Administrator> administrators = null;
+
         RespPage page = new RespPage();
-        if (building_id != null){
-            administrators = administratorService.getDormAdminsWithBuildingId(keywords,building_id,pageNumNew,pageSize);
-            page.setTotal(Long.valueOf(1));
-        }else {
-            administrators = administratorService.getDormAdmins(keywords,building_id,pageNumNew,pageSize);
-            Long count = administratorService.getAdministratorsCount(keywords);
-            page.setTotal(count);
-        }
+//        if (building_id != null){
+//            List<Administrator> administrators = administratorService.getDormAdminsWithBuildingId(keywords,building_id,pageNumNew,pageSize);
+//            Long count = administratorService.getAdministratorsCount(keywords);
+//            page.setTotal(count);
+//            page.setData(administrators);
+//            return page;
+//        }else {
+//            List<Administrator> administrators = administratorService.getDormAdmins(keywords,building_id,pageNumNew,pageSize);
+//            Long count = administratorService.getAdministratorsCount(keywords);
+//            page.setTotal(count);
+//            page.setData(administrators);
+//            return page;
+//        }
+        List<Administrator> administrators = administratorService.getDormAdminsWithBuildingId(keywords,building_id,pageNumNew,pageSize);
+        Long count = administratorService.getAdministratorsCount(keywords);
+        page.setTotal(count);
         page.setData(administrators);
         return page;
+//        page.setData(administrators);
+//        return page;
     }
 
 

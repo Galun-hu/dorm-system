@@ -33,19 +33,21 @@ public class BuildingController {
     public RespPage getAllBuilding(@RequestParam(defaultValue = "") Integer id,
                                    @RequestParam(defaultValue = "") String keywords,
                                    @RequestParam(defaultValue = "1") int pageNum,
-                                   @RequestParam(defaultValue = "10") int pagheSize){
+                                   @RequestParam(defaultValue = "10") int pageSize){
         int pageNumNew = pageNum-1;
         if (pageNumNew < 0){
             pageNumNew = 0;
         }
-        List<Building> buildings = buildingService.getBuildings(keywords,id,pageNumNew,pagheSize);
+        List<Building> buildings = buildingService.getBuildings(keywords,id,pageNumNew,pageSize);
         RespPage page = new RespPage();
-        if (id != null){
-            page.setTotal(Long.valueOf(1));
-        }else {
-            Long count = buildingService.getBuildingsCount(keywords);
-            page.setTotal(count);
-        }
+//        if (id != null){
+//            page.setTotal(Long.valueOf(1));
+//        }else {
+//            Long count = buildingService.getBuildingsCount(keywords);
+//            page.setTotal(count);
+//        }
+        Long count = buildingService.getBuildingsCount(keywords);
+        page.setTotal(count);
         page.setData(buildings);
         return page;
     }

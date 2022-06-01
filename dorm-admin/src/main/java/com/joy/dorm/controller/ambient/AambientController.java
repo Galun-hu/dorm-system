@@ -47,7 +47,7 @@ public class AambientController {
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
         Integer id = (Integer) map.get("id");
         String role = (String)map.get("role");
-        if (role != "ROLE_admin"){
+        if (!role.equals("ROLE_admin")){
             Building building = dormitoryTool.getBuildWithAdminId(id);
             building_id = building.getId();
         }
@@ -57,12 +57,8 @@ public class AambientController {
         }
         List<Health> healths = healthService.getHealths(building_id,keywords,building_type,pageNumNew,pageSize);
         RespPage page = new RespPage();
-        if (healths.size() == 1){
-            page.setTotal(Long.valueOf(1));
-        }else {
-            Long count = healthService.getHealthsCount(keywords);
-            page.setTotal(count);
-        }
+        Long count = healthService.getHealthsCount(building_type,keywords,building_id);
+        page.setTotal(count);
         page.setData(healths);
         return page;
     }

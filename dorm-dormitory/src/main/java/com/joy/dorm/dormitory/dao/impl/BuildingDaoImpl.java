@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -44,9 +45,34 @@ public class BuildingDaoImpl implements IBuildingDao {
             criteria.and("name").regex(pattern);
         }
         PageRequest pageRequest = PageRequest.of(pageNum,pageSize);
-        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
         Query query = new Query().addCriteria(criteria).with(sort).with(pageRequest);
         return mongoTemplate.find(query,Building.class);
+
+
+
+//        LookupOperation lookup = LookupOperation.newLookup()
+//                .from("t_building_admin")
+//                .localField("id")
+//                .foreignField("building_id")
+//                .as("t_b_a");
+//        ProjectionOperation project = Aggregation.project("_id","id","name","type","person_num",
+//                        "created","modified").and("t_b_a.admin").as("admin_id");
+//        Criteria criteria = new Criteria();
+//        if (id != null){
+//            criteria.and("id").is(id);
+//        }
+//        if (StringUtils.hasText(keywords)){
+//            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+//            criteria.and("name").regex(pattern);
+//        }
+//
+//        Aggregation aggregation = Aggregation.newAggregation(lookup,project,
+//                Aggregation.match(criteria),
+//                Aggregation.skip(pageNum*pageSize),
+//                Aggregation.limit(pageSize));
+//        List<Building> buildings = mongoTemplate.aggregate(aggregation,"t_building",Building.class).getMappedResults();
+//        return buildings;
     }
 
     @Override

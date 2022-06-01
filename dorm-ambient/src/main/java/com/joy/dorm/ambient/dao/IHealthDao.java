@@ -9,7 +9,7 @@ public interface IHealthDao {
     List<Health> findHealths(Integer building_id, String keywords,String building_type, Integer pageNum, Integer pageSize);
 
     // 统计模糊查询结果的数量
-    Long acountHealths(String keywords);
+    Long acountHealths(String building_type,String keywords,Integer building_id);
 
     // 添加卫生信息
     Integer insertHealth(Health health);

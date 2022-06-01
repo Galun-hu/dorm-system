@@ -20,8 +20,8 @@ public class HealthServiceImpl implements IHealthService {
     }
 
     @Override
-    public Long getHealthsCount(String keywords){
-        return healthDao.acountHealths(keywords);
+    public Long getHealthsCount(String building_type,String keywords,Integer building_id){
+        return healthDao.acountHealths(building_type,keywords,building_id);
     }
 
     @Override

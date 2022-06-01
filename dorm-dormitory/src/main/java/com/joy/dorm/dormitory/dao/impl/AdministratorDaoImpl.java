@@ -35,7 +35,7 @@ public class AdministratorDaoImpl implements IAdministretorDao {
             criteria.and("name").regex(pattern);
         }
         PageRequest pageRequest = PageRequest.of(pageNum,pageSize);
-        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
         Query query = new Query().addCriteria(criteria).with(sort).with(pageRequest);
         return mongoTemplate.find(query, Administrator.class);
     }

@@ -16,7 +16,7 @@ public interface IOutlateDao {
 //    List<Outlate> findAllOutlateByBuildingIdAdndBuildingType(Integer building_id,String building_type);
 
     // 统计模糊查询结果的数量
-    Long acountOutlate(String keywords);
+    Long acountOutlate(Integer building_id,String keywords,String building_type);
 
     // 添加晚归信息
     Integer insertOutlate(Outlate outlate);

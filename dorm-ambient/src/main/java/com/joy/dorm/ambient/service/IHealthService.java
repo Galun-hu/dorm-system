@@ -10,7 +10,7 @@ public interface IHealthService {
     List<Health> getHealths(Integer building_id,String keywords,String building_type,Integer pageNum,Integer pageSize);
 
     // 统计模糊查询的结果数量
-    Long getHealthsCount(String keywords);
+    Long getHealthsCount(String building_type,String keywords,Integer building_id);
 
     // 添加卫生信息
     Integer addHealth(Health health);
