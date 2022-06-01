@@ -5,6 +5,7 @@ import com.joy.dorm.visitor.model.Visitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,6 +19,7 @@ public class VisitorService {
     }
 
     public int addVisitor(Visitor visitor) {
+        visitor.setCreateTime(new Date());
         return visitorDao.addVisitor(visitor);
     }
 

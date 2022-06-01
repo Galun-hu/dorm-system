@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @Repository
@@ -131,5 +132,26 @@ public class BuildingDaoImpl implements IBuildingDao {
         mongoTemplate.findAllAndRemove(query1,"t_building_administrator");
 
         return result.getDeletedCount();
+    }
+
+    @Override
+    public List<Building> getAllBuildingAndAdmin(String keywords, Integer id, int pageNum, int pageSize) {
+
+        LookupOperation lookup = LookupOperation.newLookup()
+                .from("admin")
+                .localField("admin_id")
+                .foreignField("id")
+                .as("admin");
+
+        LookupOperation lookup2 = LookupOperation.newLookup()
+                .from("building")
+                .localField("building_id")
+                .foreignField("id")
+                .as("building");
+
+        Aggregation aggregation = Aggregation.newAggregation(lookup, lookup2);
+        List<Map> results = mongoTemplate.aggregate(aggregation, "t_building_admin", Map.class).getMappedResults();
+
+        return null;
     }
 }

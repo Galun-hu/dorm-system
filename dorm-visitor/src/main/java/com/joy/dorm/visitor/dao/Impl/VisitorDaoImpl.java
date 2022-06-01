@@ -73,6 +73,9 @@ public class VisitorDaoImpl implements VisitorDao {
         if (StringUtils.hasText(visitor.getPhone())){
             update.set("phone",visitor.getPhone());
         }
+        if (StringUtils.hasText(visitor.getFloor())){
+            update.set("floor",visitor.getFloor());
+        }
         if (StringUtils.hasText(visitor.getRemark())){
             update.set("remark",visitor.getRemark());
         }

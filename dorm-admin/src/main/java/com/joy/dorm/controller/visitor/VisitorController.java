@@ -42,7 +42,6 @@ public class VisitorController {
                                   @RequestParam(defaultValue = "1") long pageNum,
                                   @RequestParam(defaultValue = "10") long pageSize,
                                   @RequestParam(defaultValue = "1") Integer buildingId
-                               //   @RequestParam(defaultValue = "男生宿舍") String buildingType
     ){
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
         Integer id = (Integer) map.get("id");
@@ -72,8 +71,7 @@ public class VisitorController {
             @ApiImplicitParam(name = "name",value = "姓名"),
             @ApiImplicitParam(name = "sex",value = "性别"),
             @ApiImplicitParam(name = "phone",value = "手机号"),
-            @ApiImplicitParam(name = "remark",value = "到访原因"),
-            @ApiImplicitParam(name = "createTime",value = "到访时间")
+            @ApiImplicitParam(name = "remark",value = "到访原因")
     })
     @PostMapping("/")
     public RespResult addVisitor(@RequestBody Visitor visitor, HttpServletRequest request){
@@ -97,7 +95,6 @@ public class VisitorController {
             @ApiImplicitParam(name = "sex",value = "性别"),
             @ApiImplicitParam(name = "phone",value = "手机号"),
             @ApiImplicitParam(name = "remark",value = "到访原因"),
-            @ApiImplicitParam(name = "createTime",value = "到访时间")
     })
     @PutMapping("/")
     public RespResult updateVisitor(@RequestBody Visitor visitor){
