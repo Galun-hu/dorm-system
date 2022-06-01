@@ -73,6 +73,9 @@ public class RepairDaoImpl implements RepairDao {
         if (StringUtils.hasText(repair.getPhone())){
             update.set("phone",repair.getPhone());
         }
+        if (StringUtils.hasText(repair.getFloor())){
+            update.set("floor",repair.getFloor());
+        }
         if (StringUtils.hasText(repair.getContent())){
             update.set("content",repair.getContent());
         }

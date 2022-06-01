@@ -44,6 +44,8 @@ public class Repair {
     private String BuiName;
     @ApiModelProperty("宿舍类别")
     private String type;
+    @ApiModelProperty("宿舍楼层")
+    private String floor;
 
     public String get_id() {
         return _id;
@@ -158,6 +160,14 @@ public class Repair {
         this.type = type;
     }
 
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
     @Override
     public String toString() {
         return "Repair{" +
@@ -175,6 +185,7 @@ public class Repair {
                 ", goodsTime=" + goodsTime +
                 ", BuiName='" + BuiName + '\'' +
                 ", type='" + type + '\'' +
+                ", floor='" + floor + '\'' +
                 '}';
     }
 }

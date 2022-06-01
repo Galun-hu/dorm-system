@@ -61,4 +61,8 @@ public interface IBuildingDao {
      * @param _id
      */
     long deleteBuildingBy_id(Integer _id);
+
+
+    // 查询所有宿舍楼对应的管理员
+    List<Building> getAllBuildingAndAdmin(String keywords,Integer id,int pageNum,int pageSize);
 }

@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 public class BuildingTest {
@@ -91,6 +92,12 @@ public class BuildingTest {
     @Test
     public void asdasd(){
         System.out.println(dormitoryTool.getAllAdminWithBuildingId(1));
+    }
+
+
+    @Test
+    public void test1(){
+        List<Building> buildings = buildingDao.getAllBuildingAndAdmin(null, null, 0, 0);
     }
 
 }
