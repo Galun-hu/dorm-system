@@ -68,6 +68,7 @@ public class VisitorController {
     @ApiOperation("添加到访人员")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Visitor",value = "Visitor类  接口文档Models有对应该类描述"),
+            @ApiImplicitParam(name = "buildingId",value = "宿舍楼id，宿舍管理员不需要带此项"),
             @ApiImplicitParam(name = "name",value = "姓名"),
             @ApiImplicitParam(name = "sex",value = "性别"),
             @ApiImplicitParam(name = "phone",value = "手机号"),
@@ -79,7 +80,9 @@ public class VisitorController {
         Integer id = (Integer) map.get("id");
         Building building = dormitoryTool.getBuildWithAdminId(id);
         visitor.setDormId(id);
-        visitor.setBuildingId(building.getId());
+        if (visitor.getBuildingId()==null){
+            visitor.setBuildingId(building.getId());
+        }
         if (visitorService.addVisitor(visitor)==1){
             return RespResult.ok("添加到访人员成功!");
         }
@@ -91,6 +94,7 @@ public class VisitorController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Visitor",value = "Visitor类  接口文档Models有对应该类描述"),
             @ApiImplicitParam(name = "id",value = "到访的id"),
+            @ApiImplicitParam(name = "buildingId",value = "宿舍楼id，宿舍管理员不需要带此项"),
             @ApiImplicitParam(name = "name",value = "姓名"),
             @ApiImplicitParam(name = "sex",value = "性别"),
             @ApiImplicitParam(name = "phone",value = "手机号"),

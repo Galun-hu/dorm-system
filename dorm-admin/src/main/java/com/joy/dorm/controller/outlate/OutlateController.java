@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @Api(tags = "d 晚归管理 ------宿舍管理员")
-@RequestMapping("/system/admin/outlate")
+@RequestMapping("/system/dorm/outlate")
 public class OutlateController {
 
     @Autowired

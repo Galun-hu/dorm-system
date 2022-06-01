@@ -66,6 +66,7 @@ public class RepairController {
     @ApiOperation("添加报修")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Repair",value = "Repair类  接口文档Models有对应该类描述"),
+            @ApiImplicitParam(name = "buildingId",value = "宿舍楼id，宿舍管理员不需要带此项"),
             @ApiImplicitParam(name = "number",value = "宿舍号 类型string"),
             @ApiImplicitParam(name = "name",value = "申报人姓名"),
             @ApiImplicitParam(name = "phone",value = "申报人手机号"),
@@ -78,7 +79,9 @@ public class RepairController {
         Integer id = (Integer) map.get("id");
         Building building = dormitoryTool.getBuildWithAdminId(id);
         repair.setDormId(id);
-        repair.setBuildingId(building.getId());
+        if (repair.getBuildingId()==null){
+            repair.setBuildingId(building.getId());
+        }
         if (repairService.addRepair(repair)==1){
             return RespResult.ok("添加报修成功!");
         }
@@ -91,6 +94,7 @@ public class RepairController {
             @ApiImplicitParam(name = "Repair",value = "Repair类  接口文档Models有对应该类描述"),
             @ApiImplicitParam(name = "id",value = "维修的id"),
             @ApiImplicitParam(name = "number",value = "宿舍号 类型string"),
+            @ApiImplicitParam(name = "buildingId",value = "宿舍楼id，宿舍管理员不需要带此项"),
             @ApiImplicitParam(name = "name",value = "申报人姓名"),
             @ApiImplicitParam(name = "phone",value = "申报人手机号"),
             @ApiImplicitParam(name = "content",value = "维修内容"),

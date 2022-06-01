@@ -1,10 +1,12 @@
 package com.joy.dorm.dormitory.dao.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.joy.dorm.common.utils.Tool;
 import com.joy.dorm.dormitory.dao.IBuildingDao;
 import com.joy.dorm.dormitory.model.Administrator;
 import com.joy.dorm.dormitory.model.Building;
 import com.joy.dorm.dormitory.model.BuildingAdmin;
+import com.joy.dorm.system.model.Admin;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -144,14 +148,29 @@ public class BuildingDaoImpl implements IBuildingDao {
                 .as("admin");
 
         LookupOperation lookup2 = LookupOperation.newLookup()
-                .from("building")
+                .from("t_building")
                 .localField("building_id")
                 .foreignField("id")
                 .as("building");
 
-        Aggregation aggregation = Aggregation.newAggregation(lookup, lookup2);
+        Aggregation aggregation = Aggregation.newAggregation(lookup,lookup2,Aggregation.unwind("admin"),Aggregation.unwind("building"));
         List<Map> results = mongoTemplate.aggregate(aggregation, "t_building_admin", Map.class).getMappedResults();
-
+        System.out.println(results);
+        List<Building> buildings = new ArrayList<>();
+        List<Map<String,Object>> admins = new ArrayList<>();
+        Map<Integer,Object> map = new HashMap<>();
+        Integer n=-1;
+        for (Map result : results) {
+            Map admin = (Map) result.get("admin");
+            if (((Integer) result.get("building_id")).equals(n)){
+                admins.add(admin);
+            }else{
+                admins.clear();
+            }
+            admins.add(admin);
+            n = (Integer) result.get("building_id");
+            map.put(n,buildings);
+        }
         return null;
     }
 }

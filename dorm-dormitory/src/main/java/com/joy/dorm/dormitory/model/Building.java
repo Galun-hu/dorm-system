@@ -37,6 +37,7 @@ public class Building {
     private Date created;
     @ApiModelProperty("修改时间")
     private Date modified;
+    private List<Administrator> administrator;
 
     private List<Integer> admin_id;
 
@@ -110,6 +111,14 @@ public class Building {
 
     public void setModified(Date modified) {
         this.modified = modified;
+    }
+
+    public List<Administrator> getAdministrator() {
+        return administrator;
+    }
+
+    public void setAdministrator(List<Administrator> administrator) {
+        this.administrator = administrator;
     }
 
     @Override
