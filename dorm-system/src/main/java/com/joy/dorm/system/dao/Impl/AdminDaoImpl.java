@@ -98,6 +98,7 @@ public class AdminDaoImpl implements AdminDao {
                 .as("adminRole");
 
         Criteria criteria = new Criteria();
+        criteria.and("roleId").ne(2);
         if (id!=null){
             criteria.and("id").ne(id);
         }
@@ -144,6 +145,7 @@ public class AdminDaoImpl implements AdminDao {
     @Override
     public Long getAdminCount(String keywords, Integer id) {
         Criteria criteria = new Criteria();
+        criteria.and("roleId").ne(2);
         if (id!=null){
             criteria.and("id").ne(id);
         }
