@@ -56,15 +56,15 @@ public class AdministratorDaoImpl implements IAdministretorDao {
         ProjectionOperation project = Aggregation.project("_id","id","name","sex","phone",
                 "createTime","username","password","company","enabled","remark","roleId").and("t_b_a.building_id").as("building_id");
         Criteria criteria = new Criteria();
-//        if (building_id != null){
-//            criteria.and("building_id").is(building_id);
-//        }
+        criteria.and("roleId").is(2);
+        if (building_id != null){
+            criteria.and("building_id").is(building_id);
+        }
         if (StringUtils.hasText(keywords)){
             Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("name").regex(pattern);
         }
 
-        Integer pageNumNew = pageNum*pageSize;
         Aggregation aggregation = Aggregation.newAggregation(lookup,project,
                 Aggregation.match(criteria),
                 Aggregation.skip(pageNum*pageSize),
@@ -72,6 +72,7 @@ public class AdministratorDaoImpl implements IAdministretorDao {
                 Aggregation.unwind("building_id"));
         List<Administrator> administrators = mongoTemplate.aggregate(aggregation,"admin",Administrator.class).getMappedResults();
         return administrators;
+
     }
 
     @Override
@@ -87,9 +88,10 @@ public class AdministratorDaoImpl implements IAdministretorDao {
                 .localField("id")
                 .foreignField("admin_id")
                 .as("t_b_a");
-        ProjectionOperation project = Aggregation.project("_id","id","name","sex","age","phone",
-                "created","modified").and("t_b_a.building_id").as("building_id");
+        ProjectionOperation project = Aggregation.project("_id","id","name","sex","phone",
+                "createTime","username","password","company","enabled","remark","roleId").and("t_b_a.building_id").as("building_id");
         Criteria criteria = new Criteria();
+        criteria.and("roleId").is(2);
         if (building_id != null){
             criteria.and("building_id").is(building_id);
         }

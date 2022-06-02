@@ -174,4 +174,12 @@ public class OutlateTest {
     public void asdasd(){
         System.out.println(administratorService.getDormAdminsWithBuildingId(null,null,0,5).size());
     }
+
+    @Autowired
+    private IAdministretorDao administretorDao;
+
+    @Test
+    public void aaaa(){
+        System.out.println(administretorDao.findAdministratorsWithBuildingId("h",null,1,4));
+    }
 }
