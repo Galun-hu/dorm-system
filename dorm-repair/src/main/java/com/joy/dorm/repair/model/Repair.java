@@ -4,6 +4,7 @@ import com.joy.dorm.common.utils.AutoIncKey;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -22,10 +23,15 @@ public class Repair {
     private Integer id;
     @ApiModelProperty("接待的舍管id")
     private Integer dormId;
+
+    @Indexed
     @ApiModelProperty("宿舍楼Id")
     private Integer buildingId;
+
     @ApiModelProperty("宿舍号")
     private String number;
+
+    @Indexed
     @ApiModelProperty("申报人姓名")
     private String name;
     @ApiModelProperty("申报人手机号")

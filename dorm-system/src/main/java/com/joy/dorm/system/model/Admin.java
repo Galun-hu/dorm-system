@@ -5,6 +5,7 @@ import com.joy.dorm.common.utils.AutoIncKey;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,14 +28,20 @@ public class Admin implements UserDetails {
     @ApiModelProperty("id")
     private String _id;
     @ApiModelProperty("管理员id")
+    @Indexed
     @AutoIncKey
     private Integer id;
+
+    @Indexed(unique = true)
     @ApiModelProperty("账号")
     private String username;
     @ApiModelProperty("密码")
     private String password;
+
+    @Indexed
     @ApiModelProperty("姓名")
     private String name;
+
     @ApiModelProperty("性别")
     private String sex;
     @ApiModelProperty("手机号")
@@ -45,6 +52,7 @@ public class Admin implements UserDetails {
     private Boolean enabled;
     @ApiModelProperty("备注")
     private String remark;
+    @Indexed
     @ApiModelProperty("角色id")
     private Integer roleId;
     @ApiModelProperty("角色")

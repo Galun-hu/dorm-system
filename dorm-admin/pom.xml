@@ -82,29 +82,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                <version>2.1.1.RELEASE</version>-->
-                <!-- 用于明确表示编译版本配置有效  -->
-<!--                <configuration>-->
-<!--                    <fork>true</fork> &lt;!&ndash; 如果没有该配置，devtools不会生效 &ndash;&gt;-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>repackage</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-war-plugin</artifactId>-->
-<!--                <version>3.1.0</version>-->
-<!--                <configuration>-->
-<!--                    &lt;!&ndash; 不必在项目生中成一个无用的web.xml文件  &ndash;&gt;-->
-<!--                    <failOnMissingWebXml>false</failOnMissingWebXml>-->
-<!--                    <warName>${project.artifactId}</warName>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
         </plugins>
         <finalName>${project.artifactId}</finalName>
     </build>

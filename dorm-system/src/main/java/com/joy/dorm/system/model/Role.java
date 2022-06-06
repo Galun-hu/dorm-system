@@ -4,6 +4,7 @@ import com.joy.dorm.common.utils.AutoIncKey;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @ApiModel(description = "角色")
@@ -16,6 +17,7 @@ public class Role {
     @ApiModelProperty("管理员id")
     private String _id;
     @ApiModelProperty("管理员id")
+    @Indexed
     @AutoIncKey
     private Integer role_id;
     @ApiModelProperty("角色英文名")

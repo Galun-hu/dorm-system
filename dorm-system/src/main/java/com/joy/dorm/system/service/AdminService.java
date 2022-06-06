@@ -91,10 +91,9 @@ public class AdminService implements UserDetailsService {
 
 
     public Admin getUsername(String username) {
-        Admin admin = adminDao.loadUserByUsername(username);
-        Role role = roleDao.getByIdRole(admin.getRoleId());
-        admin.setRole(role);
-        return admin;
+        return adminDao.loadUserByUsername(username);
+//        Role role = roleDao.getByIdRole(admin.getRoleId());
+//        admin.setRole(role);
     }
 
 

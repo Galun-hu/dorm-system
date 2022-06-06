@@ -4,6 +4,7 @@ import com.joy.dorm.common.utils.AutoIncKey;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -19,9 +20,13 @@ public class Visitor {
     private String _id;
     @ApiModelProperty("访客id")
     @AutoIncKey
+    @Indexed
     private Integer id;
+
+    @Indexed
     @ApiModelProperty("访客姓名")
     private String name;
+
     @ApiModelProperty("访客性别")
     private String sex;
     @ApiModelProperty("访客手机号")
