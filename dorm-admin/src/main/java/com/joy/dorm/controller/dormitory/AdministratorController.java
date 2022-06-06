@@ -148,7 +148,6 @@ public class AdministratorController {
     @PutMapping("/")
     public RespResult update(@RequestBody Administrator administrator){
         Long result = administratorService.updateDormAdminToBuilding(administrator);
-        System.out.println("\n\n\n\n\n\n\n"+result+"\n\n\n\n\n");
         if (result == Long.valueOf(-1)){
             return RespResult.error("失败，缺少管理员id");
         }else if (result == Long.valueOf(-2)){
