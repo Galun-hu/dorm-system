@@ -63,6 +63,12 @@ public class SystemController {
     })
     @PostMapping("/")
     public RespResult addAdmin(@RequestBody Admin admin){
+        Admin username = adminService.getUsername(admin.getUsername());
+
+        if (username!=null){
+            return RespResult.error("该账号名已被使用!");
+        }
+
         if (adminService.insert(admin)==1){
             return RespResult.ok("添加管理员成功!");
         }

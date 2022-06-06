@@ -15,6 +15,7 @@ spring:
       port: 27017
       authentication-database: admin
       database: dormitory
+      auto-index-creation: true
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -22,7 +23,3 @@ spring:
     default-property-inclusion: non_null
     time-zone: GMT+8
 
-
-#logging:
-#  level:
-#    org.springframework.data.mongodb.core: DEBUG
