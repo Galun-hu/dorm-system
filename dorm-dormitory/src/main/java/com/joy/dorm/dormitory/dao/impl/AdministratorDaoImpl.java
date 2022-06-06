@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @Repository
@@ -48,13 +49,59 @@ public class AdministratorDaoImpl implements IAdministretorDao {
 
     @Override
     public List<Administrator> findAdministratorsWithBuildingId(String keywords,Integer building_id,Integer pageNum,Integer pageSize){
+//        LookupOperation lookup = LookupOperation.newLookup()
+//                .from("t_building_admin")
+//                .localField("id")
+//                .foreignField("admin_id")
+//                .as("t_b_a");
+//        ProjectionOperation project = Aggregation.project("_id","id","name","sex","phone",
+//                "createTime","username","password","company","enabled","remark","roleId").and("t_b_a.building_id").as("building_id");
+//        Criteria criteria = new Criteria();
+//        criteria.and("roleId").is(2);
+//        if (building_id != null){
+//            criteria.and("building_id").is(building_id);
+//        }
+//        if (StringUtils.hasText(keywords)){
+//            Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
+//            criteria.and("name").regex(pattern);
+//        }
+//
+//        Aggregation aggregation = Aggregation.newAggregation(lookup,project,
+//                Aggregation.match(criteria),
+//                Aggregation.skip(pageNum*pageSize),
+//                Aggregation.limit(pageSize),
+//                Aggregation.unwind("building_id"));
+//        List<Administrator> administrators = mongoTemplate.aggregate(aggregation,"admin",Administrator.class).getMappedResults();
+//        return administrators;
+
+
+
+
         LookupOperation lookup = LookupOperation.newLookup()
-                .from("t_building_admin")
-                .localField("id")
-                .foreignField("admin_id")
-                .as("t_b_a");
-        ProjectionOperation project = Aggregation.project("_id","id","name","sex","phone",
-                "createTime","username","password","company","enabled","remark","roleId").and("t_b_a.building_id").as("building_id");
+                .from("admin")
+                .localField("admin_id")
+                .foreignField("id")
+                .as("t_a");
+        LookupOperation lookup2 = LookupOperation.newLookup()
+                .from("t_building")
+                .localField("building_id")
+                .foreignField("id")
+                .as("t_b");
+
+        ProjectionOperation project = Aggregation.project("building_id")
+                .and("t_a._id").as("_id")
+                .and("t_a.id").as("id")
+                .and("t_a.name").as("name")
+                .and("t_a.sex").as("sex")
+                .and("t_a.phone").as("phone")
+                .and("t_a.createTime").as("createTime")
+                .and("t_a.username").as("username")
+                .and("t_a.password").as("password")
+                .and("t_a.company").as("company")
+                .and("t_a.enabled").as("enabled")
+                .and("t_a.remark").as("remark")
+                .and("t_a.roleId").as("roleId")
+                .and("t_b.name").as("building_name");
         Criteria criteria = new Criteria();
         criteria.and("roleId").is(2);
         if (building_id != null){
@@ -65,12 +112,24 @@ public class AdministratorDaoImpl implements IAdministretorDao {
             criteria.and("name").regex(pattern);
         }
 
-        Aggregation aggregation = Aggregation.newAggregation(lookup,project,
+        Aggregation aggregation = Aggregation.newAggregation(lookup,lookup2,project,
+                Aggregation.unwind("_id"),
+                Aggregation.unwind("id"),
+                Aggregation.unwind("name"),
+                Aggregation.unwind("sex"),
+                Aggregation.unwind("phone"),
+                Aggregation.unwind("createTime"),
+                Aggregation.unwind("username"),
+                Aggregation.unwind("password"),
+                Aggregation.unwind("company"),
+                Aggregation.unwind("enabled"),
+                Aggregation.unwind("remark"),
+                Aggregation.unwind("roleId"),
+                Aggregation.unwind("building_name"),
                 Aggregation.match(criteria),
                 Aggregation.skip(pageNum*pageSize),
-                Aggregation.limit(pageSize),
-                Aggregation.unwind("building_id"));
-        List<Administrator> administrators = mongoTemplate.aggregate(aggregation,"admin",Administrator.class).getMappedResults();
+                Aggregation.limit(pageSize));
+        List<Administrator> administrators = mongoTemplate.aggregate(aggregation,"t_building_admin",Administrator.class).getMappedResults();
         return administrators;
 
     }

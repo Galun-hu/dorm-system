@@ -37,6 +37,7 @@ public class AdministratorServiceImpl implements IAdministratorService {
     @Override
     public List<Administrator> getDormAdminsWithBuildingId(String keywords,Integer building_id,Integer pageNum,Integer pageSize){
         return  administretorDao.findAdministratorsWithBuildingId(keywords,building_id,pageNum,pageSize);
+//        return null;
     }
 
     @Override
@@ -69,8 +70,12 @@ public class AdministratorServiceImpl implements IAdministratorService {
         //在这里添加都是宿舍管理员
         administrator.setRoleId(2);
         administrator.setEnabled(true);
+        administrator.setBuilding_name(null);
         if (StringUtils.hasText(administrator.getPassword())){
             administrator.setPassword(encoder.encode(administrator.getPassword()));
+        }
+        if (!StringUtils.hasText(administrator.getRemark())){
+            administrator.setRemark("");
         }
         Integer building_id = administrator.getBuilding_id();
         administrator.setBuilding_id(null);
@@ -89,6 +94,7 @@ public class AdministratorServiceImpl implements IAdministratorService {
         if (administrator.getId() == null) {
             return Long.valueOf(-1);
         }
+        administrator.setBuilding_name(null);
         if (administrator.getBuilding_id() != null) {
             Integer building_id = administretorDao.findBuildingIdByDormAdminId(administrator.getId());
             if (building_id == null || building_id != administrator.getBuilding_id()) {

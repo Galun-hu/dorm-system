@@ -190,4 +190,9 @@ public class OutlateTest {
         administrator.setRemark("顶顶顶顶顶顶顶顶顶");
         System.out.println(administratorService.updateDormAdminToBuilding(administrator));
     }
+
+    @Test
+    public void asdeee(){
+        System.out.println(administretorDao.findAdministratorsWithBuildingId(null,null,0,10).size());
+    }
 }

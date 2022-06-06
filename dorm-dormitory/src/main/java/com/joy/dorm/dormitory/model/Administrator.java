@@ -46,7 +46,16 @@ public class Administrator {
     private Date createTime;
     @ApiModelProperty("宿舍楼id")
     private Integer building_id;
+    @ApiModelProperty("宿舍楼名称")
+    private String building_name;
 
+    public String getBuilding_name() {
+        return building_name;
+    }
+
+    public void setBuilding_name(String building_name) {
+        this.building_name = building_name;
+    }
 
     public String get_id() {
         return _id;
@@ -177,6 +186,7 @@ public class Administrator {
                 ", role=" + role +
                 ", createTime=" + createTime +
                 ", building_id=" + building_id +
+                ", building_name='" + building_name + '\'' +
                 '}';
     }
 }

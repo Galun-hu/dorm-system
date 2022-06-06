@@ -5,6 +5,7 @@ import com.joy.dorm.dormitory.model.BuildingAdmin;
 import com.joy.dorm.system.model.Admin;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IAdministretorDao {
 
@@ -12,7 +13,7 @@ public interface IAdministretorDao {
     List<Administrator> findAdministrators(String keywords,Integer building_id,int pageNum,int pageSize);
 
     // 根据building_id获取所有宿舍管理员信息
-    List<Administrator> findAdministratorsWithBuildingId(String keywords,Integer building_id,Integer pageNum,Integer pageSize);
+    List<Administrator> findAdministratorsWithBuildingId(String keywords, Integer building_id, Integer pageNum, Integer pageSize);
 
     Long acountAdministrators(String keywords,Integer building_id);
 
