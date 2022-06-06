@@ -182,4 +182,12 @@ public class OutlateTest {
     public void aaaa(){
         System.out.println(administretorDao.findAdministratorsWithBuildingId("h",null,1,4));
     }
+
+    @Test
+    public void adsd(){
+        Administrator administrator = new Administrator();
+        administrator.setId(10);
+        administrator.setRemark("顶顶顶顶顶顶顶顶顶");
+        System.out.println(administratorService.updateDormAdminToBuilding(administrator));
+    }
 }

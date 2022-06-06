@@ -148,13 +148,14 @@ public class AdministratorController {
     @PutMapping("/")
     public RespResult update(@RequestBody Administrator administrator){
         Long result = administratorService.updateDormAdminToBuilding(administrator);
-        if (result == -1){
+        System.out.println("\n\n\n\n\n\n\n"+result+"\n\n\n\n\n");
+        if (result == Long.valueOf(-1)){
             return RespResult.error("失败，缺少管理员id");
-        }else if (result == -2){
+        }else if (result == Long.valueOf(-2)){
             return RespResult.error("修改绑定的宿舍失败");
-        }else if (result == -3){
+        }else if (result == Long.valueOf(-3)){
             return RespResult.error("修改绑定的宿舍成功，修改管理员信息失败");
-        }else if (result > 0){
+        }else if (result > Long.valueOf(0)){
             return RespResult.ok("成功");
         }else {
             return RespResult.error("失败");

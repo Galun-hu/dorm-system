@@ -8,6 +8,7 @@ import com.joy.dorm.system.dao.AdminDao;
 import com.joy.dorm.system.model.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +22,7 @@ public class AdministratorServiceImpl implements IAdministratorService {
 
     @Autowired
     private IAdministretorDao administretorDao;
+
 
     @Autowired
     private AdminDao adminDao;
@@ -104,12 +106,14 @@ public class AdministratorServiceImpl implements IAdministratorService {
                 } else {
                     return result1;
                 }
+            }else {
+                administrator.setBuilding_id(null);
+                return administretorDao.updateAdministrator(administrator);
             }
         } else {
             administrator.setBuilding_id(null);
             return administretorDao.updateAdministrator(administrator);
         }
-        return null;
     }
 
 
