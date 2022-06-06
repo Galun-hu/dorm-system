@@ -21,7 +21,8 @@ public class Tool {
             try {
                 if ("serialVersionUID".equals(field.getName())
                         || "_id".equals(field.getName())
-                        || "id".equals(field.getName())) {
+                        || "id".equals(field.getName())
+                        || "tableName".equals(field.getName())) {
                     continue;
                 }
                 if (field.get(domainType) != null) {

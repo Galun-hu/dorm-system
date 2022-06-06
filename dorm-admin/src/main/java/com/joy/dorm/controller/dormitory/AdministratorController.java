@@ -152,6 +152,8 @@ public class AdministratorController {
             return RespResult.error("失败，缺少管理员id");
         }else if (result == -2){
             return RespResult.error("修改绑定的宿舍失败");
+        }else if (result == -3){
+            return RespResult.error("修改绑定的宿舍成功，修改管理员信息失败");
         }else if (result > 0){
             return RespResult.ok("成功");
         }else {

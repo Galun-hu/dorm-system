@@ -83,11 +83,11 @@ public class AdministratorServiceImpl implements IAdministratorService {
     }
 
     @Override
-    public Long updateDormAdminToBuilding(Administrator administrator){
-        if (administrator.getId() == null){
+    public Long updateDormAdminToBuilding(Administrator administrator) {
+        if (administrator.getId() == null) {
             return Long.valueOf(-1);
         }
-        if (administrator.getBuilding_id() != null){
+        if (administrator.getBuilding_id() != null) {
             Integer building_id = administretorDao.findBuildingIdByDormAdminId(administrator.getId());
             if (building_id == null || building_id != administrator.getBuilding_id()) {
                 BuildingAdmin buildingAdmin = new BuildingAdmin();
@@ -97,10 +97,19 @@ public class AdministratorServiceImpl implements IAdministratorService {
                 if (result < 1) {
                     return Long.valueOf(-2);
                 }
+                administrator.setBuilding_id(null);
+                Long result1 = administretorDao.updateAdministrator(administrator);
+                if (result1 == 0) {
+                    return Long.valueOf(-3);
+                } else {
+                    return result1;
+                }
             }
+        } else {
+            administrator.setBuilding_id(null);
+            return administretorDao.updateAdministrator(administrator);
         }
-        administrator.setBuilding_id(null);
-        return administretorDao.updateAdministrator(administrator);
+        return null;
     }
 
 
