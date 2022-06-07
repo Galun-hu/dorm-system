@@ -6,6 +6,7 @@ import com.joy.dorm.dormitory.model.Administrator;
 import com.joy.dorm.dormitory.model.Building;
 import com.joy.dorm.dormitory.model.BuildingAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import com.joy.dorm.dormitory.service.IBuildingService;
 
@@ -22,8 +23,12 @@ public class BuildingServiceImpl implements IBuildingService {
     @Autowired
     private IAdministretorDao administretorDao;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Override
     public List<Building> getBuildings(String keywords,Integer id,int pageNum,int pageSize){
+        Object o = redisTemplate.opsForValue().get("buildings_"+keywords+"_"+id+"_"+pageNum+"_"+pageSize);
         List<Building> buildings = buildingDao.findBuildings(keywords,id,pageNum,pageSize);
         return setAdminstrator(buildings);
     }
@@ -93,6 +98,7 @@ public class BuildingServiceImpl implements IBuildingService {
 
     @Override
     public long deleteBuilding(Integer id){
+        redisTemplate.delete("buildingAdminWithbuildingId_"+id);
         return buildingDao.deleteBuildingBy_id(id);
     }
 
@@ -100,11 +106,26 @@ public class BuildingServiceImpl implements IBuildingService {
     public List<Building> setAdminstrator(List<Building> buildings){
         for (int i = 0;i<buildings.size();i++){
             Building building = buildings.get(i);
-            List<BuildingAdmin> buildingAdmins = administretorDao.findAllAdmintratorIdByBuildId(building.getId());
+            Object ob = redisTemplate.opsForValue().get("buildingAdminWithbuildingId_"+building.getId());
+            List<BuildingAdmin> buildingAdmins = null;
+            if (ob != null){
+                buildingAdmins = (List<BuildingAdmin>)ob;
+            }else {
+                buildingAdmins = administretorDao.findAllAdmintratorIdByBuildId(building.getId());
+                redisTemplate.opsForValue().set("buildingAdminWithbuildingId_"+building.getId(),buildingAdmins);
+            }
             if (buildingAdmins != null){
                 List<Administrator> administrators = new ArrayList<>();
                 for (int index = 0;index < buildingAdmins.size();index++){
-                    administrators.add(administretorDao.findAdministratorById(buildingAdmins.get(index).getAdmin_id()));
+                    Administrator administrator = null;
+                    Object o = redisTemplate.opsForValue().get("administrator_"+buildingAdmins.get(index).getAdmin_id());
+                    if (o != null){
+                        administrator = (Administrator) o;
+                    }else {
+                        administrator = administretorDao.findAdministratorById(buildingAdmins.get(index).getAdmin_id());
+                        redisTemplate.opsForValue().set("administrator_"+buildingAdmins.get(index).getAdmin_id(),administrator);
+                    }
+                    administrators.add(administrator);
                 }
                 building.setAdministrators(administrators);
             }
@@ -119,7 +140,14 @@ public class BuildingServiceImpl implements IBuildingService {
         if (buildingAdmins != null){
             List<Administrator> administrators = new ArrayList<>();
             for (int i = 0;i < buildingAdmins.size();i++){
-                administrators.add(administretorDao.findAdministratorById(buildingAdmins.get(i).getAdmin_id()));
+                Administrator administrator = null;
+                Object o = redisTemplate.opsForValue().get("administrator_"+buildingAdmins.get(i).getAdmin_id());
+                if (o != null){
+                    administrator = (Administrator) o;
+                }else {
+                    administrator = administretorDao.findAdministratorById(buildingAdmins.get(i).getAdmin_id());
+                }
+                administrators.add(administrator);
             }
             building.setAdministrators(administrators);
         }

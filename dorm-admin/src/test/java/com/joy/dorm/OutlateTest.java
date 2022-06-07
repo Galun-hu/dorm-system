@@ -186,13 +186,31 @@ public class OutlateTest {
     @Test
     public void adsd(){
         Administrator administrator = new Administrator();
-        administrator.setId(10);
-        administrator.setRemark("顶顶顶顶顶顶顶顶顶");
+        administrator.setId(15);
+        administrator.setPassword("");
         System.out.println(administratorService.updateDormAdminToBuilding(administrator));
     }
 
     @Test
     public void asdeee(){
         System.out.println(administretorDao.findAdministratorsWithBuildingId(null,null,0,10).size());
+    }
+
+    @Test
+    public void kkk(){
+        System.out.println(buildingService.getBuildings(null,null,0,10));
+    }
+
+    @Test
+    public void insasd(){
+        Administrator administrator = new Administrator();
+        administrator.setRemark("asd");
+        administrator.setBuilding_id(4);
+        administrator.setSex("男");
+        administrator.setCompany("学生处");
+        administrator.setName("蔡徐坤");
+        administrator.setPassword("123456");
+        administrator.setUsername("yy");
+        administratorService.insertDormAdminToBuilding(administrator);
     }
 }

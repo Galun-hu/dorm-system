@@ -27,6 +27,9 @@ public class AdministratorServiceImpl implements IAdministratorService {
     @Autowired
     private AdminDao adminDao;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Override
@@ -78,6 +81,7 @@ public class AdministratorServiceImpl implements IAdministratorService {
             administrator.setRemark("");
         }
         Integer building_id = administrator.getBuilding_id();
+        redisTemplate.delete("buildingAdminWithbuildingId_"+building_id);
         administrator.setBuilding_id(null);
         administrator.setCreateTime(new Date());
         Administrator administrator1 = administretorDao.insertAdministrator(administrator);
@@ -94,6 +98,9 @@ public class AdministratorServiceImpl implements IAdministratorService {
         if (administrator.getId() == null) {
             return Long.valueOf(-1);
         }
+        if (administrator.getPassword() == ""){
+            administrator.setPassword(null);
+        }
         administrator.setBuilding_name(null);
         if (administrator.getBuilding_id() != null) {
             Integer building_id = administretorDao.findBuildingIdByDormAdminId(administrator.getId());
@@ -104,6 +111,8 @@ public class AdministratorServiceImpl implements IAdministratorService {
                 Long result = administretorDao.updateAdministratorToBuilding(buildingAdmin);
                 if (result < 1) {
                     return Long.valueOf(-2);
+                }else {
+                    redisTemplate.delete("buildingAdminWithbuildingId_"+administrator.getBuilding_id());
                 }
                 administrator.setBuilding_id(null);
                 Long result1 = administretorDao.updateAdministrator(administrator);
@@ -125,15 +134,18 @@ public class AdministratorServiceImpl implements IAdministratorService {
 
 
     public long removeDormAdminToBuilding(Integer admin_id){
+        Integer building_id = administretorDao.findBuildingIdByDormAdminId(admin_id);
         Integer result = adminDao.delete(admin_id);
         if (result == 0){
             return -1;
         }
+        redisTemplate.delete("buildingAdminWithbuildingId_"+building_id);
         return administretorDao.deleteDromAdminToBuilding(admin_id);
     }
 
     @Override
     public long removeAllDormAdminToBuilding(Integer building_id){
+        redisTemplate.delete("buildingAdminWithbuildingId_"+building_id);
         return administretorDao.deleteAllDromAdminToBuilding(building_id);
     }
 }

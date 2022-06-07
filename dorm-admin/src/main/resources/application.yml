@@ -17,11 +17,14 @@ spring:
       database: dormitory
       auto-index-creation: true
 
-    redis:
-      host: 192.168.128.130
-      port: 6379
-      password: "123456"
-      database: 4
+  redis:
+    # 106.55.18.86
+    host: 106.55.18.86
+    # 63790
+    port: 63790
+    password: "123456"
+    database: 4
+    timeout: 5000
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
