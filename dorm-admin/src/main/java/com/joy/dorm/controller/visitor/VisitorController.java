@@ -17,14 +17,18 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+//声明只返回json数据
 @RestController
 @Api(tags = "f 访客管理 ------宿舍管理员")
+//统一路径前缀
 @RequestMapping("/system/dorm/visitor")
 public class VisitorController {
 
+    //注入访客
     @Autowired
     VisitorService visitorService;
 
+    //注入工具包 用来实现查询当前管理员的管理楼栋
     @Autowired
     DormitoryTool dormitoryTool;
 
@@ -42,20 +46,32 @@ public class VisitorController {
                                   @RequestParam(defaultValue = "1") long pageNum,
                                   @RequestParam(defaultValue = "10") long pageSize, Integer buildingId
     ){
+        //获取token
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
+        //解析token里面的id
         Integer id = (Integer) map.get("id");
+        //解析token里面的角色
         String role = (String)map.get("role");
+        //获取当前管理员所管理的楼栋
         Building building = dormitoryTool.getBuildWithAdminId(id);
+        //页码减1 因为mongo下标从0开始
         long pageNumNew = pageNum-1;
+        //如果小于0 那么都统一等于从0开始拿
         if (pageNumNew < 0){
             pageNumNew = 0;
         }
+        //是页码从哪里开始
         if (pageNumNew > 0){
+            //当前页码*一页的数量
             pageNumNew *= pageSize;
         }
+        //创建一个封装的返回分页的对象
         RespPage respPage = new RespPage();
+        //判断是否是系统管理员
         if (role.equals("ROLE_admin")){
+            //拿总数量 分页使用 keyword是模糊查询使用 buildingId是根据宿舍楼id查
             respPage.setTotal(visitorService.getVisitorAdminCount(keywords,buildingId));
+            //拿当前分页数据
             respPage.setData(visitorService.getAllVisitorAdmin(keywords,pageNumNew,pageSize,buildingId));
         }else{
             respPage.setTotal(visitorService.getVisitorCount(keywords,building.getId()));
@@ -63,6 +79,8 @@ public class VisitorController {
         }
         return respPage;
     }
+
+
 
     @ApiOperation("添加到访人员")
     @ApiImplicitParams({
@@ -78,10 +96,13 @@ public class VisitorController {
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
         Integer id = (Integer) map.get("id");
         Building building = dormitoryTool.getBuildWithAdminId(id);
+        //添加宿舍管理员id
         visitor.setDormId(id);
+        //如果等于空说明这是宿舍管理员添加 不等于空则是系统管理员添加 用来区分是哪个角色的操作
         if (visitor.getBuildingId()==null){
             visitor.setBuildingId(building.getId());
         }
+        //调用service层 添加成功返回1
         if (visitorService.addVisitor(visitor)==1){
             return RespResult.ok("添加到访人员成功!");
         }

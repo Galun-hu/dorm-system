@@ -30,23 +30,50 @@ public class VisitorDaoImpl implements VisitorDao {
 
     @Override
     public List<Visitor> getAllVisitor(String keywords, Integer id,long pageNumNew,long pageSize) {
+
+        //多集合查询
+        LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("t_building")
+                .localField("buildingId")
+                .foreignField("id")
+                .as("building");
+
+        //创建查询对象
         Criteria criteria = new Criteria();
         if (id!=null){
             //根据宿舍楼查找
             criteria.and("buildingId").is(id);
         }
+        //判断是否为空
         if (StringUtils.hasText(keywords)){
+            //根据姓名模糊查询
             Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("name").regex(pattern);
         }
-        //创建分页
-        PageRequest pageRequest = PageRequest.of((int)pageNumNew,(int)pageSize);
-        Sort sort = Sort.by(Sort.Direction.DESC, "createTime");
-        Query query = new Query();
-        query.with(pageRequest);
-        query.with(sort);
-        query.addCriteria(criteria);
-        return mongoTemplate.find(query,Visitor.class);
+        //筛选查询成功需要返回的数据
+        ProjectionOperation project  = Aggregation.project("id", "name", "sex","floor","phone", "buildingId", "dormId", "remark","createTime")
+                .and("building").as("building");
+        //创建查询
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),lookupOperation,project,Aggregation.unwind("building"));
+        //拿到返回对象
+        List<Map> results = mongoTemplate.aggregate(aggregation, "visitor", Map.class).getMappedResults();
+        //创建维修对象
+        List<Visitor> visitors = new ArrayList<>();
+        //遍历封装返回的数据
+        for (Map result : results) {
+            //获取到里面的宿舍楼
+            Map<String,Object> building = JSONObject.parseObject(JSONObject.toJSONString(result.get("building")));
+            //将result变成字符串在转成Visitor对象
+            String str = JSON.toJSONString(result);
+            Visitor visitor = JSON.parseObject(str, Visitor.class);
+            //添加宿舍楼名字
+            visitor.setBuiName((String) building.get("name"));
+            //添加宿舍楼类型
+            visitor.setType((String) building.get("type"));
+            //放入数组打包返回
+            visitors.add(visitor);
+        }
+        return visitors;
     }
 
     @Override
@@ -62,8 +89,11 @@ public class VisitorDaoImpl implements VisitorDao {
 
     @Override
     public int updateVisitor(Visitor visitor) {
+        //创建查询条件 根据维修id修改
         Query query = new Query(Criteria.where("id").is(visitor.getId()));
+        //创建修改对象
         Update update = new Update();
+        //判断是否为空 不为空则进行添加到修改
         if (StringUtils.hasText(visitor.getName())){
             update.set("name",visitor.getName());
         }
@@ -82,7 +112,11 @@ public class VisitorDaoImpl implements VisitorDao {
         if (visitor.getCreateTime()!=null){
             update.set("createTime",visitor.getCreateTime());
         }
+        if (visitor.getBuildingId()!=null){
+            update.set("buildingId",visitor.getBuildingId());
+        }
         try {
+            //修改第一条记录
             mongoTemplate.updateFirst(query,update,Visitor.class);
             return 1;
         } catch (Exception e) {
@@ -93,6 +127,7 @@ public class VisitorDaoImpl implements VisitorDao {
 
     @Override
     public int deleteVisitor(Integer id) {
+        //根据维修id查询
         Query query = new Query(Criteria.where("id").is(id));
         try {
             mongoTemplate.remove(query,Visitor.class);
@@ -105,6 +140,13 @@ public class VisitorDaoImpl implements VisitorDao {
 
     @Override
     public Long getVisitorCount(String keywords, Integer id) {
+
+        LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("t_building")
+                .localField("buildingId")
+                .foreignField("id")
+                .as("building");
+
         Criteria criteria = new Criteria();
         if (id!=null){
             //根据宿舍楼查找
@@ -114,8 +156,10 @@ public class VisitorDaoImpl implements VisitorDao {
             Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("name").regex(pattern);
         }
-        Query query = new Query(criteria);
-        return mongoTemplate.count(query,Visitor.class);
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),lookupOperation);
+        List<Map> results = mongoTemplate.aggregate(aggregation, "visitor", Map.class).getMappedResults();
+        int num = results.size();
+        return (long)num;
     }
 
     @Override

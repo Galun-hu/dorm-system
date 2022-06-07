@@ -30,6 +30,13 @@ public class RepairDaoImpl implements RepairDao {
 
     @Override
     public List<Repair> getAllRepair(String keywords, Integer id,long pageNumNew,long pageSize) {
+
+        LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("t_building")
+                .localField("buildingId")
+                .foreignField("id")
+                .as("building");
+
         Criteria criteria = new Criteria();
         if (id!=null){
             //根据宿舍楼查找
@@ -39,14 +46,20 @@ public class RepairDaoImpl implements RepairDao {
             Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("name").regex(pattern);
         }
-        //创建分页
-        PageRequest pageRequest = PageRequest.of((int)pageNumNew,(int)pageSize);
-        Sort sort = Sort.by(Sort.Direction.DESC, "createTime");
-        Query query = new Query();
-        query.with(pageRequest);
-        query.with(sort);
-        query.addCriteria(criteria);
-        return mongoTemplate.find(query,Repair.class);
+        ProjectionOperation project  = Aggregation.project("id", "dormId", "buildingId", "number", "name", "phone","floor","content","enabled", "remark","createTime")
+                .and("building").as("building");
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.skip(pageNumNew),Aggregation.limit(pageSize),lookupOperation,project,Aggregation.unwind("building"));
+        List<Map> results = mongoTemplate.aggregate(aggregation, "repair", Map.class).getMappedResults();
+        List<Repair> repairs = new ArrayList<>();
+        for (Map result : results) {
+            Map<String,Object> building = JSONObject.parseObject(JSONObject.toJSONString(result.get("building")));
+            String str = JSON.toJSONString(result);
+            Repair repair = JSON.parseObject(str, Repair.class);
+            repair.setBuiName((String) building.get("name"));
+            repair.setType((String) building.get("type"));
+            repairs.add(repair);
+        }
+        return repairs;
     }
 
     @Override
@@ -91,6 +104,9 @@ public class RepairDaoImpl implements RepairDao {
         if (repair.getGoodsTime()!=null){
             update.set("goodsTime",repair.getGoodsTime());
         }
+        if (repair.getBuildingId()!=null){
+            update.set("buildingId",repair.getBuildingId());
+        }
         try {
             mongoTemplate.updateFirst(query,update,Repair.class);
             return 1;
@@ -114,17 +130,27 @@ public class RepairDaoImpl implements RepairDao {
 
     @Override
     public Long getRepairCount(String keywords, Integer id) {
+        LookupOperation lookup= LookupOperation.newLookup()
+                .from("t_building")
+                .localField("buildingId")
+                .foreignField("id")
+                .as("building");
+
         Criteria criteria = new Criteria();
-        if (id!=null){
-            //根据宿舍楼查找
-            criteria.and("buildingId").is(id);
-        }
+        boolean flag = true;
         if (StringUtils.hasText(keywords)){
             Pattern pattern= Pattern.compile("^.*"+keywords+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("name").regex(pattern);
+            flag = false;
         }
-        Query query = new Query(criteria);
-        return mongoTemplate.count(query,Repair.class);
+        if (id!=null&&flag){
+            criteria.and("buildingId").is(id);
+        }
+//        Aggregation.match(criteria),
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),lookup);
+        List<Map> results = mongoTemplate.aggregate(aggregation, "repair", Map.class).getMappedResults();
+        int num = results.size();
+        return (long)num;
     }
 
     @Override

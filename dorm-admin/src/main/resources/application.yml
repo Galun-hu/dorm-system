@@ -28,8 +28,6 @@ spring:
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
-#    空值不返回
+    #    空值不返回
     default-property-inclusion: non_null
     time-zone: GMT+8
-
-

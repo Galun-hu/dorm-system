@@ -1,0 +1,296 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : 106.55.18.86
+ Source Server Type    : MongoDB
+ Source Server Version : 50006
+ Source Host           : 106.55.18.86:27017
+ Source Schema         : dormitory
+
+ Target Server Type    : MongoDB
+ Target Server Version : 50006
+ File Encoding         : 65001
+
+ Date: 07/06/2022 16:47:36
+*/
+
+
+// ----------------------------
+// Collection structure for t_health
+// ----------------------------
+db.getCollection("t_health").drop();
+db.createCollection("t_health");
+
+// ----------------------------
+// Documents of t_health
+// ----------------------------
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e44e"),
+    id: NumberInt("4"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("102"),
+    floor: NumberInt("1"),
+    "health_level": "优",
+    "create_time": ISODate("2022-06-01T01:54:20.26Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e44f"),
+    id: NumberInt("5"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("103"),
+    floor: NumberInt("1"),
+    "health_level": "良",
+    "create_time": ISODate("2022-06-01T01:54:20.273Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e450"),
+    id: NumberInt("6"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("104"),
+    floor: NumberInt("1"),
+    "health_level": "优",
+    "create_time": ISODate("2022-06-01T01:54:20.285Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e451"),
+    id: NumberInt("7"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("105"),
+    floor: NumberInt("1"),
+    "health_level": "良",
+    "create_time": ISODate("2022-06-01T01:54:20.297Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e452"),
+    id: NumberInt("8"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("106"),
+    floor: NumberInt("1"),
+    "health_level": "差",
+    "create_time": ISODate("2022-06-01T01:54:20.312Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e453"),
+    id: NumberInt("9"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("107"),
+    floor: NumberInt("1"),
+    "health_level": "良",
+    "create_time": ISODate("2022-06-01T01:54:20.325Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e454"),
+    id: NumberInt("10"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("108"),
+    floor: NumberInt("1"),
+    "health_level": "良",
+    "create_time": ISODate("2022-06-01T01:54:20.344Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e455"),
+    id: NumberInt("11"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("109"),
+    floor: NumberInt("1"),
+    "health_level": "优",
+    "create_time": ISODate("2022-06-01T01:54:20.355Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e456"),
+    id: NumberInt("12"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("201"),
+    floor: NumberInt("2"),
+    "health_level": "优",
+    "create_time": ISODate("2022-06-01T01:54:20.365Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e457"),
+    id: NumberInt("13"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("202"),
+    floor: NumberInt("2"),
+    "health_level": "差",
+    "create_time": ISODate("2022-06-01T01:54:20.375Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e458"),
+    id: NumberInt("14"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("203"),
+    floor: NumberInt("2"),
+    "health_level": "良",
+    "create_time": ISODate("2022-06-01T01:54:20.386Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e459"),
+    id: NumberInt("15"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("204"),
+    floor: NumberInt("2"),
+    "health_level": "优",
+    "create_time": ISODate("2022-06-01T01:54:20.396Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e45a"),
+    id: NumberInt("16"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("205"),
+    floor: NumberInt("2"),
+    "health_level": "差",
+    "create_time": ISODate("2022-06-01T01:54:20.405Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e45b"),
+    id: NumberInt("17"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("206"),
+    floor: NumberInt("2"),
+    "health_level": "差",
+    "create_time": ISODate("2022-06-01T01:54:20.414Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e45c"),
+    id: NumberInt("18"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("207"),
+    floor: NumberInt("2"),
+    "health_level": "优",
+    "create_time": ISODate("2022-06-01T01:54:20.424Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e45d"),
+    id: NumberInt("19"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("208"),
+    floor: NumberInt("2"),
+    "health_level": "优",
+    "create_time": ISODate("2022-06-01T01:54:20.433Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e45e"),
+    id: NumberInt("20"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("209"),
+    floor: NumberInt("2"),
+    "health_level": "良",
+    "create_time": ISODate("2022-06-01T01:54:20.443Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e45f"),
+    id: NumberInt("21"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("301"),
+    floor: NumberInt("3"),
+    "health_level": "良",
+    "create_time": ISODate("2022-06-01T01:54:20.452Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e460"),
+    id: NumberInt("22"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("302"),
+    floor: NumberInt("3"),
+    "health_level": "优",
+    "create_time": ISODate("2022-06-01T01:54:20.461Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e461"),
+    id: NumberInt("23"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("303"),
+    floor: NumberInt("3"),
+    "health_level": "差",
+    "create_time": ISODate("2022-06-01T01:54:20.472Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e462"),
+    id: NumberInt("24"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("304"),
+    floor: NumberInt("3"),
+    "health_level": "优",
+    "create_time": ISODate("2022-06-01T01:54:20.483Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e463"),
+    id: NumberInt("25"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("305"),
+    floor: NumberInt("3"),
+    "health_level": "良",
+    "create_time": ISODate("2022-06-01T01:54:20.494Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e464"),
+    id: NumberInt("26"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("306"),
+    floor: NumberInt("3"),
+    "health_level": "良",
+    "create_time": ISODate("2022-06-01T01:54:20.503Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e465"),
+    id: NumberInt("27"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("307"),
+    floor: NumberInt("3"),
+    "health_level": "良",
+    "create_time": ISODate("2022-06-01T01:54:20.517Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e466"),
+    id: NumberInt("28"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("308"),
+    floor: NumberInt("3"),
+    "health_level": "优",
+    "create_time": ISODate("2022-06-01T01:54:20.531Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e467"),
+    id: NumberInt("29"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("309"),
+    floor: NumberInt("3"),
+    "health_level": "差",
+    "create_time": ISODate("2022-06-01T01:54:20.542Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
+db.getCollection("t_health").insert([ {
+    _id: ObjectId("6296c6ccac14fd26d9a0e468"),
+    id: NumberInt("30"),
+    "building_id": NumberInt("1"),
+    "rome_id": NumberInt("401"),
+    floor: NumberInt("4"),
+    "health_level": "差",
+    "create_time": ISODate("2022-06-01T01:54:20.552Z"),
+    _class: "com.joy.dorm.ambient.model.Health"
+} ]);
