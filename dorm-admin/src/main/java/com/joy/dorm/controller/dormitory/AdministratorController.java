@@ -153,7 +153,7 @@ public class AdministratorController {
         }else if (result == Long.valueOf(-2)){
             return RespResult.error("修改绑定的宿舍失败");
         }else if (result == Long.valueOf(-3)){
-            return RespResult.error("修改绑定的宿舍成功，修改管理员信息失败");
+            return RespResult.ok("修改绑定的宿舍成功");
         }else if (result > Long.valueOf(0)){
             return RespResult.ok("成功");
         }else {
