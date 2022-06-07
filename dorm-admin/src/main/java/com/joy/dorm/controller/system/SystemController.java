@@ -66,7 +66,7 @@ public class SystemController {
         Admin username = adminService.getUsername(admin.getUsername());
 
         if (username!=null){
-            return RespResult.error("该账号名已被使用!");
+            return RespResult.ok("该账号名已被使用!");
         }
 
         if (adminService.insert(admin)==1){
