@@ -100,6 +100,8 @@ public class AdministratorServiceImpl implements IAdministratorService {
         }
         if (administrator.getPassword() == ""){
             administrator.setPassword(null);
+        }else {
+            administrator.setPassword(encoder.encode(administrator.getPassword()));
         }
         administrator.setBuilding_name(null);
         if (administrator.getBuilding_id() != null) {
@@ -140,6 +142,7 @@ public class AdministratorServiceImpl implements IAdministratorService {
             return -1;
         }
         redisTemplate.delete("buildingAdminWithbuildingId_"+building_id);
+        redisTemplate.delete("administrator_"+admin_id);
         return administretorDao.deleteDromAdminToBuilding(admin_id);
     }
 
