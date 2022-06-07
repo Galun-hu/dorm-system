@@ -40,8 +40,7 @@ public class VisitorController {
     @GetMapping("/")
     public RespPage getAllVisitor(String keywords, HttpServletRequest request,
                                   @RequestParam(defaultValue = "1") long pageNum,
-                                  @RequestParam(defaultValue = "10") long pageSize,
-                                  @RequestParam(defaultValue = "1") Integer buildingId
+                                  @RequestParam(defaultValue = "10") long pageSize, Integer buildingId
     ){
         Map<String, Object> map = RequestJwt.getIdByJwtToken(request);
         Integer id = (Integer) map.get("id");

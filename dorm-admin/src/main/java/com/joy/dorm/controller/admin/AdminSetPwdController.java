@@ -1,8 +1,6 @@
 package com.joy.dorm.controller.admin;
 
 import com.joy.dorm.common.utils.RespResult;
-import com.joy.dorm.dormitory.model.Administrator;
-import com.joy.dorm.dormitory.model.Building;
 import com.joy.dorm.dormitory.service.IAdministratorService;
 import com.joy.dorm.dormitory.service.IBuildingService;
 import com.joy.dorm.system.service.AdminService;
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Map;
 
 @RestController
