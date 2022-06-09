@@ -33,25 +33,25 @@
 ### 项目效果图
 登录页面
 
-![my-login.png](http://hehuazhu.top/group1/M00/00/00/eE5TmWKhnxGES2NIAAAAAN6zzzw948.png)
+![my-login.png](dorm-admin/src/main/resources/image/login.png)
 
 首页
 
-![my-home.png](http://hehuazhu.top/group1/M00/00/00/eE5TmWKhn1eEWwN2AAAAAMgSYkQ869.png)
+![my-home.png](dorm-admin/src/main/resources/image/home.png)
 
 
 宿舍楼信息列表
 
-![my-info.png](http://hehuazhu.top/group1/M00/00/00/eE5TmWKhn2mELFmjAAAAAHdOL9E553.png)
+![my-info.png](dorm-admin/src/main/resources/image/info.png)
 
 
 访客管理
 
-![my-info2.png](http://hehuazhu.top/group1/M00/00/00/eE5TmWKhn3CEac-1AAAAABD9Scc916.png)
+![my-info2.png](dorm-admin/src/main/resources/image/info2.png)
 
 宿舍管理员页面
 
-![my-info3.png](http://hehuazhu.top/group1/M00/00/00/eE5TmWKhn3aEejEgAAAAAIQpTu0476.png)
+![my-info3.png](dorm-admin/src/main/resources/image/info3.png)
 
 ### 项目部署
 ...
