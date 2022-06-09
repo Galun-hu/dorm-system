@@ -11,7 +11,7 @@
 
 #### 前端技术栈
 1. Vue
-2. ElementUI
+2. antDesignVue
 3. Axios
 4. Vue-router
 5. Vuex
