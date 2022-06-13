@@ -95,10 +95,10 @@ public class BuildingTest {
     }
 
 
-    @Test
-    public void test1(){
-        List<Building> buildings = buildingDao.getAllBuildingAndAdmin(null, null, 0, 0);
-    }
+//    @Test
+//    public void test1(){
+//        List<Building> buildings = buildingDao.getAllBuildingAndAdmin(null, null, 0, 0);
+//    }
 
 }
 

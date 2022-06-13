@@ -114,6 +114,7 @@ public class AdministratorServiceImpl implements IAdministratorService {
                 if (result < 1) {
                     return Long.valueOf(-2);
                 }else {
+                    redisTemplate.delete("buildingAdminWithbuildingId_"+building_id);
                     redisTemplate.delete("buildingAdminWithbuildingId_"+administrator.getBuilding_id());
                 }
                 administrator.setBuilding_id(null);

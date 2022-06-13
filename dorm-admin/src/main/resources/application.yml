@@ -9,19 +9,21 @@ spring:
   data:
     mongodb:
       #106.55.18.86
-      host: 106.55.18.86
-      username: "admin"
+      host: 192.168.128.130
+      username: "dorm"
       password: "1353663350"
-      port: 27017
+      # 27017 mongo
+      # 27020 mongo分片分区副本集
+      port: 27020
       authentication-database: admin
       database: dormitory
       auto-index-creation: true
 
   redis:
     # 106.55.18.86
-    host: 106.55.18.86
+    host: 192.168.128.130
     # 63790
-    port: 63790
+    port: 6379
     password: "123456"
     database: 4
     timeout: 5000

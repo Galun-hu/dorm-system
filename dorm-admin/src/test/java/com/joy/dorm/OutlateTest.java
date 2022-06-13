@@ -70,11 +70,11 @@ public class OutlateTest {
 //    }
 
 
-    @Test
-    public void get(){
-        List<Administrator> administrators = administratorService.getDormAdmins(null, null,0,10);
-        System.out.println(administrators);
-    }
+//    @Test
+//    public void get(){
+//        List<Administrator> administrators = administratorService.getDormAdmins(null, null,0,10);
+//        System.out.println(administrators);
+//    }
 
     @Autowired
     private IHealthService healthServicem;
