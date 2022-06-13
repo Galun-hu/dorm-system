@@ -11,7 +11,7 @@
 
 #### 前端技术栈
 1. Vue
-2. ElementUI
+2. antDesignVue
 3. Axios
 4. Vue-router
 5. Vuex
@@ -31,19 +31,27 @@
 
 
 ### 项目效果图
-1. 登录页面
+登录页面
 
+![my-login.png](dorm-admin/src/main/resources/image/login.png)
 
 首页
+
+![my-home.png](dorm-admin/src/main/resources/image/home.png)
 
 
 宿舍楼信息列表
 
+![my-info.png](dorm-admin/src/main/resources/image/info.png)
+
 
 访客管理
 
+![my-info2.png](dorm-admin/src/main/resources/image/info2.png)
 
 宿舍管理员页面
 
+![my-info3.png](dorm-admin/src/main/resources/image/info3.png)
 
 ### 项目部署
+...
